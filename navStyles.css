@@ -290,7 +290,7 @@ nav{
   }
 
   .toggle{
-    transform: translateX(0%) !important;
+    transform: translateX(0) !important;
     transition: transform 0.5s ease-in-out;
   }
 
@@ -336,8 +336,12 @@ nav{
   }
 
   .toggler-active{
-    transform: translateX(0%);
+    transform: translateX(30%) translateY(-12%);
     transition: transform 0.5s ease-in;
+  }
+
+  .collapseToTheBottom{
+    transform: translateX(50%);
   }
 
 

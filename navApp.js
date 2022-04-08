@@ -92,6 +92,7 @@ toggler.addEventListener("click", function () {
             item.style.animation=`dropdownItemsAnimation 0.5s ease forwards ${index/7 +1}s`
         }
     })
+    document.body.children[1].classList.toggle("collapseToTheBottom")
 
 
 })
