@@ -7,9 +7,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>TRADdiction</title>
 
-  <link rel="stylesheet" href="navStyles.css">
-  <link rel="stylesheet" href="footerStyles.css">
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="/static/navStyles.css">
+  <link rel="stylesheet" href="/static/footerStyles.css">
+  <link rel="stylesheet" href="/static/styles.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
   <!-- include jquery to create html templates -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
@@ -22,10 +22,47 @@
 
 
 <body>
+  <!-- navbar -->
   <header>
-    <!-- import navbar -->
-    <div id="navBar"></div>
+    <div class="container-fluid" id="nav">
+      <div class="row">
+        <nav>
+          <div class="toggler">
+            <div class="line1"></div>
+            <div class="line2"></div>
+            <div class="line3"></div>
+          </div>
+          <a href="/" class="title" data-link><span id="title">TRADdiction</span></a>
+
+
+          <div class="nav-collapse1">
+            <form class="nav-form">
+              <input type="search" placeholder="Search items" id="nav-input">
+              <button type="submit" class="nav-btn"></button>
+            </form>
+
+          </div>
+          <div class="nav-collapse2">
+            <button class="btn btn-secondary" type="button" id="dropdown-btn">
+              Log-in/Sign-up
+              <i class="arrow-down"></i>
+            </button>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="/" data-link>SignUp</a></li>
+              <br>
+              <li><a class="dropdown-item isDisabled" href="">Already have an account?</a></li>
+              <li><a class="dropdown-item" href="/" data-link>LogIn</a></li>
+            </ul>
+          </div>
+
+
+
+        </nav>
+      </div>
+
+    </div>
   </header>
+
   <main>
     <div class="container-fluid" id="newAdditions">
       <div class="row" id="carousel">
@@ -39,6 +76,7 @@
             <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2"
               aria-label="Slide 3"></button>
           </div>
+
           <div class="carousel-inner">
             <div class="carousel-item active">
               <img
@@ -94,30 +132,24 @@
       <div class="row" id="searchItems">
         <h2>Search for items</h2>
 
-        <form action="/" method="post" class="queryItemsForm">
+        <form action="/" class="queryItemsForm">
           <input type="text" id="queryItems" placeholder="Query">
           <button type="submit" id="query-btn">Go</button>
         </form>
       </div>
 
       <div class="row d-flex justify-content-evenly results">
-        
-        <div class="col-3" id="prototype">
+
+        <div class="col-3 item d-none" id="prototype">
           <img
             src="https://pyxis.nymag.com/v1/imgs/f5e/cb1/3be2f873678308dc656756a9899aa1d25a-kids-converse.rhorizontal.w600.jpg">
           <h6>Title</h6>
           <p id="caption">Lorem ipsum dolor sit amet consectetur adipisicing elit. </p>
           <p id="looksFor">Looking for: <span id="items">shoes,watches</span></p>
         </div>
-        <div class="col-3">
-          <img
-            src="https://pyxis.nymag.com/v1/imgs/f5e/cb1/3be2f873678308dc656756a9899aa1d25a-kids-converse.rhorizontal.w600.jpg">
-          <h6>Title</h6>
-          <p id="caption">Lorem ipsum dolor sit amet consectetur adipisicing elit. lor </p>
-          <p id="looksFor">Looking for: <span id="items">shoes,watches</span></p>
-        </div>
         
-        
+
+
 
       </div>
 
@@ -130,12 +162,36 @@
 
   <footer class="d-flex">
     <!-- import footer -->
-    <div class="container-fluid" id="footer"></div>
-  </footer>
-  
+    <div class="container-fluid" id="footer">
 
-  <script src="app.js"></script>
-  
+    <div class="row-4">
+      <h4>Get to know us</h4>
+      <ul>
+        <li><a href="/about" data-link>About us</a></li>
+        <li><a href="/" data-link>Our mission</a></li>
+        <li><a href="/" data-link>Our vision</a></li>
+      </ul>
+    </div>
+    <div class="row-4">
+      <h4>Social Media</h4>
+      <div class="social">
+        <a href="/facebook" data-link><i class="fab fa-facebook-f"></i></a>
+        <a href="/insta" data-link><i class="fab fa-instagram"></i></a>
+        <a href="/" data-link><i class="fab fa-twitter"></i></a>
+      </div>
+    </div>
+    <div class="row-4 copyrights">
+      <h6>&copy; Traddiction 2022</h6>
+      <h6>All rights reserved.</h6>
+
+    </div>
+  </div>
+  </footer>
+
+  <script src="/static/navApp.js"></script>
+  <script type="module" src="/static/app.js"></script>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
   <!-- first 2 are bootstrap scripts -->
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"
     integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB"

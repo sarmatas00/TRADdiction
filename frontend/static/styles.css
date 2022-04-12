@@ -52,7 +52,7 @@ h2{
 
 #category .category-btn{
     border-radius: 70%;
-    padding: 20px;
+    padding: 12px 25px;
     cursor: default;
     background-color: rgb(21, 182, 56);
 
@@ -60,6 +60,10 @@ h2{
 
 #category .category-btn:hover{
     transform: scale(1.1);
+    
+}
+#category .category-btn:focus{
+    background-color: aqua;
     
 }
 
