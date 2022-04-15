@@ -119,15 +119,16 @@
         </div>
       </div>
 
-      <div class="row" id="category">
+      <div class="row category">
         <h2>Browse by category</h2>
-        <div class="col-3 d-flex justify-content-center align-items-center">
+        <div class="col-3 d-flex justify-content-center align-items-center d-none">
           <button type="button" class="btn btn-info label" disabled>Info</button>
         </div>
-        <div class="col-2">
+        <div class="col-2 d-none">
           <button type="button" class="btn btn-info category-btn">Clothing</button>
         </div>
       </div>
+      
 
       <div class="row" id="searchItems">
         <h2>Search for items</h2>
@@ -188,8 +189,9 @@
   </div>
   </footer>
 
-  <script src="/static/navApp.js"></script>
   <script type="module" src="/static/app.js"></script>
+  <script type="module" src="/static/navApp.js"></script>
+  <script type="module" src="/static/events.js"></script>
   <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 
   <!-- first 2 are bootstrap scripts -->

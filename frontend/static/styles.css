@@ -45,41 +45,39 @@ h2{
     margin-top: 3rem !important;
 }
 
-#category .label{
-    padding: 10px 70px;
-    
-}
 
-#category .category-btn{
+
+.category .category-btn{
     border-radius: 70%;
     padding: 12px 25px;
-    cursor: default;
+    word-wrap: break-word;
+    width: 10vw;
+    cursor: default !important;
     background-color: rgb(21, 182, 56);
+    
 
 }
 
-#category .category-btn:hover{
+.category .category-btn:hover{
     transform: scale(1.1);
     
 }
-#category .category-btn:focus{
+.category .category-btn:focus{
     background-color: aqua;
     
 }
 
-#category .label{
+.category .label{
     background-color: aqua;
-    border: 1px solid black;
+    width: 20vw;
+    word-wrap: break-word;
     font-weight: 600;
     font-size: 1.5em;
-}
-
-#category .category-btn a{
-    text-decoration: none;
-    cursor: default;
-    color: aqua;
+    padding: 0 4em;
 
 }
+
+
 
 
 

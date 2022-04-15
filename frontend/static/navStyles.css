@@ -195,7 +195,7 @@ nav{
 @media screen and (min-width:0px) and (max-width: 768px){
   body{
     
-    overflow: hidden;
+    overflow-x: hidden;
   }
 
   nav{
@@ -297,7 +297,9 @@ nav{
   
 
   .nav-btn{
-    
+    position: relative;
+    bottom:20px;
+    height: 4vh;
     width: 8vw;
     border-radius: 20% !important;
     
