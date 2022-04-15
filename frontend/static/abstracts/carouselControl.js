@@ -1,5 +1,8 @@
 import abstract from "./abstract.js";
 
+//module that is called every time a user posts a new item
+//3 last items posted on the site are desplayed on the carousel.
+
 export default class extends abstract{
     constructor(params){
         super(params)

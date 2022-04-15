@@ -1,5 +1,6 @@
 import abstract from "./abstract.js";
 
+//module that helps with creating new adds with the data we get from the server.
 export default class extends abstract {
     constructor({src,title,text,looksFor,free}) {
         let params={src,title,text,looksFor,free}

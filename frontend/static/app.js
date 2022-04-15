@@ -14,10 +14,25 @@ import category from "./abstracts/category.js"
 
 
 
-//when all elements are there, listen for user clicking on links
+
+
+//when all elements on the page have loaded
 
 document.addEventListener("DOMContentLoaded", () => {
     window.scrollTo(0, 0);
+
+    document.body.addEventListener("click",function(e){
+        if(e.target.matches("[data-link]")) {
+            e.preventDefault()
+            history.pushState(null, null, e.target.getAttribute("href"))
+        }
+        else if(e.target.parentElement.matches("[data-link]")) {
+            e.preventDefault()
+            history.pushState(null, null, e.target.parentElement.getAttribute("href"))
+        }
+    })
+
+    
     
     (new category({ctgType:"NotDone",ctgName:"Nikos"})).createCategory();
     (new category({ctgType:"Done",ctgName:"Spiros"})).createCategory();
@@ -29,22 +44,14 @@ document.addEventListener("DOMContentLoaded", () => {
     (new category({ctgType:"Done",ctgName:"Pena"})).createCategory();
     (new category({ctgType:"Done",ctgName:"Pena"})).createCategory();
     (new category({ctgType:"Done",ctgName:"Pena"})).createCategory();
+    
 });
 
 
 
 
 //event function for stopping page refresh on anchors
-const evt = e => {
-    if (e.target.matches("[data-link]")) {
-        history.pushState(null, null, e.target.getAttribute("href"))
-        e.preventDefault()
-    }
-    else if (e.target.parentElement.matches("[data-link]")) {
-        history.pushState(null, null, e.target.parentElement.getAttribute("href"))
-        e.preventDefault()
-    }
-}
+
 
 
 

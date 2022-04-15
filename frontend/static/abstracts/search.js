@@ -1,15 +1,21 @@
 import abstract from "./abstract.js";
 import addControl from "./addControl.js";
 
+//that module takes care of making requests to the database for adds, load them on the page, or remove them
+//depending on search and category conditions
+
 export default class extends abstract {
     constructor(params) {
         super(params)
+        this.finishSearch=true
 
     }
 
+    //make a post request for adds and put the results in an array. With the help of addControl
+    //create a new add for every object of information we get and then direct it to be loaded or removed from the page respectively
     async search() {
         
-        const items = await axios.post("/search", { category: this.params.category, text: this.params.text })
+        const items = await axios.post("/search", { category: this.params.category, text: this.params.text,numberOfItems:this.params.numberOfItems,finish:this.finishSearch })
         let r = []
         items.data.forEach(async (item) => {
             const tmp = await (new addControl(item).create())
@@ -21,7 +27,9 @@ export default class extends abstract {
 
     async loadItems() {
         let item = await this.search()
-
+        
+        //compare every new element we got from the server with the preexisting ones in the page and keep
+        //only the new ones
         item = item.map((res) => {
 
             let elementsOnPage = document.querySelectorAll(".results .item")
@@ -29,10 +37,13 @@ export default class extends abstract {
 
                 return element.children[2].innerHTML === res.children[2].innerHTML
             })) {
+                
                 return res
             }
         })
-
+        
+        //if after filtering the elements, we still got some new ones, put them on the page where
+        //space exists. Make new rows if there is no space left
         item.forEach((res) => {
             if (res !== undefined) {
                 let resultPage = document.querySelectorAll(".results")
@@ -50,6 +61,8 @@ export default class extends abstract {
 
 
     }
+
+    //for each item we want to remove from the page, go and find it and then remove
 
     async removeItems() {
         let item = await this.search()
@@ -70,6 +83,23 @@ export default class extends abstract {
 
 
     }
+
+
+
+    setFinishSearch(color=""){
+        if(color=="aqua"){
+            this.finishSearch=false
+        }else{
+            this.finishSearch=true
+        }
+        console.log(this.finishSearch);
+        
+    }
+
+    
+
+
+    
 
 
     

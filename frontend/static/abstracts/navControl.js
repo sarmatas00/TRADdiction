@@ -1,5 +1,7 @@
 import abstract from "./abstract.js"
 
+//controls the navbar content, depending on if someone is logged in their account
+
 export default class extends abstract{
     constructor(params){
         super(params)
