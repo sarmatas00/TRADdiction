@@ -48,10 +48,10 @@
               <i class="arrow-down"></i>
             </button>
             <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="/" data-link>SignUp</a></li>
+              <li><a class="dropdown-item" href="/signup" data-link>SignUp</a></li>
               <br>
               <li><a class="dropdown-item isDisabled" href="">Already have an account?</a></li>
-              <li><a class="dropdown-item" href="/" data-link>LogIn</a></li>
+              <li><a class="dropdown-item" href="/login" data-link>LogIn</a></li>
             </ul>
           </div>
 
@@ -63,7 +63,10 @@
     </div>
   </header>
 
-  <main>
+  
+  
+
+  <main class="d-none">
     <div class="container-fluid" id="newAdditions">
       <div class="row" id="carousel">
         <h2>Our newest additions</h2>
@@ -142,6 +145,7 @@
       <div class="row d-flex justify-content-evenly results">
 
         <div class="col-3 item d-none" id="prototype">
+          <button class="btn btn-primary"><a href="/adds/:id" data-link>View!</a></button>
           <img
             src="https://pyxis.nymag.com/v1/imgs/f5e/cb1/3be2f873678308dc656756a9899aa1d25a-kids-converse.rhorizontal.w600.jpg">
           <h6>Title</h6>

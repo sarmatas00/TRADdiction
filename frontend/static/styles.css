@@ -113,9 +113,24 @@ h2{
 
 }
 
+.results .col-3 button{
+    
+    visibility: hidden;
+    
+    margin-left: 40%;
+}
+.results .col-3 button:hover{
+    
+    background-color: rgb(121, 121, 207);
+}
+
 .results .col-3:hover{
     transform: scale(1.05);
     transition: transform 250ms ease;
+}
+.results .col-3:hover button{
+    visibility: visible;
+    
 }
 
 
@@ -147,5 +162,27 @@ h2{
 .results img{
     max-width: 100%;
     border-bottom: 1px dashed black;
+    
+}
+
+
+
+
+
+#login{
+    background-color: white;
+    font-weight: 500;
+    border-radius: 5%;
+    max-width: 30%;
+    transform: translateY(20%);
+    padding: 5px;
+    
+}
+
+#login button{
+    align-self: center;
+    
+    margin-top: 3%;
+    padding: 2% 7%;
     
 }
