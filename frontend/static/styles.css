@@ -18,6 +18,12 @@ main .row{
 
 }
 
+#carousel{
+    max-width: 90%;
+    position: relative;
+    top: 0;
+    left: 6%;
+}
 
 .carousel{
     filter: drop-shadow(0px 0px 15px black);
@@ -169,7 +175,7 @@ h2{
 
 
 
-#login{
+/* #login{
     background-color: white;
     font-weight: 500;
     border-radius: 5%;
@@ -177,12 +183,40 @@ h2{
     transform: translateY(20%);
     padding: 5px;
     
-}
+}*/
 
 #login button{
-    align-self: center;
+    display: block;
     
     margin-top: 3%;
     padding: 2% 7%;
     
+} 
+
+
+#signup{
+    margin-top: 2em;
 }
+
+.invalid input,.invalid select{
+    border: 2px solid red !important;
+    animation: 2s shake ease alternate;
+    
+}
+
+@keyframes shake {
+    0% { transform: skewX(-15deg); }
+    5% { transform: skewX(15deg); }
+    10% { transform: skewX(-15deg); }
+    15% { transform: skewX(15deg); }
+    20% { transform: skewX(0deg); }
+    100% { transform: skewX(0deg); }  
+  } 
+
+  
+
+  
+
+
+
+ 

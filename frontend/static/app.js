@@ -6,6 +6,8 @@ import addControl from "./abstracts/addControl.js"
 import search from "./abstracts/search.js"
 import category from "./abstracts/category.js"
 import login from "./abstracts/login.js"
+import signup from "./abstracts/signup.js"
+import user from "./abstracts/user.js"
 
 
 
@@ -27,9 +29,9 @@ const getParams = match => {
 const router = async ()=>{
     const routes=[
         {path:"/",view:abstract},
-        {path:"/login/:id",view:login},
-        {path:"/login",view:login}
-        // {path:"/login",view:},
+        {path:"/login",view:login},
+        {path:"/signup",view:signup},
+        {path:"/user/:id",view:user}
         // {path:"/about",view:},
         // {path:"/mission",view:},
         // {path:"/vision",view:},
@@ -53,13 +55,15 @@ const router = async ()=>{
     }
 
     
-    console.log(match);
-    console.log(getParams(match));
+    
     const view = new match.route.view(getParams(match));
     const newElement=await view.getElement()
+    
     if(newElement!==null){
         document.querySelector("header").insertAdjacentElement("afterend",newElement)
+        view.callOtherMethods()
     }
+    
 
 }
 
@@ -71,8 +75,7 @@ window.addEventListener("popstate",router)
 
 document.addEventListener("DOMContentLoaded", () => {
     window.scrollTo(0, 0);
-    // history.pushState(null,null,"/")
-    // router()
+    
 
     document.body.addEventListener("click",function(e){
         if(e.target.matches("[data-link]")) {
@@ -103,6 +106,8 @@ document.addEventListener("DOMContentLoaded", () => {
     router()
     
 });
+
+export {router}
 
 
 

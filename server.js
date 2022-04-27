@@ -2,6 +2,18 @@ const exp = require("constants")
 const express = require("express")
 const path = require("path")
 
+const livereload=require("livereload")
+const connectLivereload=require("connect-livereload")
+
+const liveReloadServer=livereload.createServer()
+liveReloadServer.watch(path.join(__dirname,"frontend"))
+
+liveReloadServer.server.once("connection",()=>{
+    setTimeout(()=>{
+        liveReloadServer.refresh("/")
+    },100)
+})
+
 const app= express()
 
 const aggelies=[
@@ -110,7 +122,7 @@ const aggelies=[
 
 ]
 
-
+app.use(connectLivereload())
 app.use("/static",express.static(path.join(__dirname,"/frontend","/static")))
 app.use(express.json())
 
@@ -119,9 +131,7 @@ let finish=true
 
 app.post("/search",(req,res)=>{
     
-    console.log(req.body.finish);
-    console.log(req.body.numberOfItems);
-    console.log(finish);
+    
     if(req.body.numberOfItems!=10 && !req.body.finish){
         finish=false
         res.send(JSON.stringify(aggelies.slice(0,4)))
@@ -134,9 +144,28 @@ app.post("/search",(req,res)=>{
     }else if(req.body.numberOfItems!=10 && req.body.finish){
         finish=true
         res.send(JSON.stringify(aggelies.slice(0,4)))
+        
     }
 })
 
+
+app.post("/signup",(req,res)=>{
+    //TODO 
+    // search the db for similarities in email and return true if signup is successful
+    res.send(JSON.stringify(true))
+})
+
+app.post("/login",(req,res)=>{
+    //TODO 
+    // search the db for similarities in email and return true if signup is successful
+    const response={
+        userID:"90076i",
+        wrongPass:false,
+        wrongEmail:true
+    }
+    res.send(JSON.stringify(response))
+    
+})
 
 app.get("*",(req,res)=>{
     console.log("request");
