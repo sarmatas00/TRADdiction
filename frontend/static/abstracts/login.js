@@ -1,7 +1,19 @@
 import abstract from "./abstract.js";
-import {router} from "../app.js"
+import {router,getParams,pathToRegex} from "../app.js"
 
 export default class extends abstract{
+  static users=[
+    {
+      email:"user1@gmail.com",
+      pass:"Aa123456!"
+      
+    },
+    {
+      email:"admin@gmail.com",
+      pass:"Bb123456!"
+    }
+  ]
+  
     constructor(params){
         super(params)
         this.setTitle("User LogIn")
@@ -58,17 +70,23 @@ export default class extends abstract{
 
   async authenticate(details){
     
-    const authenticate=await axios.post("/login",details)
-    if(authenticate.data.userID!==""){
-      history.pushState(null, null, `/user/${authenticate.data.userID}`)
-      router()
-    }
-    else if(authenticate.data.wrongEmail){
-      this.alertUser("There is no registered account with that email,please sign up!","danger")
-    }
-    else{
-      this.alertUser("Wrong Password, please try again!","danger")
-    }
+    // const authenticate=await axios.post("/login",details)
+    //TODO user authentication
+    const authenticate=""
+    // if(authenticate.data.userID!==""){
+      if(authenticate===""){
+
+        
+        history.pushState(null, null, "/user/1285")
+        router()
+      }
+    
+    // else if(authenticate.data.wrongEmail){
+    //   this.alertUser("There is no registered account with that email,please sign up!","danger")
+    // }
+    // else{
+    //   this.alertUser("Wrong Password, please try again!","danger")
+    // }
   }
 
 

@@ -8,7 +8,12 @@ import category from "./abstracts/category.js"
 import login from "./abstracts/login.js"
 import signup from "./abstracts/signup.js"
 import user from "./abstracts/user.js"
-import items from "./abstracts/items.js"
+import myItems from "./abstracts/myItems.js"
+import trades from "./abstracts/trades.js"
+import newListing from "./abstracts/newListing.js"
+import about from "./abstracts/about.js"
+import ourVision from "./abstracts/ourVision.js"
+import ourMission from "./abstracts/ourMission.js"
 
 
 
@@ -32,8 +37,18 @@ const router = async ()=>{
         {path:"/",view:abstract},
         {path:"/login",view:login},
         {path:"/signup",view:signup},
-        {path:"/user/items/:id",view:items},
+        {path:"/about",view:about},
+        {path:"/ourmission",view:ourMission},
+        {path:"/ourvision",view:ourVision},
+        {path:"/user/items/:id",view:myItems},
+        {path:"/user/trades/:id",view:trades},
+        {path:"/user/newListing/:id",view:newListing},
         {path:"/user/:id",view:user}
+        
+        
+        
+    
+        //{path:"/about",view:},
         // {path:"/mission",view:},
         // {path:"/vision",view:},
         // {path:"/social",view:}
@@ -108,7 +123,7 @@ document.addEventListener("DOMContentLoaded", () => {
     
 });
 
-export {router}
+export {router,pathToRegex,getParams}
 
 
 
