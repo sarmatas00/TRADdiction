@@ -59,10 +59,8 @@ export default class extends abstract{
   async authenticate(details){
     
     const authenticate=await axios.post("/login",details)
-    console.log(authenticate.data);
     if(authenticate.data.userID!==""){
-      // window.location.href=`/user/${authenticate.data.userID}`
-      history.pushState(null, null, "/user/1285")
+      history.pushState(null, null, `/user/${authenticate.data.userID}`)
       router()
     }
     else if(authenticate.data.wrongEmail){

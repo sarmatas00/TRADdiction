@@ -130,8 +130,6 @@ let i=0
 let finish=true
 
 app.post("/search",(req,res)=>{
-    
-    
     if(req.body.numberOfItems!=10 && !req.body.finish){
         finish=false
         res.send(JSON.stringify(aggelies.slice(0,4)))
@@ -144,7 +142,6 @@ app.post("/search",(req,res)=>{
     }else if(req.body.numberOfItems!=10 && req.body.finish){
         finish=true
         res.send(JSON.stringify(aggelies.slice(0,4)))
-        
     }
 })
 

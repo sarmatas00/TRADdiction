@@ -8,6 +8,7 @@ import category from "./abstracts/category.js"
 import login from "./abstracts/login.js"
 import signup from "./abstracts/signup.js"
 import user from "./abstracts/user.js"
+import items from "./abstracts/items.js"
 
 
 
@@ -31,8 +32,8 @@ const router = async ()=>{
         {path:"/",view:abstract},
         {path:"/login",view:login},
         {path:"/signup",view:signup},
+        {path:"/user/items/:id",view:items},
         {path:"/user/:id",view:user}
-        // {path:"/about",view:},
         // {path:"/mission",view:},
         // {path:"/vision",view:},
         // {path:"/social",view:}
