@@ -11,6 +11,9 @@ import user from "./abstracts/user.js"
 import myItems from "./abstracts/myItems.js"
 import trades from "./abstracts/trades.js"
 import newListing from "./abstracts/newListing.js"
+import about from "./abstracts/about.js"
+import ourVision from "./abstracts/ourVision.js"
+import ourMission from "./abstracts/ourMission.js"
 
 
 
@@ -34,6 +37,9 @@ const router = async ()=>{
         {path:"/",view:abstract},
         {path:"/login",view:login},
         {path:"/signup",view:signup},
+        {path:"/about",view:about},
+        {path:"/ourmission",view:ourMission},
+        {path:"/ourvision",view:ourVision},
         {path:"/user/items/:id",view:myItems},
         {path:"/user/trades/:id",view:trades},
         {path:"/user/:id/newListing",view:newListing},
