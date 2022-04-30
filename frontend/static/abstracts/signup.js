@@ -1,6 +1,24 @@
 import abstract from "./abstract.js";
 
-export default class extends abstract {
+
+class signup extends abstract {
+
+  static users=[
+    {
+      email:"user1@gmail.com",
+      pass:"Aa123456!",
+      type:"user",
+      userID:Math.floor(1000+Math.random()*9000)
+    },
+    {
+      email:"admin@gmail.com",
+      pass:"Bb123456!",
+      type:"admin",
+      userID:Math.floor(1000+Math.random()*9000)
+    }
+  ]
+
+
   constructor(params) {
     super(params);
     this.setTitle("User SignUp");
@@ -90,6 +108,7 @@ export default class extends abstract {
 
       
         `;
+        
 
     return newElement;
   }
@@ -192,9 +211,15 @@ export default class extends abstract {
 
   async register(details){
     if (this.checkInput(details)) {
-      const profile = await axios.post("/signup", details);
+      // const profile = await axios.post("/signup", details);
+
+      //for every user in the users array go and check if they have
+      //the same email as the one currently trying to register
+      const profile=[...signup.users].map((user)=>{return user.email}).includes(details.inputEmail)
       //if email has not been already registered
-      if (profile.data) {
+      if (!profile) {
+        signup.users.push({email:details.inputEmail,pass:details.inputPassword,type:"user",userID:Math.floor(1000+Math.random()*9000)})
+        
         this.alertUser("Your registration has been completed!","success")
       }else{
         this.alertUser("This email address is already in use. Please login!","danger")
@@ -202,7 +227,24 @@ export default class extends abstract {
     }
   }
 
+  static getUsers({email,password}){
+    for(let user of this.users){
+      if(user.email===email && user.pass===password){
+        return user
+      }
+    }
+    return null
+
+  }
+
+  static setUsers(data){
+    this.users.push({...data,userID:Math.floor(1000+Math.random()*9000)})
+  }
+
   callOtherMethods(){
     this.validate()
   }
 }
+
+
+export {signup};

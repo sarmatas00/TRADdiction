@@ -1,15 +1,11 @@
-import {router,getParams,pathToRegex} from "../app.js"
+import {router} from "../app.js"
 import abstract from "./abstract.js";
 import addControl from"./addControl.js";
 
 
 export default class extends abstract{
   
-    // static listings[{
-      
-    // },{
-
-    // }]
+  
 
     addToListings(listing){
       this.listing.push(listing)
@@ -17,6 +13,8 @@ export default class extends abstract{
 
     constructor(params){
         super(params);
+        document.querySelector("main").classList.add("d-none")
+        this.setTitle("My Items")
         this.id=params.id;
         let data=params.data;
         this.aggelies=[
@@ -49,7 +47,7 @@ export default class extends abstract{
     const dd1=d1.innerHTML;
     const d2=await (new addControl(this.aggelies[1]).create());
     const dd2=d2.innerHTML;
-    console.log(dd1);
+    
     newElement.innerHTML = 
     `
      <h1>DICKS</h1> 

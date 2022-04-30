@@ -1,22 +1,19 @@
 import abstract from "./abstract.js";
 
 export default class extends abstract{
-    
   
     constructor(params){
         
-
-
         super(params)
         this.id=params.id;
-        this.userData={}
-        this.getData(params.id)
+        // this.userData={}
+        // this.getData(params.id)
     }
 
     //make ajax call and get an object with user data
-    async getData(id){
-        this.userData=await axios.get(`/user/${id}`)
-    }
+    // async getData(id){
+        // this.userData=await axios.get(`/user/${id}`)
+    // }
 
     async getElement(){
         document.querySelector('#dropdown-btn').innerHTML=`My Account

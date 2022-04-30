@@ -4,6 +4,8 @@ import myItems from "./myItems.js";
 export default class extends abstract{
     constructor(params){
         super(params);
+        document.querySelector("main").classList.add("d-none")
+        this.setTitle("Create new listing")
         this.id=params.id;
         
         }

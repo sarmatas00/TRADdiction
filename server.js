@@ -2,6 +2,8 @@ const exp = require("constants")
 const express = require("express")
 const path = require("path")
 
+
+
 const livereload=require("livereload")
 const connectLivereload=require("connect-livereload")
 
@@ -165,7 +167,8 @@ app.post("/login",(req,res)=>{
 })
 
 app.get("*",(req,res)=>{
-    console.log("request");
+    
+    
     res.sendFile(path.resolve(__dirname,"frontend","index.html"))
 })
 

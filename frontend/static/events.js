@@ -1,6 +1,6 @@
 import search from "./abstracts/search.js"
 import category from "./abstracts/category.js"
-import signup from "./abstracts/signup.js"
+
 
 
 const categoryBtn = document.querySelectorAll(".category-btn")
