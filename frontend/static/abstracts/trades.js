@@ -1,6 +1,5 @@
 import abstract from "./abstract.js";
-
-export default class extends abstract{
+class trades extends abstract{
     constructor(params){
         super(params);
         this.id=params.id;
@@ -38,3 +37,5 @@ async getData(id){
 }
     
 }
+
+export {trades}
