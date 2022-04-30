@@ -1,6 +1,6 @@
-import exp from "constants";
+
 import abstract from "./abstract.js";
-import myItems from "./myItems.js";
+import {myItems} from "./myItems.js";
 
 class newListing extends abstract{
     

@@ -63,26 +63,10 @@ export default class extends abstract{
     
     const authenticate=signup.getUsers(details)
     if(authenticate!==null){
-      document.querySelector('#dropdown-btn').innerHTML=`My Account
-        <i class="arrow-down"></i>`
-        document.querySelector('.dropdown-menu').innerHTML=
-        `
-        <li>Hey there, Spiros</li>
-        <br/>
-        <li>
-          <a class="dropdown-item" href="/user/items/${this.id}" data-link>My items</a>
-        </li>
-        <li>
-          <a class="dropdown-item" href="/user/trades/${this.id}" data-link>Trades</a>
-        </li>
-        <li>
-          <a class="dropdown-item signout" href="/signout" data-link>Sign Out</a>
-        </li>
-        `
-      this.signOutEvent()
+      
+      
 
-      // history.pushState(null, null, `/user/${authenticate.userID}`)
-      history.pushState(null, null, `/`)
+      history.pushState(null, null, `/user/${authenticate.userID}`)
       router()
       
     }else{
@@ -98,34 +82,7 @@ export default class extends abstract{
     // }
   }
 
-  signOutEvent(){
-    document.querySelector('.dropdown-menu .signout').addEventListener("click",(evt)=>{
-      evt.preventDefault()
-      evt.stopImmediatePropagation()
-
-      document.querySelector('#dropdown-btn').innerHTML=`Log-in/Sign-up
-      <i class="arrow-down"></i>`
-        document.querySelector('.dropdown-menu').innerHTML=
-        `
-        <li>
-          <a class="dropdown-item" href="/signup" data-link>Sign-Up</a>
-        </li>
-        <br />
-        <li>
-          <a class="dropdown-item isDisabled" href=""
-            >Already have an account?</a
-          >
-        </li>
-        <br>
-        <li>
-          <a class="dropdown-item" href="/login" data-link>Log-In</a>
-        </li>
-        `
-
-      history.pushState(null, null, `/`)
-      router()
-    })
-  }
+  
 
 
   callOtherMethods(){

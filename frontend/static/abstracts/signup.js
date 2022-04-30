@@ -2,19 +2,20 @@ import abstract from "./abstract.js";
 
 
 class signup extends abstract {
+  static userID=1234
 
   static users=[
     {
       email:"user1@gmail.com",
       pass:"Aa123456!",
       type:"user",
-      userID:Math.floor(1000+Math.random()*9000)
+      userID:1232
     },
     {
       email:"admin@gmail.com",
       pass:"Bb123456!",
       type:"admin",
-      userID:Math.floor(1000+Math.random()*9000)
+      userID:1233
     }
   ]
 
@@ -218,7 +219,7 @@ class signup extends abstract {
       const profile=[...signup.users].map((user)=>{return user.email}).includes(details.inputEmail)
       //if email has not been already registered
       if (!profile) {
-        signup.users.push({email:details.inputEmail,pass:details.inputPassword,type:"user",userID:Math.floor(1000+Math.random()*9000)})
+        signup.users.push({email:details.inputEmail,pass:details.inputPassword,type:"user",userID:signup.userID++})
         
         this.alertUser("Your registration has been completed!","success")
       }else{
@@ -238,7 +239,11 @@ class signup extends abstract {
   }
 
   static setUsers(data){
-    this.users.push({...data,userID:Math.floor(1000+Math.random()*9000)})
+    this.users.push({...data,userID:this.userID++})
+  }
+
+  static validateById(id){
+    return [...this.users].map((user)=>{return user.userID}).includes(id)
   }
 
   callOtherMethods(){

@@ -9,11 +9,13 @@ import login from "./abstracts/login.js"
 import {signup} from "./abstracts/signup.js"
 import user from "./abstracts/user.js"
 import {myItems} from "./abstracts/myItems.js"
-import trades from "./abstracts/trades.js"
+import {trades} from "./abstracts/trades.js"
 import {newListing} from "./abstracts/newListing.js"
 import about from "./abstracts/about.js"
 import ourVision from "./abstracts/ourVision.js"
 import ourMission from "./abstracts/ourMission.js"
+import add from "./abstracts/add.js"
+
 
 
 
@@ -51,10 +53,7 @@ const router = async ()=>{
         
         
     
-        //{path:"/about",view:},
-        // {path:"/mission",view:},
-        // {path:"/vision",view:},
-        // {path:"/social",view:}
+        
     ];
 
     const potentialMatches= routes.map(route=>{
