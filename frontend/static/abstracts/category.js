@@ -1,5 +1,5 @@
 import abstract from "./abstract.js";
-import search from "./search.js";
+import {search} from "./search.js";
 
 //this module handles the category section. 
 
@@ -63,16 +63,16 @@ export default class extends abstract{
     //to search module begins for new items.
     addEvents(categoryBtnDiv){
         categoryBtnDiv.children[0].addEventListener("click", (evt) => {
-            console.log(categoryBtnDiv.children[0].innerText);
+            
             let item = new search({ category: categoryBtnDiv.children[0].innerText, text: "" })
     
             if (categoryBtnDiv.children[0].style.backgroundColor !== "aqua") {
-                item.setFinishSearch("aqua")
+                search.setFinishSearch("aqua")
                 item.loadItems()
                 categoryBtnDiv.children[0].style.backgroundColor = "aqua"
             }
             else {
-                item.setFinishSearch()
+                search.setFinishSearch()
                 item.removeItems()
                 categoryBtnDiv.children[0].style.backgroundColor = ""
             }

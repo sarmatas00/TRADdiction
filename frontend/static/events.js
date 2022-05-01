@@ -1,4 +1,4 @@
-import search from "./abstracts/search.js"
+import {search} from "./abstracts/search.js"
 import category from "./abstracts/category.js"
 
 

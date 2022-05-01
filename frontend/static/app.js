@@ -3,7 +3,7 @@ import abstract from "./abstracts/abstract.js"
 import navControl from "./abstracts/navControl.js"
 import carouselControl from "./abstracts/carouselControl.js"
 import addControl from "./abstracts/addControl.js"
-import search from "./abstracts/search.js"
+
 import category from "./abstracts/category.js"
 import login from "./abstracts/login.js"
 import {signup} from "./abstracts/signup.js"
@@ -78,6 +78,7 @@ const router = async ()=>{
     const newElement=await view.getElement()
     
     if(newElement!==null){
+        console.log(newElement);
         document.querySelector("header").insertAdjacentElement("afterend",newElement)
         signup.getUsers({email:"spiros",password:"dimos"})
         view.callOtherMethods()

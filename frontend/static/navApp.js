@@ -1,5 +1,5 @@
 import abstract from "./abstracts/abstract.js";
-import search from "./abstracts/search.js";
+import {search} from "./abstracts/search.js";
 
 let widthMatch = window.matchMedia("(max-width: 768px)");
 const navButton = document.querySelector(".nav-btn");

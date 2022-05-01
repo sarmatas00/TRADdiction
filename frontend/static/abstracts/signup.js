@@ -243,7 +243,7 @@ class signup extends abstract {
   }
 
   static validateById(id){
-    return [...this.users].map((user)=>{return user.userID}).includes(id)
+    return [...this.users].map((user)=>{return user.userID}).includes(Number.parseInt(id))
   }
 
   callOtherMethods(){
