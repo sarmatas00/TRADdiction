@@ -1,12 +1,14 @@
 import abstract from "./abstract.js";
-
-export default class extends abstract{
+import user from "./user.js"
+class trades extends user{
     constructor(params){
         super(params);
         this.id=params.id;
         let data=params.data;
+        this.setUserOptions();
         }
     async getElement() {
+    
     if (
       document.querySelector("header").nextElementSibling.nodeName !== "MAIN"
     ) {
@@ -18,8 +20,20 @@ export default class extends abstract{
     
     newElement.innerHTML = 
     `
-     <h1>DICKS</h1> 
-     <div class="results row">
+     <h1 style="color:white">Trades</h1> 
+     <div>
+     <div style="display:inline-block;color:white;">
+     <h2 style="color:white">Trade History</h2>
+     <ul>
+     <li>Traded:102 On:Monday</li>
+     <li>Traded:102 On:Monda</li>
+     </ul>
+     </div>
+     <div style="color:white;">
+     <h2 style="color:white">Trade Requests</h2>
+
+     
+     </div>
 
     
      </div>
@@ -33,8 +47,8 @@ export default class extends abstract{
     */
     return newElement;
 }
-async getData(id){
-    this.userData=await axios.get(`/user/${id}`)
-}
+
     
 }
+
+export {trades}

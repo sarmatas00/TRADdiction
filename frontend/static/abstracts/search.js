@@ -1,32 +1,53 @@
 import abstract from "./abstract.js";
 import addControl from "./addControl.js";
+import {newListing} from "./newListing.js"
 
 //that module takes care of making requests to the database for adds, load them on the page, or remove them
 //depending on search and category conditions
 
-export default class extends abstract {
+class search extends abstract {
     constructor(params) {
         super(params)
-        this.finishSearch=true
-
+        this.i=0
+        this.aggelies=newListing.getListing("")
+        console.log(this.aggelies);
     }
+
+    static i=0;
+    static finishSearch=true;
+
+
+    
 
     //make a post request for adds and put the results in an array. With the help of addControl
     //create a new add for every object of information we get and then direct it to be loaded or removed from the page respectively
-    async search() {
+    search() {
+        const {category,text,numberOfItems}=this.params
         
-        const items = await axios.post("/search", { category: this.params.category, text: this.params.text,numberOfItems:this.params.numberOfItems,finish:this.finishSearch })
+        // const items = await axios.post("/search", { category: this.params.category, text: this.params.text,numberOfItems:this.params.numberOfItems,finish:this.finishSearch })
+        let items=[]
+        if(numberOfItems!==10 && !search.finishSearch){
+        
+            search.finishSearch=false
+            items=this.aggelies.slice(0,4)
+        }else if(numberOfItems==10 && search.finishSearch){
+            items=this.aggelies.slice(search.i,search.i+=2)
+            if(search.i>=this.aggelies.length){search.i=0}
+        }else if(numberOfItems!==10 && search.finishSearch){
+            search.finishSearch=true
+            items=this.aggelies.slice(4,8)
+        }
         let r = []
-        items.data.forEach(async (item) => {
-            const tmp = await (new addControl(item).create())
+        items.forEach(async (item) => {
+            const tmp = (new addControl(item).create())
             r.push(tmp)
         })
         return r
 
     }
 
-    async loadItems() {
-        let item = await this.search()
+     loadItems() {
+        let item =  this.search()
         
         //compare every new element we got from the server with the preexisting ones in the page and keep
         //only the new ones
@@ -64,8 +85,8 @@ export default class extends abstract {
 
     //for each item we want to remove from the page, go and find it and then remove
 
-    async removeItems() {
-        let item = await this.search()
+     removeItems() {
+        let item =  this.search()
 
         item.forEach((res) => {
 
@@ -86,26 +107,18 @@ export default class extends abstract {
 
 
 
-    setFinishSearch(color=""){
+    static setFinishSearch(color=""){
         if(color=="aqua"){
             this.finishSearch=false
         }else{
             this.finishSearch=true
         }
-        console.log(this.finishSearch);
+        
         
     }
 
-    
 
 
     
-
-
-    
-
-
-
-
-
 }
+export {search}

@@ -1,5 +1,5 @@
 import abstract from "./abstract.js";
-import {router,getParams,pathToRegex} from "../app.js"
+import {router} from "../app.js"
 
 export default class extends abstract{
     constructor(params){
@@ -15,7 +15,7 @@ export default class extends abstract{
     }
         const newElement=document.createElement("div")
         newElement.classList.add("container")
-        newElement.setAttribute("id","login")
+        newElement.setAttribute("id","about")
         newElement.innerHTML=
         `
         <h1>About us</h1>

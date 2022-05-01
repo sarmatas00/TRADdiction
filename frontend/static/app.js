@@ -3,17 +3,22 @@ import abstract from "./abstracts/abstract.js"
 import navControl from "./abstracts/navControl.js"
 import carouselControl from "./abstracts/carouselControl.js"
 import addControl from "./abstracts/addControl.js"
-import search from "./abstracts/search.js"
+
 import category from "./abstracts/category.js"
 import login from "./abstracts/login.js"
-import signup from "./abstracts/signup.js"
+import {signup} from "./abstracts/signup.js"
 import user from "./abstracts/user.js"
-import myItems from "./abstracts/myItems.js"
-import trades from "./abstracts/trades.js"
-import newListing from "./abstracts/newListing.js"
+import {myItems} from "./abstracts/myItems.js"
+import {trades} from "./abstracts/trades.js"
+import {newListing} from "./abstracts/newListing.js"
 import about from "./abstracts/about.js"
 import ourVision from "./abstracts/ourVision.js"
 import ourMission from "./abstracts/ourMission.js"
+import add from "./abstracts/add.js"
+
+
+
+
 
 
 
@@ -42,16 +47,13 @@ const router = async ()=>{
         {path:"/ourvision",view:ourVision},
         {path:"/user/items/:id",view:myItems},
         {path:"/user/trades/:id",view:trades},
-        {path:"/user/:id/newListing",view:newListing},
+        {path:"/user/newListing/:id",view:newListing},
         {path:"/user/:id",view:user}
         
         
         
     
-        //{path:"/about",view:},
-        // {path:"/mission",view:},
-        // {path:"/vision",view:},
-        // {path:"/social",view:}
+        
     ];
 
     const potentialMatches= routes.map(route=>{
@@ -76,7 +78,9 @@ const router = async ()=>{
     const newElement=await view.getElement()
     
     if(newElement!==null){
+        console.log(newElement);
         document.querySelector("header").insertAdjacentElement("afterend",newElement)
+        signup.getUsers({email:"spiros",password:"dimos"})
         view.callOtherMethods()
     }
     
@@ -91,7 +95,7 @@ window.addEventListener("popstate",router)
 
 document.addEventListener("DOMContentLoaded", () => {
     window.scrollTo(0, 0);
-    console.log("putses");
+    
 
     document.body.addEventListener("click",function(e){
         if(e.target.matches("[data-link]")) {
@@ -108,22 +112,28 @@ document.addEventListener("DOMContentLoaded", () => {
 
     
     
-    (new category({ctgType:"NotDone",ctgName:"Nikos"})).createCategory();
-    (new category({ctgType:"Done",ctgName:"Spiros"})).createCategory();
-    (new category({ctgType:"NotDone",ctgName:"Tasos"})).createCategory();
-    (new category({ctgType:"Done",ctgName:"Pena"})).createCategory();
-    (new category({ctgType:"Done",ctgName:"Pena"})).createCategory();
-    (new category({ctgType:"Done",ctgName:"Pena"})).createCategory();
-    (new category({ctgType:"Done",ctgName:"Pena"})).createCategory();
-    (new category({ctgType:"Done",ctgName:"Pena"})).createCategory();
-    (new category({ctgType:"Done",ctgName:"Pena"})).createCategory();
-    (new category({ctgType:"Done",ctgName:"Pena"})).createCategory();
-
+    (new category({ctgName:"Nikos"})).createCategory();
+    (new category({ctgName:"Spiros"})).createCategory();
+    (new category({ctgName:"Tasos"})).createCategory();
+    (new category({ctgName:"Pena"})).createCategory();
+    (new category({ctgName:"Pena"})).createCategory();
+    (new category({ctgName:"Pena"})).createCategory();
+    (new category({ctgName:"Pena"})).createCategory();
+    (new category({ctgName:"Pena"})).createCategory();
+    (new category({ctgName:"Pena"})).createCategory();
+    (new category({ctgName:"Pena"})).createCategory();
+    (new category({ctgName:"Pena"})).createCategory();
+    (new category({ctgName:"Pena"})).createCategory();
+    (new category({ctgName:"Pena"})).createCategory();
+    console.log(newListing.getListing("https://pyxis.nymag.com/v1/imgs/f5e/cb1/3be2f873678308dc656756a9899aa1d25a-kids-converse.rhorizontal.w600.jpg"));
+    
+    
+    
     router()
     
 });
 
-export {router,pathToRegex,getParams}
+export {router}
 
 
 

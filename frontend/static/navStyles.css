@@ -21,7 +21,7 @@ nav{
   
 }
 
-#title{
+#title1{
     position: relative;
     display: inline-block;
     margin-bottom: 1rem;
@@ -43,7 +43,7 @@ nav{
 
 
 
- #title:hover{
+ #title1:hover{
     animation: 5s shake infinite alternate;
     
     
@@ -60,7 +60,7 @@ nav{
 
 
 .nav-btn{
-  background-color: rgb(21, 182, 56) !important;
+  background-color: rgb(71,225,12) !important;
   border-radius: 0 20% 20% 0 !important;
   width: 3vw;
   height: 4vh;
@@ -135,7 +135,7 @@ nav{
   outline: none;
   float: left;
   border: 1px solid gray;
-  border-radius: 10% 0 0 10%;
+  /* border-radius: 10% 0 0 10%; */
 }
 
 .nav-collapse:nth-of-type(2){
@@ -144,8 +144,8 @@ nav{
   
 }
 #dropdown-btn{
-  background-color: rgb(21, 182, 56);
-  border-radius: 20%;
+  background-color: rgb(71,225,12);
+  
   color: black;
   font-weight: 500;
  
@@ -171,7 +171,7 @@ nav{
   content: '';
   display: block;
   height: 5px;
-  background-color: rgb(21, 182, 56);
+  background-color: rgb(71,225,12);
 
   position: relative;
   top: 0;
@@ -210,7 +210,7 @@ nav{
     
   }
 
-  #title{
+  #title1{
     font-size: 1.8em;
   }
 

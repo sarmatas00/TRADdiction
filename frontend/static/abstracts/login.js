@@ -1,5 +1,6 @@
 import abstract from "./abstract.js";
-import {router,getParams,pathToRegex} from "../app.js"
+import {router} from "../app.js"
+import {signup} from "./signup.js";
 
 export default class extends abstract{
     constructor(params){
@@ -58,20 +59,30 @@ export default class extends abstract{
 
   async authenticate(details){
     
-    const authenticate=await axios.post("/login",details)
-    console.log(authenticate.data);
-    if(authenticate.data.userID!==""){
-      // window.location.href=`/user/${authenticate.data.userID}`
-      history.pushState(null, null, "/user/1285")
+    // const authenticate=await axios.post("/login",details)
+    
+    const authenticate=signup.getUsers(details)
+    if(authenticate!==null){
+      
+      
+
+      history.pushState(null, null, `/user/${authenticate.userID}`)
       router()
+      
+    }else{
+      this.alertUser("Wrong shit","danger")
     }
-    else if(authenticate.data.wrongEmail){
-      this.alertUser("There is no registered account with that email,please sign up!","danger")
-    }
-    else{
-      this.alertUser("Wrong Password, please try again!","danger")
-    }
+      
+    // if(authenticate.data.userID!==""){
+    // else if(authenticate.data.wrongEmail){
+    //   this.alertUser("There is no registered account with that email,please sign up!","danger")
+    // }
+    // else{
+    //   this.alertUser("Wrong Password, please try again!","danger")
+    // }
   }
+
+  
 
 
   callOtherMethods(){

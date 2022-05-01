@@ -36,7 +36,7 @@
               <div class="line3"></div>
             </div>
             <a href="/" class="title" data-link
-              ><span id="title">TRADdiction</span></a
+              ><span id="title1">TRADdiction</span></a
             >
 
             <div class="nav-collapse1">
@@ -56,7 +56,7 @@
               </button>
               <ul class="dropdown-menu">
                 <li>
-                  <a class="dropdown-item" href="/signup" data-link>SignUp</a>
+                  <a class="dropdown-item" href="/signup" data-link>Sign-Up</a>
                 </li>
                 <br />
                 <li>
@@ -64,8 +64,9 @@
                     >Already have an account?</a
                   >
                 </li>
+                <br>
                 <li>
-                  <a class="dropdown-item" href="/login" data-link>LogIn</a>
+                  <a class="dropdown-item" href="/login" data-link>Log-In</a>
                 </li>
               </ul>
             </div>
@@ -177,14 +178,8 @@
 
         <div class="row category">
           <h2>Browse by category</h2>
-          <div
-            class="col-3 d-flex justify-content-center align-items-center d-none"
-          >
-            <button type="button" class="btn btn-info label" disabled>
-              Info
-            </button>
-          </div>
-          <div class="col-2 d-none">
+          
+          <div class="col-3 d-none">
             <button type="button" class="btn btn-info category-btn">
               Clothing
             </button>
@@ -206,9 +201,12 @@
             <button class="btn btn-primary">
               <a href="/adds/:id" data-link>View!</a>
             </button>
+            <!-- 
             <img
               src="https://pyxis.nymag.com/v1/imgs/f5e/cb1/3be2f873678308dc656756a9899aa1d25a-kids-converse.rhorizontal.w600.jpg"
             />
+            -->
+            <div id="display_image" ></div>
             <h6>Title</h6>
             <p id="caption">
               Lorem ipsum dolor sit amet consectetur adipisicing elit.
@@ -235,8 +233,8 @@
         <div class="row-4">
           <h4>Social Media</h4>
           <div class="social">
-            <a href="/facebook" data-link><i class="fab fa-facebook-f"></i></a>
-            <a href="/insta" data-link><i class="fab fa-instagram"></i></a>
+            <a href="/" data-link><i class="fab fa-facebook-f"></i></a>
+            <a href="/" data-link><i class="fab fa-instagram"></i></a>
             <a href="/" data-link><i class="fab fa-twitter"></i></a>
           </div>
         </div>
@@ -247,6 +245,7 @@
       </div>
     </footer>
 
+    
     <script type="module" src="/static/app.js"></script>
     <script type="module" src="/static/navApp.js"></script>
     <script type="module" src="/static/events.js"></script>

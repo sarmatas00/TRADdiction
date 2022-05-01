@@ -1,8 +1,9 @@
 body{
-    background-color: rgb(225, 228, 225) !important;
+    background-color: rgb(32,33,36) !important;
 }
 main{
     margin-bottom: 15%;
+    
 }
 
 #newAdditions{
@@ -23,6 +24,7 @@ main .row{
     position: relative;
     top: 0;
     left: 6%;
+    color: #8e8e8e;
 }
 
 .carousel{
@@ -59,13 +61,15 @@ h2{
     word-wrap: break-word;
     width: 10vw;
     cursor: default !important;
-    background-color: rgb(21, 182, 56);
+    background-color: rgb(71,225,12);
     
 
 }
 
 .category .category-btn:hover{
     transform: scale(1.1);
+    background-color: rgb(71,225,12);
+
     
 }
 .category .category-btn:focus{
@@ -97,7 +101,7 @@ h2{
     height: 5vh;
     width: 10vw;
     cursor: default;
-    background-color: aqua;
+    background-color: rgb(71,225,12);
     color: black;
     font-weight: 600;
 }
@@ -151,7 +155,7 @@ h2{
     border-top: 1px dashed black;
 }
 .results #items{
-    color: rgb(21, 182, 56);
+    color: rgb(71,225,12);
 }
 
 .results h6{
@@ -185,6 +189,8 @@ h2{
     
 }*/
 
+
+
 #login button{
     display: block;
     
@@ -213,8 +219,20 @@ h2{
     100% { transform: skewX(0deg); }  
   } 
 
-  
 
+  #about,#mission,#vision{
+      color: white;
+
+  }
+  
+ 
+  #mission img,#vision img{
+      max-width: 100%;
+  }
+
+  #listings{
+      color: white;
+  }
   
 
 
