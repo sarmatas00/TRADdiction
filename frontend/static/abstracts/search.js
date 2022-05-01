@@ -8,7 +8,7 @@ class search extends abstract {
     constructor(params) {
         super(params)
         this.i=0
-
+        //newListing.getListing("")
         this.aggelies=[
             {src:"https://pyxis.nymag.com/v1/imgs/f5e/cb1/3be2f873678308dc656756a9899aa1d25a-kids-converse.rhorizontal.w600.jpg",
             title:"Some title",

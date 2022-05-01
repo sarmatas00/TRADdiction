@@ -7,7 +7,7 @@ import addControl from "./abstracts/addControl.js"
 import category from "./abstracts/category.js"
 import login from "./abstracts/login.js"
 import {signup} from "./abstracts/signup.js"
-import user from "./abstracts/user.js"
+import {user} from "./abstracts/user.js"
 import {myItems} from "./abstracts/myItems.js"
 import {trades} from "./abstracts/trades.js"
 import {newListing} from "./abstracts/newListing.js"
@@ -78,9 +78,9 @@ const router = async ()=>{
     const newElement=await view.getElement()
     
     if(newElement!==null){
-        console.log(newElement);
+        
         document.querySelector("header").insertAdjacentElement("afterend",newElement)
-        signup.getUsers({email:"spiros",password:"dimos"})
+        
         view.callOtherMethods()
     }
     
@@ -99,15 +99,22 @@ document.addEventListener("DOMContentLoaded", () => {
 
     document.body.addEventListener("click",function(e){
         if(e.target.matches("[data-link]")) {
+            
             e.preventDefault()
             history.pushState(null, null, e.target.getAttribute("href"))
             router()
+
         }
         else if(e.target.parentElement.matches("[data-link]")) {
             e.preventDefault()
             history.pushState(null, null, e.target.parentElement.getAttribute("href"))
             router()
         }
+
+        if(e.target.classList.contains("signout")){
+            user.signOut()
+        }
+
     });
 
     

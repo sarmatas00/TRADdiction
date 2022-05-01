@@ -33,7 +33,7 @@ export default class extends abstract {
             <h6>${title}</h6>
             <p id="caption">${text} </p>
             <p id="looksFor">Looking for: <span id="items">${looksFor}</span></p>
-            <button class="btn btn-info"><a href="/adds" data-link>View!</a></button>
+            <button class="btn btn-info"><a href="/add" data-link>View!</a></button>
             
         `
     }

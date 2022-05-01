@@ -2,21 +2,17 @@ import abstract from "./abstract.js";
 import { router } from "../app.js";
 import { signup } from "./signup.js";
 
-export default class extends abstract{
+class user extends abstract{
   
     constructor(params){
-        
         super(params)
         this.id=params.id;
-        
     }
 
    
 
     async getElement(){
-      
-        if(!signup.validateById(this.id)){
-          console.log(this.id);
+        if(!signup.validateById(this.id)){ 
           history.pushState(null,null,"/login")
           router()
           return 
@@ -26,14 +22,9 @@ export default class extends abstract{
         return super.getElement()
     }
 
-    signOutEvent(){
-      document.querySelector('.dropdown-menu .signout').addEventListener("click",(evt)=>{
-        evt.preventDefault()
-        evt.stopImmediatePropagation()
-  
+    static signOut(){
         document.querySelector('#dropdown-btn').innerHTML=`Log-in/Sign-up
         <i class="arrow-down"></i>`
-        console.log(document.querySelector('.dropdown-menu').innerHTML);
           document.querySelector('.dropdown-menu').innerHTML=
           `
           <li>
@@ -50,13 +41,14 @@ export default class extends abstract{
             <a class="dropdown-item" href="/login" data-link>Log-In</a>
           </li>
           `
-  
-        history.pushState(null, null, `/`)
-        router()
-      })
+        
+      document.querySelector(".title").href=`/`
+        
+      
     }
 
     setUserOptions(){
+      document.querySelector(".title").href=`/user/${this.id}`
       document.querySelector('#dropdown-btn').innerHTML=`My Account
         <i class="arrow-down"></i>`
         document.querySelector('.dropdown-menu').innerHTML=
@@ -70,14 +62,16 @@ export default class extends abstract{
           <a class="dropdown-item" href="/user/trades/${this.id}" data-link>Trades</a>
         </li>
         <li>
-          <a class="dropdown-item signout" href="/" >Sign Out</a>
+          <a class="dropdown-item signout" href="/" data-link>Sign Out</a>
         </li>
         `
     }
     
 
     callOtherMethods(){
-      this.signOutEvent()
+      
 
     }
 }
+
+export {user}

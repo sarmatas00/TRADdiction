@@ -10,7 +10,7 @@ export default class extends abstract{
         if(document.querySelector("header").nextElementSibling.nodeName!=="MAIN"){
             document.querySelector("header").nextElementSibling.remove()
         }
-        
+        //newListing.getListing(src)
     }
 
 }
