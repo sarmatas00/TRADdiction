@@ -2,17 +2,8 @@ const exp = require("constants")
 const express = require("express")
 const path = require("path")
 
-const livereload=require("livereload")
-const connectLivereload=require("connect-livereload")
 
-const liveReloadServer=livereload.createServer()
-liveReloadServer.watch(path.join(__dirname,"frontend"))
 
-liveReloadServer.server.once("connection",()=>{
-    setTimeout(()=>{
-        liveReloadServer.refresh("/")
-    },100)
-})
 
 const app= express()
 
@@ -122,7 +113,6 @@ const aggelies=[
 
 ]
 
-app.use(connectLivereload())
 app.use("/static",express.static(path.join(__dirname,"/frontend","/static")))
 app.use(express.json())
 
@@ -165,7 +155,8 @@ app.post("/login",(req,res)=>{
 })
 
 app.get("*",(req,res)=>{
-    console.log("request");
+    
+    
     res.sendFile(path.resolve(__dirname,"frontend","index.html"))
 })
 
