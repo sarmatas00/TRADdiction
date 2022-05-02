@@ -1,10 +1,15 @@
 import {myItems} from "./myItems.js";
+<<<<<<< HEAD
 import {user} from "./user.js"
+=======
+import user from "./user.js"
+>>>>>>> a77d9f2b6075b273d18cf5a3412f937d594461a1
 
 class newListing extends user{
     //Πίνακας με όλα τα listings 
     static listings=[
       {src:"https://pyxis.nymag.com/v1/imgs/f5e/cb1/3be2f873678308dc656756a9899aa1d25a-kids-converse.rhorizontal.w600.jpg",
+<<<<<<< HEAD
       title:"White converse",
       text:"They are in great condition",
       looksFor:"Headphones",
@@ -104,6 +109,107 @@ class newListing extends user{
       title:"Kern precision scale",
       text:"Gram precision food scale",
       looksFor:"Kitchenware",
+=======
+      title:"Some title",
+      text:":this is a very good sho",
+      looksFor:"guns",
+      free:false
+      },
+      {src:"https://pyxis.nymag.com/v1/imgs/f5e/cb1/3be2f873678308dc656756a9899aa1d25a-kids-converse.rhorizontal.w600.jpg",
+      title:"Some title",
+      text:":this is a very good sh",
+      looksFor:"guns",
+      free:false
+      },
+      {src:"https://pyxis.nymag.com/v1/imgs/f5e/cb1/3be2f873678308dc656756a9899aa1d25a-kids-converse.rhorizontal.w600.jpg",
+      title:"Some title",
+      text:":this is a very good s",
+      looksFor:"guns",
+      free:false
+      },
+      {src:"https://pyxis.nymag.com/v1/imgs/f5e/cb1/3be2f873678308dc656756a9899aa1d25a-kids-converse.rhorizontal.w600.jpg",
+      title:"Some title",
+      text:":this is a very good shoefgh",
+      looksFor:"guns",
+      free:false
+      },
+      {src:"https://pyxis.nymag.com/v1/imgs/f5e/cb1/3be2f873678308dc656756a9899aa1d25a-kids-converse.rhorizontal.w600.jpg",
+      title:"Some title",
+      text:":this is a very good shoedfgdfg",
+      looksFor:"guns",
+      free:false
+      },
+      {src:"https://pyxis.nymag.com/v1/imgs/f5e/cb1/3be2f873678308dc656756a9899aa1d25a-kids-converse.rhorizontal.w600.jpg",
+      title:"Some title",
+      text:":this is a very goofghd shoe",
+      looksFor:"guns",
+      free:false
+      },
+      {src:"https://pyxis.nymag.com/v1/imgs/f5e/cb1/3be2f873678308dc656756a9899aa1d25a-kids-converse.rhorizontal.w600.jpg",
+      title:"Some title",
+      text:":this is a very good sdfsfdghoe",
+      looksFor:"guns",
+      free:false
+      },
+      {src:"https://pyxis.nymag.com/v1/imgs/f5e/cb1/3be2f873678308dc656756a9899aa1d25a-kids-converse.rhorizontal.w600.jpg",
+      title:"Some title",
+      text:":this is a very good shhgjdfgoe",
+      looksFor:"guns",
+      free:false
+      },
+      {src:"https://pyxis.nymag.com/v1/imgs/f5e/cb1/3be2f873678308dc656756a9899aa1d25a-kids-converse.rhorizontal.w600.jpg",
+      title:"Some title",
+      text:":this is dfga very good shoe",
+      looksFor:"guns",
+      free:false
+      },
+      {src:"https://pyxis.nymag.com/v1/imgs/f5e/cb1/3be2f873678308dc656756a9899aa1d25a-kids-converse.rhorizontal.w600.jpg",
+      title:"Some title",
+      text:":this iss a very good fghdfshoe",
+      looksFor:"guns",
+      free:false
+      },
+      {src:"https://pyxis.nymag.com/v1/imgs/f5e/cb1/3be2f873678308dc656756a9899aa1d25a-kids-converse.rhorizontal.w600.jpg",
+      title:"Some title",
+      text:":this is a dvery goofd sshoe",
+      looksFor:"guns",
+      free:false
+      },
+      {src:"https://pyxis.nymag.com/v1/imgs/f5e/cb1/3be2f873678308dc656756a9899aa1d25a-kids-converse.rhorizontal.w600.jpg",
+      title:"Some title",
+      text:":this zis a very gofod sdhoe",
+      looksFor:"guns",
+      free:false
+      },
+      {src:"https://pyxis.nymag.com/v1/imgs/f5e/cb1/3be2f873678308dc656756a9899aa1d25a-kids-converse.rhorizontal.w600.jpg",
+      title:"Some title",
+      text:":tszdfhis is a very good shoe",
+      looksFor:"guns",
+      free:false
+      },
+      {src:"https://pyxis.nymag.com/v1/imgs/f5e/cb1/3be2f873678308dc656756a9899aa1d25a-kids-converse.rhorizontal.w600.jpg",
+      title:"Some title",
+      text:":this is a very good shoddde",
+      looksFor:"guns",
+      free:false
+      },
+      {src:"https://pyxis.nymag.com/v1/imgs/f5e/cb1/3be2f873678308dc656756a9899aa1d25a-kids-converse.rhorizontal.w600.jpg",
+      title:"Some title",
+      text:":thifffs is a very good shoe",
+      looksFor:"guns",
+      free:false
+      },
+      {src:"https://pyxis.nymag.com/v1/imgs/f5e/cb1/3be2f873678308dc656756a9899aa1d25a-kids-converse.rhorizontal.w600.jpg",
+      title:"Some title",
+      text:":thidfs isdf a verydf good shdfoe",
+      looksFor:"guns",
+      free:false
+      },
+      {src:"https://pyxis.nymag.com/v1/imgs/f5e/cb1/3be2f873678308dc656756a9899aa1d25a-kids-converse.rhorizontal.w600.jpg",
+      title:"Some title",
+      text:":this is a very gzsdfszdfzsdfood shoe",
+      looksFor:"guns",
+>>>>>>> a77d9f2b6075b273d18cf5a3412f937d594461a1
       free:false
       }
   
@@ -117,7 +223,11 @@ class newListing extends user{
 
    }
    static getListing(src){
+<<<<<<< HEAD
      if(src===""){return this.listings;}
+=======
+     if(src=""){return this.listings;}
+>>>>>>> a77d9f2b6075b273d18cf5a3412f937d594461a1
      for(let listing of this.listings){
        if(listing.src===src){
          return listing;
@@ -210,6 +320,7 @@ extract() {
   free:undefined
 };
   const forms = document.getElementById("listings");
+<<<<<<< HEAD
   const img=document.querySelector('#src');
   let uploaded_image="";
     img.addEventListener('change',function(e){
@@ -226,11 +337,24 @@ extract() {
       details.src=url;
       console.log(url);
       */
+=======
+  console.log("done");
+  const img=document.querySelector('#src');
+    img.addEventListener('change',function(e){
+      const url=URL.createObjectURL(e.target.files[0]);
+      const input=document.createElement('img');
+      input.src=url;
+      details.src=input;
+>>>>>>> a77d9f2b6075b273d18cf5a3412f937d594461a1
     })
   forms.children[5].addEventListener("click", async (event) => {
     
     let details = {
+<<<<<<< HEAD
       src: uploaded_image,
+=======
+      src: document.querySelector("#src").value,
+>>>>>>> a77d9f2b6075b273d18cf5a3412f937d594461a1
       title: document.querySelector("#title").value,
       text: document.querySelector("#text").value,
       looksFor: document.querySelector("#looksFor").value,
