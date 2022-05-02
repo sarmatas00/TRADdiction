@@ -1,11 +1,14 @@
 import abstract from "./abstract.js";
-class trades extends abstract{
+import {user} from "./user.js"
+class trades extends user{
     constructor(params){
         super(params);
         this.id=params.id;
         let data=params.data;
+        this.setUserOptions();
         }
     async getElement() {
+    
     if (
       document.querySelector("header").nextElementSibling.nodeName !== "MAIN"
     ) {
@@ -13,12 +16,24 @@ class trades extends abstract{
     }
     const newElement = document.createElement("div");
     newElement.classList.add("container");
-    newElement.setAttribute("id", "items");
+    newElement.setAttribute("id", "trades");
     
     newElement.innerHTML = 
     `
-     <h1>DICKS</h1> 
-     <div class="results row">
+     <h1 style="color:white">Trades</h1> 
+     <div>
+     <div style="display:inline-block;color:white;">
+     <h2 style="color:white">Trade History</h2>
+     <ul>
+     <li>Traded:102 On:Monday</li>
+     <li>Traded:102 On:Monda</li>
+     </ul>
+     </div>
+     <div style="color:white;">
+     <h2 style="color:white">Trade Requests</h2>
+
+     
+     </div>
 
     
      </div>
@@ -32,9 +47,7 @@ class trades extends abstract{
     */
     return newElement;
 }
-async getData(id){
-    this.userData=await axios.get(`/user/${id}`)
-}
+
     
 }
 

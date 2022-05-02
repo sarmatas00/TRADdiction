@@ -45,6 +45,7 @@ const router = async ()=>{
         {path:"/about",view:about},
         {path:"/ourmission",view:ourMission},
         {path:"/ourvision",view:ourVision},
+        {path:"/add/:id",view:add},
         {path:"/user/items/:id",view:myItems},
         {path:"/user/trades/:id",view:trades},
         {path:"/user/newListing/:id",view:newListing},
@@ -77,7 +78,7 @@ const router = async ()=>{
     const view = new match.route.view(getParams(match));
     const newElement=await view.getElement()
     
-    if(newElement!==null){
+    if(newElement!==null && newElement!==false){
         
         document.querySelector("header").insertAdjacentElement("afterend",newElement)
         
@@ -97,11 +98,25 @@ document.addEventListener("DOMContentLoaded", () => {
     window.scrollTo(0, 0);
     
 
+    
     document.body.addEventListener("click",function(e){
         if(e.target.matches("[data-link]")) {
             
             e.preventDefault()
-            history.pushState(null, null, e.target.getAttribute("href"))
+            let path=e.target.getAttribute("href")
+            let state=null
+
+            if(path.includes("/add")){
+                if(location.pathname==="/"){
+                    path="/login"
+                }else{
+                    state={'src':Array.from(path).slice(5).join("")}
+                    path="/add/"
+                    path+=Array.from(location.pathname).slice(-4).join("")
+                }
+            }
+
+            history.pushState(state, null, path)
             router()
 
         }

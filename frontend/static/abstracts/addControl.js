@@ -8,7 +8,7 @@ export default class extends abstract {
 
     }
 
-    async create() {
+    create() {
         let src,title,text,looksFor,free
         ({src,title,text,looksFor,free}=this.params)
         const newEl= document.createElement("div")
@@ -16,30 +16,27 @@ export default class extends abstract {
         newEl.classList.add("item")
         if (free) {
             newEl.innerHTML=`
-            <img
-            src="${src}">
+            <div id="display_image" style='width:100px;height:100px; background-size: cover; background-image: url("${src}")'></div>
             <h6>${title}</h6>
-            <p id="caption">${text} </p>
+            <p id="caption">${text}</p>
             <p id="looksFor">Freebie <span id="items"></span></p>
-            <button class="btn btn-info"><a href="/adds" data-link>View!</a></button>
+            <button class="btn btn-info"><a href="/add/${src}" data-link>View!</a></button>
             
             `  
         }
         else{
         newEl.innerHTML=`
             
-            <img
-            src="${src}">
+            <div id="display_image" style='width:100px;height:100px; background-size: cover; background-image: url("${src}")'></div>
             <h6>${title}</h6>
             <p id="caption">${text} </p>
             <p id="looksFor">Looking for: <span id="items">${looksFor}</span></p>
-            <button class="btn btn-info"><a href="/add" data-link>View!</a></button>
+            <button class="btn btn-info"><a href="/add/${src}" data-link>View!</a></button>
             
         `
     }
         return newEl
     }
-
 
 
     

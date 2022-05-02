@@ -2,6 +2,7 @@ import abstract from "./abstract.js";
 import { router } from "../app.js";
 import { signup } from "./signup.js";
 
+
 class user extends abstract{
   
     constructor(params){
@@ -15,7 +16,7 @@ class user extends abstract{
         if(!signup.validateById(this.id)){ 
           history.pushState(null,null,"/login")
           router()
-          return 
+          return false
         }
 
         this.setUserOptions()

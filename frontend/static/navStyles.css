@@ -21,7 +21,7 @@ nav{
   
 }
 
-#title{
+#title1{
     position: relative;
     display: inline-block;
     margin-bottom: 1rem;
@@ -43,7 +43,7 @@ nav{
 
 
 
- #title:hover{
+ #title1:hover{
     animation: 5s shake infinite alternate;
     
     
@@ -210,7 +210,7 @@ nav{
     
   }
 
-  #title{
+  #title1{
     font-size: 1.8em;
   }
 
