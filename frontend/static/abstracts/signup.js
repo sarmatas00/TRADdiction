@@ -19,6 +19,7 @@ class signup extends abstract {
     }
   ]
 
+
   constructor(params) {
     super(params);
     this.setTitle("User SignUp");

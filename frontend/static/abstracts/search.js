@@ -10,7 +10,7 @@ class search extends abstract {
         super(params)
         this.i=0
         this.aggelies=newListing.getListing("")
-        console.log(this.aggelies);
+        
     }
 
     static i=0;
@@ -27,15 +27,21 @@ class search extends abstract {
         // const items = await axios.post("/search", { category: this.params.category, text: this.params.text,numberOfItems:this.params.numberOfItems,finish:this.finishSearch })
         let items=[]
         if(numberOfItems!==10 && !search.finishSearch){
-        
-            search.finishSearch=false
+            console.log("s1");
             items=this.aggelies.slice(0,4)
-        }else if(numberOfItems==10 && search.finishSearch){
+        }else if(numberOfItems==10 && search.finishSearch && text===""){
             items=this.aggelies.slice(search.i,search.i+=2)
-            if(search.i>=this.aggelies.length){search.i=0}
+            console.log("s2");
+            if(search.i>=this.aggelies.length){search.i=0;console.log("s3");}
         }else if(numberOfItems!==10 && search.finishSearch){
-            search.finishSearch=true
-            items=this.aggelies.slice(4,8)
+            console.log("s4",text);
+            for(let add of this.aggelies){         
+               if(add.title.toLowerCase().includes(text.toLowerCase())||add.text.toLowerCase().includes(text.toLowerCase())){
+                    items.push(add);
+                    console.log("yes");
+                }
+                
+            }
         }
         let r = []
         items.forEach(async (item) => {

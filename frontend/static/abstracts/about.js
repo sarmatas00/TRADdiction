@@ -9,6 +9,8 @@ export default class extends abstract{
 
     }
 
+    //Η παρούσα κλάση σχετίζεται με το κουμπί About Us στο κάτω μέρος της σελίδας και εμφανίζει απλά μια φωτογραφία μαζί με κείμενο στο
+    //body της κύριας σελίδας
     async getElement(){
       if(document.querySelector("header").nextElementSibling.nodeName!=="MAIN"){
         document.querySelector("header").nextElementSibling.remove()

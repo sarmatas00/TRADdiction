@@ -7,7 +7,7 @@ const categoryBtn = document.querySelectorAll(".category-btn")
 const queryForm = document.querySelector(".queryItemsForm")
 
 //enable infinite scrolling
-window.addEventListener('scroll', loadMore, true);
+window.addEventListener('scroll', loadMore, false);
 
 
 //infinite scrolling helper function
@@ -31,7 +31,8 @@ function loadMore() {
 //is sent to the database to get results. if there is a category selected, we take that into consideration as well
 queryForm.addEventListener("submit", (evt) => {
     evt.preventDefault()
-    window.removeEventListener("scroll", loadMore, true)
+    console.log(true);
+    window.removeEventListener("scroll", loadMore)
     const text = evt.target.children[0].value
     let searched = false
     if (text !== "") {

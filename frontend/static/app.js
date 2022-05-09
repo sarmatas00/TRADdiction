@@ -7,7 +7,7 @@ import addControl from "./abstracts/addControl.js"
 import category from "./abstracts/category.js"
 import login from "./abstracts/login.js"
 import {signup} from "./abstracts/signup.js"
-import user from "./abstracts/user.js"
+import {user} from "./abstracts/user.js"
 import {myItems} from "./abstracts/myItems.js"
 import {trades} from "./abstracts/trades.js"
 import {newListing} from "./abstracts/newListing.js"
@@ -45,6 +45,7 @@ const router = async ()=>{
         {path:"/about",view:about},
         {path:"/ourmission",view:ourMission},
         {path:"/ourvision",view:ourVision},
+        {path:"/add/:id",view:add},
         {path:"/user/items/:id",view:myItems},
         {path:"/user/trades/:id",view:trades},
         {path:"/user/newListing/:id",view:newListing},
@@ -77,10 +78,10 @@ const router = async ()=>{
     const view = new match.route.view(getParams(match));
     const newElement=await view.getElement()
     
-    if(newElement!==null){
-        console.log(newElement);
+    if(newElement!==null && newElement!==false){
+        
         document.querySelector("header").insertAdjacentElement("afterend",newElement)
-        signup.getUsers({email:"spiros",password:"dimos"})
+        
         view.callOtherMethods()
     }
     
@@ -97,35 +98,54 @@ document.addEventListener("DOMContentLoaded", () => {
     window.scrollTo(0, 0);
     
 
+    
     document.body.addEventListener("click",function(e){
         if(e.target.matches("[data-link]")) {
+            
             e.preventDefault()
-            history.pushState(null, null, e.target.getAttribute("href"))
+            let path=e.target.getAttribute("href")
+            let state=null
+
+            if(path.includes("/add")){
+                if(location.pathname==="/"){
+                    path="/login"
+                }else{
+                    state={'src':Array.from(path).slice(5).join("")}
+                    path="/add/"
+                    path+=Array.from(location.pathname).slice(-4).join("")
+                }
+            }
+
+            history.pushState(state, null, path)
             router()
+
         }
         else if(e.target.parentElement.matches("[data-link]")) {
             e.preventDefault()
             history.pushState(null, null, e.target.parentElement.getAttribute("href"))
             router()
         }
+
+        if(e.target.classList.contains("signout")){
+            user.signOut()
+        }
+
     });
 
     
     
-    (new category({ctgName:"Nikos"})).createCategory();
-    (new category({ctgName:"Spiros"})).createCategory();
-    (new category({ctgName:"Tasos"})).createCategory();
-    (new category({ctgName:"Pena"})).createCategory();
-    (new category({ctgName:"Pena"})).createCategory();
-    (new category({ctgName:"Pena"})).createCategory();
-    (new category({ctgName:"Pena"})).createCategory();
-    (new category({ctgName:"Pena"})).createCategory();
-    (new category({ctgName:"Pena"})).createCategory();
-    (new category({ctgName:"Pena"})).createCategory();
-    (new category({ctgName:"Pena"})).createCategory();
-    (new category({ctgName:"Pena"})).createCategory();
-    (new category({ctgName:"Pena"})).createCategory();
-    console.log(newListing.getListing("https://pyxis.nymag.com/v1/imgs/f5e/cb1/3be2f873678308dc656756a9899aa1d25a-kids-converse.rhorizontal.w600.jpg"));
+    (new category({ctgName:"Shoes"})).createCategory();
+    (new category({ctgName:"Jeans"})).createCategory();
+    (new category({ctgName:"T-shirts"})).createCategory();
+    (new category({ctgName:"Apparel"})).createCategory();
+    (new category({ctgName:"Shirts"})).createCategory();
+    (new category({ctgName:"Shirts"})).createCategory();
+    (new category({ctgName:"Shirts"})).createCategory();
+    (new category({ctgName:"Shirts"})).createCategory();
+    (new category({ctgName:"Shirts"})).createCategory();
+    (new category({ctgName:"Shirts"})).createCategory();
+    (new category({ctgName:"Shirts"})).createCategory();
+    (new category({ctgName:"Shirts"})).createCategory();
     
     
     
