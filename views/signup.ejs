@@ -1,0 +1,77 @@
+<%- include("partials/navbar.ejs",{title:"Sign Up",logged:false}) %> 
+
+<div class="container" id="signup">
+    <form action="/signup" method="post" autocomplete="on">
+    <div class="row">
+    <div class="form-group col-md-6">
+      <label for="inputEmail">Email</label>
+      <input type="email" class="form-control" id="inputEmail" placeholder="example@outlook.com" name="email">
+    </div>
+    <div class="form-group col-md-6">
+      <label for="inputPassword">Password</label>
+      <input type="password" class="form-control" id="inputPassword" placeholder="Password" name="password">
+      <small id="passHelp" class="form-text text-muted">Minimum eight characters, at least one uppercase letter, one lowercase letter and one number.</small>
+    </div>
+  </div>
+  <div class="row">
+    <div class="form-group col-md-6">
+      <label for="inputName">First Name</label>
+      <input type="text" class="form-control" id="inputName" placeholder="John" name="firstName">
+    </div>
+    <div class="form-group col-md-6">
+      <label for="inputLast">Last Name</label>
+      <input type="text" class="form-control" id="inputLast" placeholder="Smith" name="lastName">
+    </div>
+  </div>
+  <div class="row">
+  <div class="form-group col-md-6">
+  <label for="inputNumber">Phone number</label>
+  <input type="number" class="form-control" id="inputNumber" placeholder="6909090909" name="number">
+  </div>
+</div>
+  
+  <div class="row">
+    <div class="form-group col-md-6">
+      <label for="inputCity">City</label>
+      <input type="text" class="form-control" id="inputCity" placeholder="Thessaloniki" name="city">
+    </div>
+    <div class="form-group col-md-4">
+      <label for="inputState">State</label>
+      <select id="inputState" class="form-control" name="state">
+        <option selected>Choose...</option>
+        <option>Makedonia</option>
+        <option>Attiki</option>
+        <option>Kappa keepo</option>
+
+      </select>
+    </div>
+    </div>
+    <div class="row">
+    <div class="form-group col-md-2">
+      <label for="inputZip">Zip</label>
+      <input type="text" class="form-control" id="inputZip" placeholder="31100" name="zip">
+    </div>
+  </div>
+  
+  <div class="row">
+  <div class="form-group">
+    <div class="form-check">
+      <input class="form-check-input" type="checkbox" id="inputCheck" name="terms">
+      <label class="form-check-label" for="inputCheck">
+        Agree to the terms of usage
+      </label>
+    </div>
+  </div>
+  </div>
+  
+  <button type="submit" class="btn btn-primary">Sign up</button>
+  
+</form>
+<% if(messages.error){ %> 
+    <div class="alert alert-danger mt-2" role="alert"><%=messages.error  %></div>
+<% } %>
+
+</div>
+
+
+<%- include("partials/footer.ejs") %> 

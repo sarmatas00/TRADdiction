@@ -1,0 +1,52 @@
+<%- include('partials/navbar.ejs',{title:"Trades",logged,username:user.firstName}) %>
+
+<div class="container trades">
+    <h1>Trades</h1> 
+     <div>
+     <div id="leftbox">
+     <h2 style="color: blue;">Trade History</h2>
+     <ul id="tradeHistory" class="TradeHistoryLi">
+        <% if(completed.length!==0){ %> 
+            <% for(let trade of completed){ %> 
+              <li class="tradeHistoryLi">Traded <span style="color:blue ;"><%=trade.itemWanted.title %></span> for: <br> <span style="color:red ;"><%=trade.itemProvided.title %></span> </li>
+            <% } %> 
+        <% } %> 
+    </ul>
+    </div>
+
+    <div id="rightbox">
+        <h2 style="color: red;">Trade Requests</h2>
+        <ul>
+            <% for(let request of requests){ %> 
+                <li class="tradeReqLi">
+                <span style="color: blue;"> User <%= request.itemProvided.userId%> requested</span> <br>
+                <div class="wanted">
+                <div id="display_image" style='background-size: contain;background-repeat: no-repeat; background-image: url("<%=request.itemWanted.src%>")'></div>
+                <h4 class="mx-3"> <%= request.itemWanted.title %> </h4>
+                <p><%= request.itemWanted.text %></p>
+                </div>
+                <span style="color: red;"> in exchange for </span>
+                 <div class="provided">
+                    <div id="display_image" style='background-size: contain;background-repeat: no-repeat; background-image: url("<%=request.itemProvided.src%>")'></div>
+                    <h4 class="mx-3"> <%= request.itemProvided.title %> </h4>
+                    <p><%= request.itemProvided.text %></p>
+                </div>
+                <form action="/trades" method="post">
+                    <input type="hidden" value="<%= request.id %> " name="accept">
+                    <button action="submit"  class="tradeBtn">Accept</button>
+                </form>
+                <form action="/trades?_method=DELETE" method="post" >
+                    <input type="hidden" value="<%= request.id %> " name="decline">
+                    <button action="submit" style="background-color: red;" class="tradeBtn">Decline</button>
+                </form>
+                </li>
+         
+            <% } %> 
+        </ul>
+    </div>
+</div>
+
+
+
+
+<%- include("partials/footer.ejs") %>

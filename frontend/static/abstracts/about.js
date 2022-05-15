@@ -1,5 +1,5 @@
 import abstract from "./abstract.js";
-import {router} from "../app.js"
+
 
 export default class extends abstract{
     constructor(params){

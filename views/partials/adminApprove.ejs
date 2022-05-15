@@ -1,0 +1,42 @@
+<% let listings=data %>
+
+<div class="container d-flex flex-column">
+  <h2 class="mt-5" style="color: rgb(71,225,12);">New Listings</h2>
+  <% if(listings.length!==0){ %> 
+    <h3><span style="color: blueviolet;"> <%= listings.length %></span> listings remain approval  </h3>
+  <% for(let listing of listings){ %>
+  <div class="container d-flex flex-row align-items-start justify-content-between approve">
+    <div
+      id="display_image"
+      
+      style="
+        width:30% !important;
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-image: url('<%=listing.src%>');
+      "
+    ></div>
+    <h4 style="max-width: 10vw;"><span style="color:blueviolet;">Title: </span> <%=listing.title  %> </h4>
+    
+    <p style="word-wrap: break-word;max-width: 10vw;"><span style="color:blueviolet; font-size: 1.3em;">Description: </span><%= listing.text  %> </p>
+    <form action="/trades" method="post" class="align-self-center">
+        <input type="hidden" value=" " name="accept">
+        <button action="submit"  class="tradeBtn">Accept</button>
+    </form>
+    <br>
+    <form action="/trades?_method=DELETE" class="align-self-center" method="post" >
+        <input type="hidden" value=" " name="decline">
+        <button action="submit" style="background-color: red;" class="tradeBtn">Decline</button>
+    </form>
+
+  </div>
+
+  <% } %>
+  <form action="/manage/approve" method="post">
+    <!-- <input type="text" class="form-control w-50 mb-2" id="category" placeholder="Enter name" name="id"> -->
+  </form>
+  <% }else{ %> 
+    <h3>There is no new listing at the moment</h3>
+    <% } %> 
+
+</div>

@@ -1,0 +1,35 @@
+<%- include('partials/navbar.ejs',{title:`${listing.title}`,logged,username:user.firstName}) %>
+
+<div class="container" id="editListing">
+    <form action="/items/<%=listing.id%>/edit?_method=PATCH" method="post">
+        <div class="form-group">
+            <label for="editTitle">Edit Title</label>
+            <input type="text" class="form-control" id="editTitle" name="newTitle" value="<%=listing.title%>">
+        </div>
+          
+          <div class="form-group">
+            <label for="editDescription">Edit Description</label>
+            <textarea class="form-control" id="editDescription" name="newText" value="<%=listing.text %>" rows="3"></textarea>
+          </div>
+          <% if(listing.free){ %> 
+            <div class="form-group">
+                <label for="editLooksFor">What are you interested for? If you are still offering yout item for free,leave empty!</label>
+                <input type="text" class="form-control" id="editLooksFor" name="newLooksFor" placeholder="Free">
+            </div>
+            <% }else{ %> 
+                <div class="form-group">
+                    <label for="editLooksFor">Are you interested for something else? If you want to offer your item for free,please leave empty!</label>
+                    <input type="text" class="form-control" id="editLooksFor" name="newLooksFor" value="<%= listing.looksFor %> ">
+                </div>
+            <% } %> 
+            <button type="submit" class="btn btn-primary mb-2">Confirm changes</button>
+    
+    
+    
+    </form>
+    
+</div>
+
+
+
+<%- include("partials/footer.ejs") %>

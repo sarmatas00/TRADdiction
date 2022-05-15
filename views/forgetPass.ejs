@@ -1,0 +1,26 @@
+<%- include("partials/navbar.ejs",{title:"Recover Password",logged:false}) %> 
+    <div class="container" id="passForget">
+    <form action="/recover" method="post">
+        <div class="form-group"></div>
+            <label for="emailRev">Please enter your email</label>
+            <input type="email" class="form-control" id="emailRec" name="emailRec" placeholder="admin@org.com"">
+        </div>
+        <button type="submit" class="btn btn-primary mb-2">Recover</button>
+    </form>
+    
+    <% if(messages.exists){ %> 
+         
+        <% if((messages.exists[0]).includes("recover")){ %> 
+            <div class="alert alert-success mt-2" role="alert"><%=messages.exists%> <a href="/login">Back to Log In</a></div>
+            
+        <% }else{ %> 
+                <div class="alert alert-danger mt-2" role="alert"><%=messages.exists%> <a href="/signup">Sign Up</a></div>
+                
+        <% } %> 
+    <% } %> 
+</div>
+
+
+
+
+<%- include("partials/footer.ejs") %>
