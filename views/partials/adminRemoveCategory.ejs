@@ -1,0 +1,37 @@
+<% let categories=data %> 
+
+<div class="container d-flex  adminAdd">
+
+    
+    
+    <table>
+        <tr>
+            <th>Categories</th>
+        </tr>
+        <tr>
+        <% for(let i=0;i<categories.length;i++){ %> 
+            <% if(i%5===0 ){ %> 
+                <tr>
+            <% } %> 
+            <th><%=categories[i].ctgName  %> </th>
+            <% if(i%5===0){ %> 
+            </tr>
+            <% } %> 
+        <% } %>
+        </tr>
+    </table>
+
+    <form class="my-5" action="/manage?_method=DELETE" method="post">
+        <div class="form-group">
+            <label for="inputState">Choose which category you would like to remove</label>
+            <select id="inputState" class="form-control w-50 mb-2" name="ctgName">
+              <option selected>Choose...</option>
+              <% for(let category of categories) {%> 
+                <option><%=category.ctgName  %> </option>
+            <% } %> 
+            </select>
+            <button type="submit" class="btn btn-dark px-4" style="border:1px solid rgb(71,225,12);" >Remove</button>
+          </div>
+    </form>
+
+</div>

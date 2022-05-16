@@ -1,5 +1,4 @@
-import abstract from "./abstracts/abstract.js";
-import {search} from "./abstracts/search.js";
+
 
 let widthMatch = window.matchMedia("(max-width: 768px)");
 const navButton = document.querySelector(".nav-btn");
@@ -14,26 +13,26 @@ const dropdownItem = document.querySelectorAll(".dropdown-item");
 const categoryBtn = document.querySelectorAll(".category-btn");
 
 //for searching to apply on form submissions
-function searchingFor(evt) {
-  const text = evt.target.children[0].value;
-  let searched = false;
-  if (text !== "") {
-    categoryBtn.forEach((btn) => {
-      if (btn.style.backgroundColor === "aqua") {
-        let item = new search({ category: btn.innerText, text: text });
-        item.loadItems();
-        searched = true;
-        btn.style.backgroundColor = "";
-      }
-    });
-    if (!searched) {
-      let item = new search({ category: "", text: text });
-      item.loadItems();
-    }
-    return true;
-  }
-  return false;
-}
+// function searchingFor(evt) {
+//   const text = evt.target.children[0].value;
+//   let searched = false;
+//   if (text !== "") {
+//     categoryBtn.forEach((btn) => {
+//       if (btn.style.backgroundColor === "aqua") {
+//         let item = new search({ category: btn.innerText, text: text });
+//         item.loadItems();
+//         searched = true;
+//         btn.style.backgroundColor = "";
+//       }
+//     });
+//     if (!searched) {
+//       let item = new search({ category: "", text: text });
+//       item.loadItems();
+//     }
+//     return true;
+//   }
+//   return false;
+// }
 
 if (widthMatch.matches) {
   //search form appears when clicking search icon on mobile screens

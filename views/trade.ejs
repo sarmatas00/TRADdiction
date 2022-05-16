@@ -1,0 +1,38 @@
+<%- include('partials/navbar.ejs',{title:`${listing.title}`,logged,username:user.firstName}) %> 
+
+
+<div class="container" id="addDisplay">
+    <div class="img" style='background-image: url("<%=listing.src%> ")'></div>
+    <h2>Title: <%=listing.title%></h2>
+    <p><%=listing.text%></p>
+    <%if(!listing.free){ %>
+        <small>Looking for: <%=listing.looksFor%> <span></span></small>
+    <%}else{%>
+        <small>Freebie<span></span></small>
+    <%} %> 
+    <form action="/listing/<%=listing.id %> " method="post">
+    <select class="form-select" id="tradeFor" name="tradeFor">
+    <option selected>My items</option>
+
+    
+    <% for(let l of myListings){ %>
+            <option value=<%=l.id%> ><%=l.title %> </option>
+    <% } %> 
+   
+    </select>
+    <% if(messages.error){%>
+        <div class="alert alert-danger mt-2" role="alert"><%=messages.error%> <a href="/">Back to home page</a></div>
+    <% }else{ %>
+        <button type="submit" class="btn btn-primary">Request trade</button>
+    <% } %> 
+    </form>
+    <% if(messages.success){%>
+        <div class="alert alert-success mt-2" role="alert"><%=messages.success%> <a href="/">Back to home page</a></div>
+    <% } %>
+
+</div>
+
+
+
+
+<%- include("partials/footer.ejs") %> 

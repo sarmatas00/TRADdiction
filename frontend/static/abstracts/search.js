@@ -1,130 +1,77 @@
-import abstract from "./abstract.js";
-import addControl from "./addControl.js";
-import {newListing} from "./newListing.js"
+
 
 //that module takes care of making requests to the database for adds, load them on the page, or remove them
 //depending on search and category conditions
 
-class search extends abstract {
-    constructor(params) {
-        super(params)
-        this.i=0
-        this.aggelies=newListing.getListing("")
-        
+class search extends null{
+    
+
+
+    //listings is an array with all adds from db 
+    static searchByCategory(listings,ctgName){
+        return listings.filter((listing)=>{
+            if(listing.text.includes(ctgName) || listing.title.includes(ctgName)){
+                return listing
+            }
+        })
     }
 
-    static i=0;
-    static finishSearch=true;
 
+    static searchByText(listings,text){
+        return listings.filter((listing)=>{
+            if(text.split(" ").some((word)=>{return listing.text.includes(word)}) || text.split(" ").some((word)=>{return listing.title.includes(word)})){
+                return listing
+            }
+        })
+    }
+
+    //returns error message if some input is incorrect, else returns true
+    static checkInput(details) {
+        const reNum = /^69[0-9]{8}$/;
+        const reZip = /^[0-9]{5}$/;
+        const reMail = /^\S+@\S+\.\S+$/;
+        const rePass = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
+        
+    
+        for (let d in details) {
+          if (details[d] === "" || details[d]==="Choose...") {
+            return "Please complete all forms!"
+          } else {
+            if (d === "number") {
+              if (details[d].match(reNum) === null) {
+                return "Please provide a valid phone number!"
+              }
+            } else if (d === "zip") {
+              if (details[d].match(reZip) === null) {
+                return "Please provide a valid zip code!"
+              }
+            } else if (d === "email") {
+              if (details[d].match(reMail) === null) {
+                return "Please provide a valid email address!"
+              }
+            } else if (d === "password") {
+              if (details[d].match(rePass) === null) {
+                return "Password must meet the above spesification!"
+            }} else if(d==="terms"){
+                if(details[d]!=="on"){
+                    return "You have to agree to the terms of service!"
+                }
+            }
+          }
+        }
+        return "authenticated";
+        
+      }
+     
 
     
 
-    //make a post request for adds and put the results in an array. With the help of addControl
-    //create a new add for every object of information we get and then direct it to be loaded or removed from the page respectively
-    search() {
-        const {category,text,numberOfItems}=this.params
-        
-        // const items = await axios.post("/search", { category: this.params.category, text: this.params.text,numberOfItems:this.params.numberOfItems,finish:this.finishSearch })
-        let items=[]
-        if(numberOfItems!==10 && !search.finishSearch){
-            console.log("s1");
-            items=this.aggelies.slice(0,4)
-        }else if(numberOfItems==10 && search.finishSearch && text===""){
-            items=this.aggelies.slice(search.i,search.i+=2)
-            console.log("s2");
-            if(search.i>=this.aggelies.length){search.i=0;console.log("s3");}
-        }else if(numberOfItems!==10 && search.finishSearch){
-            console.log("s4",text);
-            for(let add of this.aggelies){         
-               if(add.title.toLowerCase().includes(text.toLowerCase())||add.text.toLowerCase().includes(text.toLowerCase())){
-                    items.push(add);
-                    console.log("yes");
-                }
-                
-            }
-        }
-        let r = []
-        items.forEach(async (item) => {
-            const tmp = (new addControl(item).create())
-            r.push(tmp)
-        })
-        return r
-
-    }
-
-     loadItems() {
-        let item =  this.search()
-        
-        //compare every new element we got from the server with the preexisting ones in the page and keep
-        //only the new ones
-        item = item.map((res) => {
-
-            let elementsOnPage = document.querySelectorAll(".results .item")
-            if (!Array.from(elementsOnPage).slice(1).some((element) => {
-
-                return element.children[2].innerHTML === res.children[2].innerHTML
-            })) {
-                
-                return res
-            }
-        })
-        
-        //if after filtering the elements, we still got some new ones, put them on the page where
-        //space exists. Make new rows if there is no space left
-        item.forEach((res) => {
-            if (res !== undefined) {
-                let resultPage = document.querySelectorAll(".results")
-
-                if ((resultPage[resultPage.length - 1].childElementCount < 3) || (resultPage.length === 1 && resultPage[resultPage.length - 1].childElementCount <= 3)) {
-                    resultPage[resultPage.length - 1].appendChild(res)
-                } else {
-                    resultPage[resultPage.length - 1].insertAdjacentElement("afterend", resultPage[resultPage.length - 1].cloneNode(false))
-                    resultPage = document.querySelectorAll(".results")
-                    resultPage[resultPage.length - 1].appendChild(res)
-                }
-            }
-
-        })
 
 
-    }
-
-    //for each item we want to remove from the page, go and find it and then remove
-
-     removeItems() {
-        let item =  this.search()
-
-        item.forEach((res) => {
-
-            let elementsOnPage = document.querySelectorAll(".results .item")
-            !Array.from(elementsOnPage).slice(1).forEach((element) => {
-
-                if (element.children[2].innerHTML === res.children[2].innerHTML) {
-                    element.remove()
-
-                }
-            })
-        })
-
-
-
-
-    }
-
-
-
-    static setFinishSearch(color=""){
-        if(color=="aqua"){
-            this.finishSearch=false
-        }else{
-            this.finishSearch=true
-        }
-        
-        
-    }
 
 
 
     
 }
-export {search}
+module.exports={search}
+

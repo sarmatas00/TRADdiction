@@ -167,6 +167,12 @@ nav{
   
 }
 
+.dropdown-item button{
+  background-color: inherit;
+  color: #dfdfdf;
+  font-weight: 400;
+}
+
 .dropdown-menu a::before {
   content: '';
   display: block;

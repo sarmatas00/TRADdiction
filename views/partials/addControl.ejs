@@ -1,0 +1,21 @@
+<% for(let i=0;i<listings.length;i++){ %> 
+    <% let {src,title,text,looksFor,free,id}=listings[i] %> 
+    <% if(i%3===0){ %> 
+        <div class="row d-flex justify-content-evenly results">
+    <% } %> 
+        <div class="col-3 item">
+            <div id="display_image" style='background-size: contain;background-repeat: no-repeat; background-image: url("<%=src%>")'></div>
+            <h6><%=title%></h6>
+            <p id="caption"><%=text%></p>
+            <% if(free){ %>
+            <p id="looksFor">Freebie <span id="items"></span></p>
+            <% }else{ %> 
+                <p id="looksFor">Looking for: <span id="items"><%=looksFor%></span></p>
+                <% } %> 
+                <button class="btn btn-info"><a href="/listing/<%=id%> " data-link>View!</a></button>
+        </div>
+    <% if(i%3===2){ %>         
+            </div>
+    <% } %> 
+
+<% } %> 

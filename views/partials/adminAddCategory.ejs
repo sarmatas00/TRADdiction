@@ -1,0 +1,33 @@
+
+<% let categories=data %> 
+
+<div class="container d-flex  adminAdd">
+
+    
+    
+    <table>
+        <tr>
+            <th>Categories</th>
+        </tr>
+        <tr>
+        <% for(let i=0;i<categories.length;i++){ %> 
+            <% if(i%5===0 ){ %> 
+                <tr>
+            <% } %> 
+            <th><%=categories[i].ctgName  %> </th>
+            <% if(i%5===0){ %> 
+            </tr>
+            <% } %> 
+        <% } %>
+        </tr>
+    </table>
+
+    <form class="my-5" action="/manage" method="post">
+        <div class="form-group">
+            <label for="category" >New Category name</label>
+            <input type="text" class="form-control w-50 mb-2" id="category" placeholder="Enter name" name="ctgName">
+            <button type="submit" class="btn btn-dark px-4" style="border:1px solid rgb(71,225,12);">Add</button>
+          </div>
+    </form>
+
+</div>
