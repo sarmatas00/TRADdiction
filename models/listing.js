@@ -18,9 +18,16 @@ const listingSchema=new mongoose.Schema({
         type:Boolean,
         required:true
     },
+    id:{
+        type:String,
+        required:true
+    },
     userId:{
         type:Number,
         required:true
+    },
+    category:{
+        type:String
     }
 })
 const Listing=mongoose.model('Listing',listingSchema);
