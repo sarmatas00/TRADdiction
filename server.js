@@ -4,6 +4,7 @@ const express = require("express")
 const path = require("path")
 const mongoose=require("mongoose")
 const Listing=require('./models/listing.js')
+const User=require('./models/user.js')
 const bcrypt=require("bcrypt")
 const initializePassport=require("./passport-config")
 const passport=require("passport")
@@ -12,8 +13,8 @@ const session=require("express-session")
 const methodOverride=require("method-override")
 
 
-// const {search}=require("./frontend/static/abstracts/search.js").default
 
+const TradeRequest = require("./models/trade_request.js")
 
 
 const app= express()
@@ -33,33 +34,78 @@ app.use(passport.session())
 app.use(methodOverride("_method"))
 
 
+mongoose.connect('mongodb://localhost:27017/TRADdiction',{useNewUrlParser:true, useUnifiedTopology: true})
+.then(res=>{
+    //console.log(res);
+})
+.catch(err=>{
+    console.log(err,"errorrrmen");
+})
 
-
-async function findInDb(id){
+async function findListingInDbById(id){
     try{
-         const ans=await Listing.find({userId:id});
+         const ans=await Listing.findOne({userId:id});
          return ans;
     }catch(err){
         return null;
     }
 }
-async function saveInDb(details){
+async function saveListingInDb(details){
     try{
         const list=new Listing(details);
         list.save();
         return true;
     }catch(err){
+        console.log("Error saving listing in DB");
         return false;
     }
 }
+async function findUserByEmailDb(email){
+    try{
+        const ans=await User.findOne({email:email})
+        return ans;
+    }catch(err){
+        console.log("Error finding user by email");
+        return null;
+    }
+}
+async function findUserByIdDb(id){
+    try{
+        const ans=await User.findOne({id:id});
+        return ans;
+    }catch(err){
+        console.log("Error finding user by ID");
+        return null;
+    }
+}
+async function findUserListings(userID){
+    try{
+        const ans=await Listing.find({userId:userID});
+        return ans;
+    }catch(err){
+        console.log("Error finding listings of user");
+        return null;
+    }
+}
+async function findListingsForApproval(){
+    try{
+        let ans=Listing.find({id:{$regex:/admin/,$options:'i'}})
+        return ans;
+    }catch(err){console.log("Erro findListingsForApproval");return null;}
+}
+async function findUsersIncomingRequests(userID){
+    try{
+        tradeReqs=await TradeRequest.find({'itemWanted.userId':userID})
+        return tradeReqs;
+    }catch(err){
+        console.log("DBErrorFindingUsersIncomingRequest");
+        return null;
+    }
+}
 
-//find user by email to use on login
-//TODO search for user in db insted of users array
-initializePassport(passport,
-    email=>{
-    return users.find(user=>user.email===email)},
-    id=>{return users.find(user=>user.id===id)}
-)
+
+//DB DONE
+initializePassport(passport,findUserByEmailDb,findUserByIdDb)
 
 function checkAuthenticated(req,res,next){
     if(req.isAuthenticated()){
@@ -81,26 +127,28 @@ function checkNotAuthenticated(req,res,next){
 
 
 
-mongoose.connect('mongodb://localhost:27017/TRADdiction',{useNewUrlParser:true, useUnifiedTopology: true})
-.then(res=>{
-    //console.log(res);
-})
-.catch(err=>{
-    console.log(err,"errorrrmen");
-})
+
 
 const tmpPass=()=>{
     
-    bcrypt.hash("12345",10).then((pass)=>{
+    bcrypt.hash("12345",10).then(async(pass)=>{
         let user={id:1234,email:"admin",password:pass,firstName:"Bobby"}
+        let actualUser={id:1111,email:"geo",password:pass,firstName:"Dicks"}
         user.type="admin"
+        actualUser.type="user"
         users.push(user)
+        users.push(actualUser)
+        let user1=new User(user);
+        let user2=new User(actualUser);
+        await user1.save();
+        await user2.save();
     })
     bcrypt.hash("12345",10).then((pass)=>{
         let user={id:1236,email:"user",password:pass,firstName:"Bobby"}
         user.type="user"
         users.push(user)
     })
+    
     
 }
 
@@ -227,16 +275,16 @@ app.get("/signup",checkNotAuthenticated,(req,res)=>{
     res.render("signup")
 })
 
+//DB CONNECTED
 app.post("/signup",checkNotAuthenticated,async (req,res)=>{
-    //TODO delete temp users array and push new user to db
     try{
         const details=req.body
         const hashedPass= await bcrypt.hash(details.password,10)
         
         
         
-        //TODO also search if email already exists in db
-        const emailExists=users.find((user)=>user.email===details.email)!==undefined
+        const emailExists=User.find({email:email})
+        if(emailExists!==undefined){console.log("email found");}
         
         if(emailExists){
             req.flash("error","This email has already been registered!")
@@ -249,9 +297,13 @@ app.post("/signup",checkNotAuthenticated,async (req,res)=>{
                 ...details,
                 type:"user"
             })
+            const newUser=new User({id:Date.now().toString(),...details,type:"user"});
+            newUser.save();
+            console.log("saved user in db");
             res.redirect("/login")
 
         }
+        
         
     }catch(e){
         console.log(e);
@@ -269,13 +321,13 @@ app.delete("/logout",(req,res)=>{
 app.get("/recover",checkNotAuthenticated,(req,res)=>{
     res.render("forgetPass")
 })
-
-app.post("/recover",checkNotAuthenticated,(req,res)=>{
-    //TODO find if account with that email=req.body.emailRec exists
+//DB CONNECTED
+app.post("/recover",checkNotAuthenticated,async (req,res)=>{
     try{
-        if(users.find((user)=>{
-            return user.email===req.body.emailRec
-        })){
+        let dbFound=await findUserByEmailDb(req.body.emailRec);
+        let mail=dbFound.email;
+        if(mail){console.log("We have this ",mail);}
+        if(mail){
             req.flash("exists","Please check your email, in order to recover your password!")
         }else{
             req.flash("exists","No account with that email has been registered!")
@@ -287,14 +339,15 @@ app.post("/recover",checkNotAuthenticated,(req,res)=>{
     
 
 })
-
-app.get("/listing/:id",checkAuthenticated,(req,res)=>{
-    //TODO find listing with id=req.params.id and pass it on => this is the listing he is interested in
-    //also we need an array with user's listings => userId=req.user.id . Put the listings in myListings array
-    const myListings=listings.slice(4,8)
+//Done not tested
+app.get("/listing/:id",checkAuthenticated,async(req,res)=>{
+    const myListings=await findUserListings(req.user.id)
     
-    //also check if the selected listing is one of his listings =>error message
     const isHisListing=false
+    for(listing of myListings){
+        if(listing.id===req.params.id)
+            isHisListing=true;
+    }
     try{
         if(isHisListing){
             req.flash("error","You can't make a trade with yourself!")
@@ -304,11 +357,13 @@ app.get("/listing/:id",checkAuthenticated,(req,res)=>{
         res.redirect("/")
     }
 })
-
-app.post("/listing/:id",checkAuthenticated,(req,res)=>{
-    //TODO go and register new trade request 
-    //user with userId=req.user.id wants to trade his listing with id=req.body.tradeFor for listing with id=req.params.id
+//db done not tested
+app.post("/listing/:id",checkAuthenticated,async (req,res)=>{
+    
     try{
+        let itemWanted=await findListingInDbById(req.params.id);
+        const tradeRequest=new TradeRequest(Date.now.toString(),req.body.tradeFor,itemWanted)
+        await tradeRequest.save();
         req.flash("success","Request has been made, awaiting approval!")
         res.redirect(`/listing/${req.params.id}`)
     }catch{
@@ -319,68 +374,66 @@ app.post("/listing/:id",checkAuthenticated,(req,res)=>{
 
 
 
-
-app.get('/items',checkAuthenticated,(req,res)=>{
-    //TODO find user in db with user id = req.user.id
-    
-    const user=users.find((user)=>{return user.id===req.user.id})
-    //TODO then find all listings for that user id
-    const userListings=listings.slice(-4)
+//Done not tested?
+app.get('/items',checkAuthenticated,async(req,res)=>{
+    const user=await findUserByIdDb(req.user.id)
+    let userListings=await findUserListings(req.user.id)
+    userListings=userListings.filter(listing=>listing.id.slice(listing.id.length-5,listing.id.length)!=='admin')
+    //const userListings=listings.slice(-4)
+    console.log("ALL LISTINGS OF USER",userListings,"  user",user," id",req.user.id);
     res.render("myItems",{logged:true,userListings,user})
 
 
 })
 
-//create a new listing
-app.get("/items/new",checkAuthenticated,(req,res)=>{
-    const user=users.find((user)=>{return user.id===req.user.id})
+//DB DONE
+app.get("/items/new",checkAuthenticated,async(req,res)=>{
+    const user=findUserByIdDb(req.user.id)
     res.render("newListing",{logged:true,user})
     
 })
-
-app.post("/items",checkAuthenticated,(req,res)=>{
+//DB DONE NOT TESTED
+app.post("/items",checkAuthenticated,async(req,res)=>{
+    const newListing={...req.body.details,id:`${Date.now().toString()}admin`,userId:req.user.id}
+    const objToAdd=new Listing(newListing);
     try{
-    const userId=users.find((user)=>{return user.id===req.user.id}).id
-    //TODO go and save the new listing in admin's listings remaining approval
-    const newListing={...req.body.details,category:"Shoes",id:Date.now().toString(),userId}
-    approve.push(newListing)
+        await objToAdd.save();
         req.flash("success","Your listing is pending approval from an admin.")
-    }catch{
-        
+    }catch(err){
+        console.log("ERRORNEWLISTING");
     }
-    res.redirect("/items")
+        res.redirect("/items")
 
 
 })
 
-app.get("/items/:id",checkAuthenticated,(req,res)=>{
+app.get("/items/:id",checkAuthenticated,async (req,res)=>{
     const user=users.find((user)=>{return user.id===req.user.id})
-    //TODO listing item with id=req.params.id in db 
-    const listing=listings[0]
+    const listing=await findListingInDbById(req.params.id)
     res.render("listing",{logged:true,listing,user:req.user})
 
 })
-
-app.patch("/items/:id/edit",checkAuthenticated,(req,res)=>{
-    //TODO find listing with id=req.params.id and update it with new data
+//DB DONE NOT TESTED
+app.patch("/items/:id/edit",checkAuthenticated,async (req,res)=>{
     
-    const oldListing=listings[0]
 
-    // if(req.body.newLooksFor===""){
-        
-    //     const newListing={oldListing.src,req.body.newTitle,req.body.newText,"",true,oldListing.id,oldListing.userId}
-    // }else{
-    //     const newListing={oldListing.src,req.body.newTitle,req.body.newText,req.body.newLooksFor,false,oldListing.id,oldListing.userId}
-    // }
+    const oldListing=await findListingInDbById(req.params.id)
+    let newListing;
+    if(req.body.newLooksFor===""){
+          newListing={src:oldListing.src,title:req.body.newTitle,text:req.body.newText,looksFor:"",free:true,id:oldListing.id,userId:oldListing.userId}
+     }else{
+         newListing={src:oldListing.src,title:req.body.newTitle,text:req.body.newText,looksFor:req.body.newLooksFor,free:false,id:oldListing.id,userId:oldListing.userId}
+     }
+     Listing.findOneAndUpdate({id:req.params.id},newListing);
 
     res.redirect("/items")
     
     
 })
-
-app.delete("/items/:id",checkAuthenticated,(req,res)=>{
-    //TODO find listing with id=req.params.id and remove it from db
+//DB DONE NOT TESTED
+app.delete("/items/:id",checkAuthenticated,async (req,res)=>{
     try{
+        await Listing.findOneAndDelete({id:req.params.id})
         req.flash("success","Item deleted successfully!")
         
     }catch{
@@ -388,34 +441,43 @@ app.delete("/items/:id",checkAuthenticated,(req,res)=>{
     res.redirect("/items")
 })
 
-
-
-app.get("/trades",checkAuthenticated,(req,res)=>{
-    //TODO get all incoming trade requests for user=req.user and put them in requests array
-    const requests=[{id:1234,itemProvided:listings[1],itemWanted:listings[2]}]
-
+//db done not tested
+app.get("/trades",checkAuthenticated,async(req,res)=>{
+    let requests=await findUsersIncomingRequests(req.user.id)
+    let pendingRequests=requests.filter(request=>request.completed===false);
     
-
-    //TODO also retrieve completed requests for that user in an array
-    const completed=[{itemProvided:listings[3],itemWanted:listings[4]}]
-    res.render("requests",{logged:true,user:req.user,requests,completed})
+    
+    let completed=requests.filter(request=>request.completed===true);
+    res.render("requests",{logged:true,user:req.user,pendingRequests,completed})
 })
-
-app.post("/trades",checkAuthenticated,(req,res)=>{
-    //this is called on trade request acceptance
-    //TODO take the accepted trade id (req.body.accept), find the trade and store it in completed trades
-    //also remove the trade from user's (req.user) trade requests
+//db done not tested
+app.post("/trades",checkAuthenticated,async (req,res)=>{
     
+    let tradeReq=await TradeRequest.findOne({id:req.body.accept});
+    tradeReq.completed=true;
+    if(tradeReq!==null){
+        try{
+            await TradeRequest.findOneAndUpdate({id:req.body.accept},tradeReq)
+        }catch(err){console.log("Error updating request to completed")}
+    }else{
+        console.log("tradeRequest to be completed not found");
+    }
 
 
     res.redirect("/trades")
 })
 
-
-app.delete("/trades",checkAuthenticated,(req,res)=>{
-    //this is called on trade decline
-    //TODO take the declined trade it (req.body.decline), find the trade and remove it from user's (req.user) trade requests
+//db done not tested
+app.delete("/trades",checkAuthenticated,async(req,res)=>{
     
+    try{
+        TradeRequest.findOneAndDelete({id: req.body.decline }, function (err, docs) {
+            if (err){
+                console.log("Error deleting the declined request")
+            }
+           
+        });
+    }catch(err){console.log("Error with findOneAndDelete for trade request on trade decline");}
     res.redirect("/trades")
 })
 
@@ -432,9 +494,9 @@ app.get("/manage/remove",checkAuthenticated,(req,res)=>{
     res.render("admin",{content:"adminRemoveCategory",data:categories})
 })
 
-
-app.get("/manage/approve",checkAuthenticated,(req,res)=>{
-    
+//db done
+app.get("/manage/approve",checkAuthenticated,async (req,res)=>{
+    let approve=await findListingsForApproval();
     res.render("admin",{content:"adminApprove",data:approve})
 })
 
@@ -454,14 +516,16 @@ app.post("/manage",checkAuthenticated,(req,res)=>{
     categories.push({ctgName:req.body.ctgName,selected:false})
     res.redirect("/manage")
 })
-app.post("/manage/approve",checkAuthenticated,(req,res)=>{
-    //TODO find listing with id=req.body.id in admin's approve table, remove it and put it in listings table
+//DB DONE NOT TESTED DONT KNOW IF SPLICE WORKS
+app.post("/manage/approve",checkAuthenticated,async(req,res)=>{
     
-    const approved=approve.find((listing)=>{
-        return listing.id===req.body.id
-    })
-    approve.splice(approve.indexOf(approved),1)
-    listings.push(approved)
+   let queryString=req.body.id;
+   //queryString=queryString.concat('admin')
+   let approved=await findListingInDbById(queryString)
+   console.log("id before"+approved.id);
+   approved.id=approved.id.slice(0,approved.id.length-5);
+   console.log("id after approve"+approved.id);
+   await Listing.findOneAndUpdate({id:req.body.id},approved)
     res.redirect("/manage/approve")
 })
 

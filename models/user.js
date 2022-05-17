@@ -8,13 +8,40 @@ const mongoose=require('mongoose')
     },
 */
 const userSchema=new mongoose.Schema({
+    id:{
+        type:String,
+        required:true
+    },
     email:{
         type:String,
         required:true
     },
-    pass:{
+    password:{
         type:String,
         required:true
+    },
+    firstName:{
+        type:String,
+        required:true
+    },
+    lastName:{
+        type:String,
+    },
+    number:{
+        type:Number,
+    },
+    city:{
+        type:String,
+    },
+    state:{
+        type:String,
+    },
+    zip:{
+        type:String,
+    },
+    terms:{
+        type:String,
+        enum:['on','off'],
     },
     type:{
         type:String,

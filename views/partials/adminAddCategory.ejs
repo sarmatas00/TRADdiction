@@ -8,8 +8,10 @@
     <table>
         <tr>
             <th>Categories</th>
+            <th>Categories</th>
+            <th>Categories</th>
         </tr>
-        <tr>
+        
         <% for(let i=0;i<categories.length;i++){ %> 
             <% if(i%4===0 ){ %> 
                 <tr>
@@ -19,7 +21,7 @@
             </tr>
             <% } %> 
         <% } %>
-        </tr>
+        
     </table>
 
     <form class="my-5" action="/manage" method="post">

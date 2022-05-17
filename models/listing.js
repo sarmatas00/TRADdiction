@@ -18,10 +18,18 @@ const listingSchema=new mongoose.Schema({
         type:Boolean,
         required:true
     },
+    category:{
+        type:String
+    },
+    id:{
+        type:String,
+        required:true
+    },
     userId:{
         type:Number,
         required:true
     }
+    
 })
 const Listing=mongoose.model('Listing',listingSchema);
 module.exports=Listing;

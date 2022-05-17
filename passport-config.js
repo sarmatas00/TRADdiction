@@ -6,7 +6,7 @@ const LocalStrategy=require("passport-local").Strategy
 
 function initialize(passport,getUserByEmail,getUserById){
     const authenticateUser=async (email,password,done)=>{
-        const user=getUserByEmail(email)
+        const user=await getUserByEmail(email)
         if(user==null){
             return done(null,false,{message:"No user with that email!"})
         }
@@ -27,7 +27,7 @@ function initialize(passport,getUserByEmail,getUserById){
     passport.use("local",new LocalStrategy({usernameField:"email"},authenticateUser))
     // passport.use("admin-local",new LocalStrategy({usernameField:"email"},authenticateAdmin))
     passport.serializeUser((user,done)=>done(null,user.id))
-    passport.deserializeUser((id,done)=>done(null,getUserById(id)))
+    passport.deserializeUser(async (id,done)=>done(null,await getUserById(id)))
 
 }
 
