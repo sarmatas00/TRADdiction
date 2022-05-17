@@ -12,7 +12,8 @@
   </div>
   </div>
   <% if(messages.success){ %> 
-    <div class="alert alert-success alert-dismissible fade show" role="alert"><%=messages.success%>
+    <% console.log(messages.success[0]) %> 
+    <div class="alert alert-success alert-dismissible fade show" role="alert"><%=messages.success[0]%>
       <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
   <% } %> 

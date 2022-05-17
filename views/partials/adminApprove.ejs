@@ -19,14 +19,14 @@
     <h4 style="max-width: 10vw;"><span style="color:blueviolet;">Title: </span> <%=listing.title  %> </h4>
     
     <p style="word-wrap: break-word;max-width: 10vw;"><span style="color:blueviolet; font-size: 1.3em;">Description: </span><%= listing.text  %> </p>
-    <form action="/trades" method="post" class="align-self-center">
-        <input type="hidden" value=" " name="accept">
-        <button action="submit"  class="tradeBtn">Accept</button>
+    <form action="/manage/approve" method="post" >
+        <input type="hidden" value="<%= listing.id %>" name="id">
+        <button action="submit"  class="tradeBtn">Approve</button>
     </form>
     <br>
-    <form action="/trades?_method=DELETE" class="align-self-center" method="post" >
-        <input type="hidden" value=" " name="decline">
-        <button action="submit" style="background-color: red;" class="tradeBtn">Decline</button>
+    <form action="/manage/approve?_method=DELETE"  method="post" >
+        <input type="hidden" value="<%= listing.id %>" name="id">
+        <button action="submit" style="background-color: red;" class="tradeBtn">Reject</button>
     </form>
 
   </div>

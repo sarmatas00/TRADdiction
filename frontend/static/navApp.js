@@ -12,27 +12,6 @@ const toggler = document.querySelector(".toggler");
 const dropdownItem = document.querySelectorAll(".dropdown-item");
 const categoryBtn = document.querySelectorAll(".category-btn");
 
-//for searching to apply on form submissions
-// function searchingFor(evt) {
-//   const text = evt.target.children[0].value;
-//   let searched = false;
-//   if (text !== "") {
-//     categoryBtn.forEach((btn) => {
-//       if (btn.style.backgroundColor === "aqua") {
-//         let item = new search({ category: btn.innerText, text: text });
-//         item.loadItems();
-//         searched = true;
-//         btn.style.backgroundColor = "";
-//       }
-//     });
-//     if (!searched) {
-//       let item = new search({ category: "", text: text });
-//       item.loadItems();
-//     }
-//     return true;
-//   }
-//   return false;
-// }
 
 if (widthMatch.matches) {
   //search form appears when clicking search icon on mobile screens
@@ -79,11 +58,7 @@ if (widthMatch.matches) {
       });
   });
 
-  navForm.addEventListener("submit", (evt) => {
-    searchingFor(evt);
-    window.scrollTo(0, document.body.scrollHeight);
-    evt.preventDefault();
-  });
+  
 }
 
 //when user clicks the login button, make the list appear

@@ -63,10 +63,11 @@ h2{
     display: inline-block;
     margin:5px;
     padding: 20px 80px;
-    word-wrap: break-word;
+    word-wrap: normal;
     cursor: default !important;
     /* background-color: rgb(71,225,12); */
     opacity: 0.8;
+    width: 20vw;
     
 
 }
@@ -473,9 +474,10 @@ h2{
 .content{
     background-color: inherit;
     width: 72vw;
-    height: 100vh;
-    align-self: flex-end;
-    transform: translateY(-45%);
+    height:fit-content;
+    position: relative;
+    top: -45vh;
+    left: 25vw;
     color:white;
     
 }
@@ -492,7 +494,16 @@ h2{
     width: 100%;
 
 }
-.admin .adminAdd table tr:first-child{
+
+ tr:not(tr:nth-of-type(1)),td,th:not(th:nth-of-type(1)){
+    border-color: rgb(130, 115, 212) !important ;
+    border-width: 1px !important;
+    border-collapse: collapse;
+    text-align: center;
+  }
+  
+
+ table tr:first-child{
     /* width: 1%; */
     font-size: 1.5em;
     color: rgb(71,225,12);
@@ -510,6 +521,37 @@ h2{
     border: 1px solid rgb(71,225,12);
     max-height: 50vh;
     overflow: scroll;
+}
+
+.approve form:nth-of-type(1){
+    position: relative;
+    top: 6em;
+    left: 15%;
+}
+.approve form:nth-of-type(2){
+    position: relative;
+    top:  11em;
+    /* bottom: 170%; */
+    right: 8%;
+    
+}
+
+.approve .tradeBtn{
+    width: 8em;
+    height: 3em;
+    padding: 0;
+    text-align: center;
+    border-radius: 0%;
+
+}
+
+
+.activeCat{
+    display: none;
+}
+
+.activeText{
+    display: none;
 }
 
 

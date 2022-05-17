@@ -7,22 +7,15 @@ class search extends null{
     
 
 
-    //listings is an array with all adds from db 
-    static searchByCategory(listings,ctgName){
-        return listings.filter((listing)=>{
-            if(listing.text.includes(ctgName) || listing.title.includes(ctgName)){
-                return listing
-            }
-        })
-    }
+   
 
 
-    static searchByText(listings,text){
-        return listings.filter((listing)=>{
-            if(text.split(" ").some((word)=>{return listing.text.includes(word)}) || text.split(" ").some((word)=>{return listing.title.includes(word)})){
-                return listing
-            }
-        })
+    static searchByText(title,text,query){
+        
+      if(query.toLowerCase().split(" ").some((word)=>{return text.toLowerCase().includes(word)}) || query.toLowerCase().split(" ").some((word)=>{return title.toLowerCase().includes(word)})){
+          return true
+      }
+      return false
     }
 
     //returns error message if some input is incorrect, else returns true
@@ -73,5 +66,5 @@ class search extends null{
 
     
 }
-module.exports={search}
+export {search}
 

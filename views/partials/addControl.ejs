@@ -1,5 +1,5 @@
 <% for(let i=0;i<listings.length;i++){ %> 
-    <% let {src,title,text,looksFor,free,id}=listings[i] %> 
+    <% let {src,title,text,looksFor,free,category,id}=listings[i] %> 
     <% if(i%3===0){ %> 
         <div class="row d-flex justify-content-evenly results">
     <% } %> 
@@ -11,8 +11,9 @@
             <p id="looksFor">Freebie <span id="items"></span></p>
             <% }else{ %> 
                 <p id="looksFor">Looking for: <span id="items"><%=looksFor%></span></p>
-                <% } %> 
+                <% } %>  
                 <button class="btn btn-info"><a href="/listing/<%=id%> " data-link>View!</a></button>
+                <div class="d-none"><%=category%></div>
         </div>
     <% if(i%3===2){ %>         
             </div>

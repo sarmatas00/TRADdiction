@@ -1,0 +1,29 @@
+<% let users=data %> 
+
+<table class="w-100" style="table-layout:fixed; font-size: 1.3em;">
+    <colgroup>
+        <col span="1" style="width: 35%;">
+        <col span="1" style="width: 20%;">
+        <col span="1" style="width: 20%;">
+        <col span="1" style="width: 20%;">
+     </colgroup>
+    <tr >
+        <th>Users</th>
+    </tr>
+    <tr style="color: blueviolet;">
+        <th>Email</th>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>City</th>
+    </tr>
+    <% for(let i=0;i<users.length;i++){ %> 
+        <% if(users[i].type!=="admin"){ %> 
+        <tr>
+            <td><%=users[i].email%></td>
+            <td><%=users[i].firstName%></td>
+            <td><%=users[i].lastName%></td>
+            <td><%=users[i].city%></td>
+        </tr> 
+        <% } %> 
+    <% } %> 
+</table>

@@ -10,11 +10,11 @@
         </tr>
         <tr>
         <% for(let i=0;i<categories.length;i++){ %> 
-            <% if(i%5===0 ){ %> 
+            <% if(i%4===0 ){ %> 
                 <tr>
             <% } %> 
-            <th><%=categories[i].ctgName  %> </th>
-            <% if(i%5===0){ %> 
+            <td><%=categories[i].ctgName  %> </td>
+            <% if(i%4===3){ %> 
             </tr>
             <% } %> 
         <% } %>
