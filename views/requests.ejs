@@ -32,11 +32,11 @@
                     <p><%= request.itemProvided.text %></p>
                 </div>
                 <form action="/trades" method="post">
-                    <input type="hidden" value="<%= request.id %> " name="accept">
+                    <input type="hidden" value="<%= request.id %>" name="accept">
                     <button action="submit"  class="tradeBtn">Accept</button>
                 </form>
                 <form action="/trades?_method=DELETE" method="post" >
-                    <input type="hidden" value="<%= request.id %> " name="decline">
+                    <input type="hidden" value="<%= request.id %>" name="decline">
                     <button action="submit" style="background-color: red;" class="tradeBtn">Decline</button>
                 </form>
                 </li>

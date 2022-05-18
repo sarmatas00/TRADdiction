@@ -8,15 +8,20 @@
         <label for="replace" style="font-size: 1.5em;">Replace</label>
         <select id="replace" class="form-control w-50 mb-2" name="replace">
           <option selected>Choose...</option>
-          <% for(let listing of carousel) {%> 
-            <option><%=listing.title  %> </option>
+          <% for(let listing of carousel) {%>
+
+            <option value="<%=listing.id  %>"><%=listing.title  %> </option>
         <% } %> 
         </select>
         <label for="for" style="font-size: 1.5em;">for</label>
         <select id="for" class="form-control w-50 mb-2" name="for">
           <option selected>Choose...</option>
-          <% for(let listing of listings) {%> 
-            <option><%=listing.title  %> </option>
+          <% for(let listing of listings) {%>
+
+            <% if(!listing.id.includes("carousel") && !carousel.some((l)=>l.title===listing.title) ){ %>  
+              <% console.log(listing.id) %> 
+              <option value="<%=listing.id  %>"><%=listing.title  %> </option>
+            <% } %> 
         <% } %> 
         </select>
         <button type="submit" class="btn btn-dark px-4" style="border:1px solid rgb(71,225,12);" >Submit</button>

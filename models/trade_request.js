@@ -14,21 +14,21 @@ const tradeRequestSchema=new mongoose.Schema({
         required:true
     },
     text:{
-        type:String
+        type:String,
+        required:true
     },
     looksFor:{
         type:String
     },
     free:{
-        type:Boolean,
-        required:true
+        type:Boolean
     },
     id:{
         type:String,
         required:true
     },
     userId:{
-        type:Number,
+        type:String,
         required:true
     }
    },
@@ -42,21 +42,21 @@ const tradeRequestSchema=new mongoose.Schema({
         required:true
     },
     text:{
-        type:String
+        type:String,
+        required:true
     },
     looksFor:{
         type:String
     },
     free:{
-        type:Boolean,
-        required:true
+        type:Boolean
     },
     id:{
         type:String,
         required:true
     },
     userId:{
-        type:Number,
+        type:String,
         required:true
     }
    },

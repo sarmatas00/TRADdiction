@@ -9,14 +9,14 @@ const listingSchema=new mongoose.Schema({
         required:true
     },
     text:{
-        type:String
+        type:String,
+        required:true
     },
     looksFor:{
         type:String
     },
     free:{
-        type:Boolean,
-        required:true
+        type:Boolean
     },
     category:{
         type:String
@@ -26,7 +26,7 @@ const listingSchema=new mongoose.Schema({
         required:true
     },
     userId:{
-        type:Number,
+        type:String,
         required:true
     }
     

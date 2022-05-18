@@ -9,7 +9,8 @@ const signupForm=document.querySelector("#signup form")
 
 
 
-if(queryItemsForm.length!==0 && categoryBtns.length!==0){
+
+if(queryItemsForm.length!==0){
 queryItemsForm.forEach((form)=>{form.addEventListener("submit", (evt) => {
   evt.preventDefault();
   const queryText = new FormData(evt.target).get("queryText");
@@ -109,7 +110,7 @@ newListingForm.addEventListener("submit", (evt) => {
     title: document.querySelector("#title").value,
     text: document.querySelector("#text").value,
     looksFor: document.querySelector("#looksFor").value,
-    free: document.querySelector("#free").checked,
+    free: document.querySelector("#free").checked
   };
   const alert=document.querySelector("#listings .alert")
   if(details.src===""){
@@ -128,6 +129,7 @@ newListingForm.addEventListener("submit", (evt) => {
     setTimeout(()=>{alert.classList.add("d-none")},3000)
     evt.preventDefault()
   }else{
+    
     fetch("/items", {
       method: "POST",
       headers: { "Content-Type": "application/json" },

@@ -15,6 +15,7 @@ const methodOverride=require("method-override")
 
 
 const TradeRequest = require("./models/trade_request.js")
+const Category = require("./models/category.js")
 
 
 const app= express()
@@ -44,12 +45,15 @@ mongoose.connect('mongodb://localhost:27017/TRADdiction',{useNewUrlParser:true, 
 
 async function findListingInDbById(id){
     try{
-         const ans=await Listing.findOne({userId:id});
+         const ans=await Listing.findOne({id:id});
          return ans;
     }catch(err){
-        return null;
+        return (err);
     }
 }
+
+
+
 async function saveListingInDb(details){
     try{
         const list=new Listing(details);
@@ -90,6 +94,7 @@ async function findUserListings(userID){
 async function findListingsForApproval(){
     try{
         let ans=Listing.find({id:{$regex:/admin/,$options:'i'}})
+        
         return ans;
     }catch(err){console.log("Erro findListingsForApproval");return null;}
 }
@@ -101,6 +106,14 @@ async function findUsersIncomingRequests(userID){
         console.log("DBErrorFindingUsersIncomingRequest");
         return null;
     }
+}
+
+async function findListingsForCarousel(){
+    try{
+        let ans=Listing.find({id:{$regex:/carousel/,$options:'i'}})
+        
+        return ans;
+    }catch(err){console.log("Error findListingsForCarousel");return null;}
 }
 
 
@@ -129,123 +142,24 @@ function checkNotAuthenticated(req,res,next){
 
 
 
-const tmpPass=()=>{
+
+
+
+
+
+
+
+
+
+
+
+app.get("/",async (req,res)=>{
     
-    bcrypt.hash("12345",10).then(async(pass)=>{
-        let user={id:1234,email:"admin",password:pass,firstName:"Bobby"}
-        let actualUser={id:1111,email:"geo",password:pass,firstName:"Dicks"}
-        user.type="admin"
-        actualUser.type="user"
-        users.push(user)
-        users.push(actualUser)
-        let user1=new User(user);
-        let user2=new User(actualUser);
-        await user1.save();
-        await user2.save();
-    })
-    bcrypt.hash("12345",10).then((pass)=>{
-        let user={id:1236,email:"user",password:pass,firstName:"Bobby"}
-        user.type="user"
-        users.push(user)
-    })
-    
-    
-}
-
-tmpPass()
-
-
-
-let users=[]
-let categories=[{ctgName:"condition"},
-{ctgName:"condition"},
-{ctgName:"shit"},
-{ctgName:"cell"},
-{ctgName:"Shoes"},
-{ctgName:"condition"},
-{ctgName:"condition"},
-{ctgName:"condition"},
-{ctgName:"condition"},
-{ctgName:"condition"},
-{ctgName:"condition"},
-{ctgName:"condition"},
-{ctgName:"condition"},
-{ctgName:"condition"},
-{ctgName:"condition"}];
-//TODO make listing format as below / need listing id as well 
-let listings=[
-    {src:"https://pyxis.nymag.com/v1/imgs/f5e/cb1/3be2f873678308dc656756a9899aa1d25a-kids-converse.rhorizontal.w600.jpg",
-    title:"White converse",
-    text:"They are in great condition",
-    looksFor:"Headphones",
-    free:false,
-    category:"Shoes",
-    id:Date.now().toString(),
-    userId:1235
-    },
-    {src:"https://hips.hearstapps.com/vader-prod.s3.amazonaws.com/1604528705-41qPLTVYudL.jpg?crop=1.00xw:1.00xh;0,0&resize=480:*",
-    title:"Adjustable barbell",
-    text:"Settings are 5,10,15,20 kg, bought 3 months ago",
-    looksFor:"Clothes",
-    free:false,
-    category:"Shoes",
-    id:Date.now().toString(),
-    userId:1232
-    },
-    {src:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSSzAc1YNXAm6gMJwGTWoQDGBv5aYNJ9sSp2XxgTlUHgFSKMazX9tUdupGlbd5R4kbgvz0&usqp=CAU",
-    title:"Apple iPhone 12 5G 4GB/64GB",
-    text:"It has a dead battery, but everything alse works",
-    looksFor:"Phone",
-    free:false,
-    category:"cell",
-    id:Date.now().toString(),
-    userId:1232
-    },
-    {src:"https://imgprd19.hobbylobby.com/2/4f/57/24f57e245a879cb2543edd1df4e090bfebf24a45/700Wx700H-1013689-0320.jpg",
-    title:"Irish Green T-Shirt L",
-    text:"I don't like green",
-    looksFor:"",
-    free:true,
-    category:"cell",
-    id:Date.now().toString(),
-    userId:1233
-    },
-    {src:"https://www.thespruce.com/thmb/gbhzpTNcuXz7eh9oK-hyEwYtYec=/900x0/filters:no_upscale():max_bytes(150000):strip_icc()/AminaRoundAccentMirror-8936df5a69af4d6fbcd082898998c43e.jpg",
-    title:"Round Bathroom Mirror",
-    text:"It's a very stylish bathroom mirror, really aesthetic",
-    looksFor:"Peanut Butter",
-    free:false,
-    category:"shit",
-    id:Date.now().toString(),
-    userId:1235
-    },
-    {src:"https://www.ubuy.com.gr/productimg/?image=aHR0cHM6Ly9tLm1lZGlhLWFtYXpvbi5jb20vaW1hZ2VzL0kvNjFVeGZYVFV5dkwuX0FDX1NMMTUwMF8uanBn.jpg",
-    title:"Logitech G203",
-    text:"I've had it for a few months and it works great",
-    looksFor:"Chair",
-    free:false,
-    category:"shit",
-    id:Date.now().toString(),
-    userId:1235
-    }
-]
-let filteredListings=[]
-
-let approve=[]
-
-let carousel=listings.slice(0,3)
-
-
-app.get("/",(req,res)=>{
-    //if a category is still on
-    if(filteredListings.length!==0){       
-        res.redirect("/search")
-    }
     if(req.isAuthenticated()){
-        //TODO gimme all categories from db like categories=[{ctgID,ctgName},...]
-        res.render("main",{categories,listings,logged:true,user:req.user,carousel})
+        
+        res.render("main",{categories:await Category.find(),listings:(await Listing.find()).filter((listing)=>!listing.id.includes("carousel")),logged:true,user:req.user,carousel:await findListingsForCarousel()})
     }else{
-        res.render("main",{categories,listings,logged:false,carousel})
+        res.render("main",{categories:await Category.find(),listings:(await Listing.find()).filter((listing)=>!listing.id.includes("carousel")),logged:false,carousel:await findListingsForCarousel()})
     }
 
 
@@ -279,11 +193,12 @@ app.get("/signup",checkNotAuthenticated,(req,res)=>{
 app.post("/signup",checkNotAuthenticated,async (req,res)=>{
     try{
         const details=req.body
+        console.log(details,details.password);
         const hashedPass= await bcrypt.hash(details.password,10)
         
         
         
-        const emailExists=User.find({email:email})
+        const emailExists=await User.findOne({email:details.email})
         if(emailExists!==undefined){console.log("email found");}
         
         if(emailExists){
@@ -292,17 +207,14 @@ app.post("/signup",checkNotAuthenticated,async (req,res)=>{
 
         }else{
             details.password=hashedPass
-            users.push({
-                id:Date.now().toString(),
-                ...details,
-                type:"user"
-            })
+            
             const newUser=new User({id:Date.now().toString(),...details,type:"user"});
             newUser.save();
             console.log("saved user in db");
             res.redirect("/login")
 
         }
+
         
         
     }catch(e){
@@ -343,8 +255,8 @@ app.post("/recover",checkNotAuthenticated,async (req,res)=>{
 app.get("/listing/:id",checkAuthenticated,async(req,res)=>{
     const myListings=await findUserListings(req.user.id)
     
-    const isHisListing=false
-    for(listing of myListings){
+    let isHisListing=false
+    for(let listing of myListings){
         if(listing.id===req.params.id)
             isHisListing=true;
     }
@@ -352,7 +264,7 @@ app.get("/listing/:id",checkAuthenticated,async(req,res)=>{
         if(isHisListing){
             req.flash("error","You can't make a trade with yourself!")
         }
-        res.render("trade",{logged:true,user:req.user,listing:listings[0],myListings})
+        res.render("trade",{logged:true,user:req.user,listing:await findListingInDbById(req.params.id),myListings})
     }catch{
         res.redirect("/")
     }
@@ -361,12 +273,21 @@ app.get("/listing/:id",checkAuthenticated,async(req,res)=>{
 app.post("/listing/:id",checkAuthenticated,async (req,res)=>{
     
     try{
+        if(req.params.tradeFor){
         let itemWanted=await findListingInDbById(req.params.id);
-        const tradeRequest=new TradeRequest(Date.now.toString(),req.body.tradeFor,itemWanted)
+        const request={id:Date.now().toString(),itemProvided:await findListingInDbById(req.body.tradeFor),itemWanted:itemWanted}
+        let tradeRequest=new TradeRequest(request)
         await tradeRequest.save();
         req.flash("success","Request has been made, awaiting approval!")
+        
+        }else{
+            req.flash("success","List an item first")
+            
+
+        }
         res.redirect(`/listing/${req.params.id}`)
-    }catch{
+    }catch(E){
+        console.log("error",E);
         res.redirect("/")
     }
     
@@ -378,9 +299,12 @@ app.post("/listing/:id",checkAuthenticated,async (req,res)=>{
 app.get('/items',checkAuthenticated,async(req,res)=>{
     const user=await findUserByIdDb(req.user.id)
     let userListings=await findUserListings(req.user.id)
-    userListings=userListings.filter(listing=>listing.id.slice(listing.id.length-5,listing.id.length)!=='admin')
-    //const userListings=listings.slice(-4)
-    console.log("ALL LISTINGS OF USER",userListings,"  user",user," id",req.user.id);
+    userListings=userListings.filter((listing)=>{
+        console.log(listing.id);
+        console.log(listing.id.slice(listing.id.length-5,listing.id.length));
+         return listing.id.slice(listing.id.length-5,listing.id.length)!=='admin'
+    })
+    
     res.render("myItems",{logged:true,userListings,user})
 
 
@@ -394,7 +318,7 @@ app.get("/items/new",checkAuthenticated,async(req,res)=>{
 })
 //DB DONE NOT TESTED
 app.post("/items",checkAuthenticated,async(req,res)=>{
-    const newListing={...req.body.details,id:`${Date.now().toString()}admin`,userId:req.user.id}
+    const newListing={...req.body.details,ctgName:"shit",id:`${Date.now().toString()}admin`,userId:req.user.id}
     const objToAdd=new Listing(newListing);
     try{
         await objToAdd.save();
@@ -408,9 +332,9 @@ app.post("/items",checkAuthenticated,async(req,res)=>{
 })
 
 app.get("/items/:id",checkAuthenticated,async (req,res)=>{
-    const user=users.find((user)=>{return user.id===req.user.id})
+    const user=await findUserByIdDb(req.user.id)
     const listing=await findListingInDbById(req.params.id)
-    res.render("listing",{logged:true,listing,user:req.user})
+    res.render("listing",{logged:true,listing,user})
 
 })
 //DB DONE NOT TESTED
@@ -420,11 +344,13 @@ app.patch("/items/:id/edit",checkAuthenticated,async (req,res)=>{
     const oldListing=await findListingInDbById(req.params.id)
     let newListing;
     if(req.body.newLooksFor===""){
-          newListing={src:oldListing.src,title:req.body.newTitle,text:req.body.newText,looksFor:"",free:true,id:oldListing.id,userId:oldListing.userId}
+          newListing={src:oldListing.src,title:req.body.newTitle,text:req.body.newText,looksFor:"",free:true,category:oldListing.category,id:oldListing.id,userId:oldListing.userId}
      }else{
-         newListing={src:oldListing.src,title:req.body.newTitle,text:req.body.newText,looksFor:req.body.newLooksFor,free:false,id:oldListing.id,userId:oldListing.userId}
+         newListing={src:oldListing.src,title:req.body.newTitle,text:req.body.newText,looksFor:req.body.newLooksFor,free:false,category:oldListing.category,id:oldListing.id,userId:oldListing.userId}
      }
-     Listing.findOneAndUpdate({id:req.params.id},newListing);
+     
+     await Listing.findOneAndUpdate({id:req.params.id},newListing);
+     
 
     res.redirect("/items")
     
@@ -445,23 +371,36 @@ app.delete("/items/:id",checkAuthenticated,async (req,res)=>{
 app.get("/trades",checkAuthenticated,async(req,res)=>{
     let requests=await findUsersIncomingRequests(req.user.id)
     let pendingRequests=requests.filter(request=>request.completed===false);
+    let allRequests= await TradeRequest.find()
+
     
     
-    let completed=requests.filter(request=>request.completed===true);
-    res.render("requests",{logged:true,user:req.user,pendingRequests,completed})
+    let completed=allRequests.filter(request=>request.completed===true);
+
+    
+    res.render("requests",{logged:true,user:req.user,requests:pendingRequests,completed})
 })
 //db done not tested
 app.post("/trades",checkAuthenticated,async (req,res)=>{
     
     let tradeReq=await TradeRequest.findOne({id:req.body.accept});
     tradeReq.completed=true;
+    tradeReq._id=mongoose.Types.ObjectId()
+    tradeReq.isNew=true
+
+    
+    
+    
     if(tradeReq!==null){
-        try{
-            await TradeRequest.findOneAndUpdate({id:req.body.accept},tradeReq)
-        }catch(err){console.log("Error updating request to completed")}
+        try{ 
+            let updated=new TradeRequest(tradeReq)
+            await TradeRequest.deleteOne({id:req.body.accept})
+            await updated.save()
+        }catch(err){console.log(err)}
     }else{
         console.log("tradeRequest to be completed not found");
     }
+
 
 
     res.redirect("/trades")
@@ -471,7 +410,7 @@ app.post("/trades",checkAuthenticated,async (req,res)=>{
 app.delete("/trades",checkAuthenticated,async(req,res)=>{
     
     try{
-        TradeRequest.findOneAndDelete({id: req.body.decline }, function (err, docs) {
+        TradeRequest.findOneAndDelete({id:req.body.decline}, function (err, docs) {
             if (err){
                 console.log("Error deleting the declined request")
             }
@@ -482,16 +421,16 @@ app.delete("/trades",checkAuthenticated,async(req,res)=>{
 })
 
 
-app.get("/manage",checkAuthenticated,(req,res)=>{
+app.get("/manage",checkAuthenticated,async (req,res)=>{
     //TODO gimme all categories that exist in categories array
-    res.render("admin",{content:"adminAddCategory",data:categories})
+    res.render("admin",{content:"adminAddCategory",data:await Category.find()})
 })
 
 
 
-app.get("/manage/remove",checkAuthenticated,(req,res)=>{
+app.get("/manage/remove",checkAuthenticated,async (req,res)=>{
     //TODO gimme all categories that exist in categories array
-    res.render("admin",{content:"adminRemoveCategory",data:categories})
+    res.render("admin",{content:"adminRemoveCategory",data:await Category.find()})
 })
 
 //db done
@@ -501,57 +440,76 @@ app.get("/manage/approve",checkAuthenticated,async (req,res)=>{
 })
 
 
-app.get("/manage/users",checkAuthenticated,(req,res)=>{
+
+app.get("/manage/users",checkAuthenticated,async (req,res)=>{
     //send all users profiles
-    res.render("admin",{content:"adminUsers",data:users})
+    res.render("admin",{content:"adminUsers",data:await User.find()})
 })
 
-app.get("/manage/carousel",checkAuthenticated,(req,res)=>{
+app.get("/manage/carousel",checkAuthenticated,async (req,res)=>{
     //send all listings and carousel array
-    res.render("admin",{content:"adminCarousel",data:{listings,carousel}})
+    res.render("admin",{content:"adminCarousel",data:{listings:await Listing.find(),carousel:await findListingsForCarousel()}})
 })
 
-app.post("/manage",checkAuthenticated,(req,res)=>{
+app.post("/manage",checkAuthenticated,async (req,res)=>{
     //TODO add new category to db (category=req.body.ctgName)
-    categories.push({ctgName:req.body.ctgName,selected:false})
+    let cat=new Category({ctgName:req.body.ctgName})
+    await cat.save()
     res.redirect("/manage")
 })
 //DB DONE NOT TESTED DONT KNOW IF SPLICE WORKS
 app.post("/manage/approve",checkAuthenticated,async(req,res)=>{
     
    let queryString=req.body.id;
-   //queryString=queryString.concat('admin')
    let approved=await findListingInDbById(queryString)
-   console.log("id before"+approved.id);
+   
    approved.id=approved.id.slice(0,approved.id.length-5);
-   console.log("id after approve"+approved.id);
    await Listing.findOneAndUpdate({id:req.body.id},approved)
     res.redirect("/manage/approve")
 })
 
-app.delete("/manage/approve",checkAuthenticated,(req,res)=>{
-    //TODO remove listing with id=req.body.id from admin's approval table
-    const approved=approve.find((listing)=>{
-        return listing.id===req.body.id
-    })
-    approve.splice(approve.indexOf(approved),1)
+app.delete("/manage/approve",checkAuthenticated,async (req,res)=>{
+    
+    await Listing.findOneAndDelete({id:req.body.id})
     res.redirect("/manage/approve")
 })
 
 
-app.delete("/manage",checkAuthenticated,(req,res)=>{
-    //TODO find cateogry with name: req.body.ctgName and delete it
-    categories.splice(categories.indexOf(categories.find((cat)=>cat.ctgName===req.body.ctgName)),1)
+app.delete("/manage",checkAuthenticated,async (req,res)=>{
+    
+    try{
+        await Category.findOneAndDelete({catgName:req.body.ctgName})
+    }catch(e){
+        console.log(e);
+    }
     res.redirect("/manage/remove")
 })
 
-app.post("/manage/carousel",checkAuthenticated,(req,res)=>{
+
+
+app.post("/manage/carousel",checkAuthenticated,async (req,res)=>{
     //replace listing with (title=req.body.replace) with (title=req.body.for) in carousel array
-    carousel.splice(carousel.indexOf(carousel.find((listing)=>listing.title===req.body.replace)),1) 
+    // carousel.splice(carousel.indexOf(carousel.find((listing)=>listing.title===req.body.replace)),1) 
     //get listing with title=req.body.for from db and push it in carousel array
-    carousel.push(listings.find((listing)=>listing.title===req.body.for))
+    // carousel.push(listings.find((listing)=>listing.title===req.body.for))
+    let carouselListings=await findListingsForCarousel()
+    // let listingToRemove=carouselListings.find((listing)=>{listing.id===req.body.replace})
+    await Listing.findOneAndDelete({id:req.body.replace})
+    
+
+    console.log(req.body.for);
+    let newId=await Listing.findOne({id:req.body.for})
+    console.log("NEWID",newId);
+    newId.id=`${newId.id}carousel`
+    newId._id=mongoose.Types.ObjectId()
+    newId.userId="null"
+    newId.isNew=true
+    let addition=new Listing(newId)
+    console.log(req.body.for);
+    await addition.save()
     res.redirect("/manage/carousel")
 })
+
 
 
 
