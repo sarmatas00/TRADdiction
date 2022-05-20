@@ -5,7 +5,6 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Admin Panel</title>
-    <link rel="stylesheet" href="/static/navStyles.css" />
     <link rel="stylesheet" href="/static/styles.css" />
     <!-- bootstrap below -->
     <link
@@ -39,6 +38,12 @@
         </div>
       </div>
     </div>
+    <hr style="color: white;">
+    <div class="toggler d-md-none d-block">
+      <div class="line1"></div>
+      <div class="line2"></div>
+      <div class="line3"></div>
+    </div>
     <div class="container-fluid admin">
       <div
         class="option">
@@ -66,5 +71,7 @@
           <%- include(`partials/${content}.ejs`,data) %> 
       </div>
     </div>
+    <script type="module" src="/static/events.js"></script>
+
   </body>
 </html>

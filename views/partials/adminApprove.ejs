@@ -1,6 +1,6 @@
 <% let listings=data %>
 
-<div class="container d-flex flex-column">
+<div class="container d-flex flex-column approveDiv">
   <h2 class="mt-5" style="color: rgb(71,225,12);">New Listings</h2>
   <% if(listings.length!==0){ %> 
     <h3><span style="color: blueviolet;"> <%= listings.length %></span> listings remain approval  </h3>
@@ -16,7 +16,7 @@
         background-image: url('<%=listing.src%>');
       "
     ></div>
-    <h4 style="max-width: 10vw;"><span style="color:blueviolet;">Title: </span> <%=listing.title  %> </h4>
+    <p style="max-width: 10vw;word-wrap: break-word;"><span style="color:blueviolet;font-size: 2em;">Title: </span> <%=listing.title  %> </p>
     
     <p style="word-wrap: break-word;max-width: 10vw;"><span style="color:blueviolet; font-size: 1.3em;">Description: </span><%= listing.text  %> </p>
     <form action="/manage/approve" method="post" >

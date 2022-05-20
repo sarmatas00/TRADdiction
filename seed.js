@@ -3,6 +3,7 @@ const Listing=require('./models/listing.js')
 const bcrypt=require("bcrypt");
 const User = require('./models/user.js');
 const Category = require('./models/category.js');
+const TradeRequest = require('./models/trade_request.js');
 let listings=[
     {src:"https://pyxis.nymag.com/v1/imgs/f5e/cb1/3be2f873678308dc656756a9899aa1d25a-kids-converse.rhorizontal.w600.jpg",
     title:"White converse",
@@ -38,7 +39,7 @@ let listings=[
     free:true,
     category:"cell",
     id:1237,
-    userId:1233
+    userId:1111
     },
     {src:"https://www.thespruce.com/thmb/gbhzpTNcuXz7eh9oK-hyEwYtYec=/900x0/filters:no_upscale():max_bytes(150000):strip_icc()/AminaRoundAccentMirror-8936df5a69af4d6fbcd082898998c43e.jpg",
     title:"Round Bathroom Mirror",
@@ -47,7 +48,7 @@ let listings=[
     free:false,
     category:"shit",
     id:1238,
-    userId:1235
+    userId:1111
     },
     {src:"https://www.ubuy.com.gr/productimg/?image=aHR0cHM6Ly9tLm1lZGlhLWFtYXpvbi5jb20vaW1hZ2VzL0kvNjFVeGZYVFV5dkwuX0FDX1NMMTUwMF8uanBn.jpg",
     title:"Logitech G203",
@@ -56,7 +57,7 @@ let listings=[
     free:false,
     category:"shit",
     id:1239,
-    userId:1235
+    userId:1112
     }
 ]
 
@@ -110,7 +111,7 @@ const tmpPass=async ()=>{
     bcrypt.hash("12345",10).then(async (pass)=>{
         let user={id:1234,email:"admin",password:pass,firstName:"Bobby"}
         let actualUser={id:1111,email:"geo",password:pass,firstName:"Dicks"}
-        let actualUser2={id:1111,email:"geo",password:pass,firstName:"Dicks"}
+        let actualUser2={id:1112,email:"geo2",password:pass,firstName:"Dicks"}
         user.type="admin"
         actualUser.type="user"
         actualUser2.type="user"
@@ -129,10 +130,7 @@ const tmpPass=async ()=>{
     
 }
 
-
-
-mongoose.connect('mongodb://localhost:27017/TRADdiction',{useNewUrlParser:true, useUnifiedTopology: true})
-.then(async()=>{
+async function connect(){
     await tmpPass()
 
     console.log("DB Connection succesful");
@@ -142,13 +140,32 @@ mongoose.connect('mongodb://localhost:27017/TRADdiction',{useNewUrlParser:true, 
     await User.deleteMany({});
     await Category.deleteMany({});
     await Category.insertMany(categories)
+    await TradeRequest.deleteMany({});
+} 
+
+module.exports={connect}
+
+
+
+// mongoose.connect('mongodb://localhost:27017/TRADdiction',{useNewUrlParser:true, useUnifiedTopology: true})
+// .then(async()=>{
+//     await tmpPass()
+
+//     console.log("DB Connection succesful");
+//     await Listing.deleteMany({});
+//     await Listing.insertMany(listings)
+//     await Listing.insertMany(carousel)
+//     await User.deleteMany({});
+//     await Category.deleteMany({});
+//     await Category.insertMany(categories)
+//     await TradeRequest.deleteMany({});
     
     
-})
-.then(res=>{
+// })
+// .then(res=>{
     
-})
-.catch(err=>{
-    console.log(err);
-})
+// })
+// .catch(err=>{
+//     console.log(err);
+// })
     

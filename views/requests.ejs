@@ -5,10 +5,19 @@
      <div>
      <div id="leftbox">
      <h2 style="color: blue;">Trade History</h2>
+     <div class="toggler2 d-sm-none d-block" >
+        <div class="line1" style="background-color: blue;"></div>
+        <div class="line2"></div>
+        <div class="line3" style="background-color: blue;"></div>
+      </div>
      <ul id="tradeHistory" class="TradeHistoryLi">
         <% if(completed.length!==0){ %> 
             <% for(let trade of completed){ %> 
-              <li class="tradeHistoryLi">Traded <span style="color:blue ;"><%=trade.itemWanted.title %></span> for: <br> <span style="color:red ;"><%=trade.itemProvided.title %></span> </li>
+                <% if(trade.itemWanted.userId==user.id){ %> 
+                    <li style="font-size: 1.3em;" class="tradeHistoryLi">Traded <span ><a style="color:blue ;" href="/listing/<%=trade.itemProvided.id%>"><%=trade.itemProvided.title %></a></span> for: <br> <span><a  style="color:red ;" href="/listing/<%=trade.itemWanted.id%>"><%=trade.itemWanted.title %></a></span> </li>
+                    <% }else{ %> 
+                        <li style="font-size: 1.3em;" class="tradeHistoryLi">Traded <span ><a style="color:blue ;" href="/listing/<%=trade.itemWanted.id%>"><%=trade.itemWanted.title %></a></span> for: <br> <span ><a style="color:red ;" href="/listing/<%=trade.itemProvided.id%>"><%=trade.itemProvided.title %></a></span> </li>
+                    <% } %> 
             <% } %> 
         <% } %> 
     </ul>
@@ -16,29 +25,80 @@
 
     <div id="rightbox">
         <h2 style="color: red;">Trade Requests</h2>
+        <div class="toggler3 d-sm-none d-block">
+            <div class="line1" style="background-color: red;"></div>
+            <div class="line2"></div>
+            <div class="line3" style="background-color: red;"></div>
+          </div>
         <ul>
+            <% let a=1 %> 
             <% for(let request of requests){ %> 
                 <li class="tradeReqLi">
                 <span style="color: blue;"> User <%= request.itemProvided.userId%> requested</span> <br>
                 <div class="wanted">
-                <div id="display_image" style='background-size: contain;background-repeat: no-repeat; background-image: url("<%=request.itemWanted.src%>")'></div>
                 <h4 class="mx-3"> <%= request.itemWanted.title %> </h4>
                 <p><%= request.itemWanted.text %></p>
+                <!-- Photo modal -->
+                <% const id="modal"+ (a++).toString() %>
+                <% const id3="#" +id %> 
+                <button style="background-color: #705df2;" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target=<%=id3%> >
+                    Photo
+                  </button>
+                  <div class="modal fade" id=<%=id%>   tabindex="-1" role="dialog" >
+                    <div class="modal-dialog" role="document">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                        </div>
+                        <div class="modal-body">
+                            <div id="display_image" style='background-size: contain;background-repeat: no-repeat; background-image: url("<%=request.itemWanted.src%>")'></div>
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
                 </div>
                 <span style="color: red;"> in exchange for </span>
                  <div class="provided">
-                    <div id="display_image" style='background-size: contain;background-repeat: no-repeat; background-image: url("<%=request.itemProvided.src%>")'></div>
                     <h4 class="mx-3"> <%= request.itemProvided.title %> </h4>
                     <p><%= request.itemProvided.text %></p>
+                  <% const id2="modal"+ (a++).toString() %> 
+                  <% const id4="#" +id2 %> 
+                    <button style="background-color: #705df2;" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target=<%=id4%> >
+                        Photo
+                      </button>
+                      <div class="modal fade" id=<%=id2%> tabindex="-1" role="dialog" >
+                        <div class="modal-dialog" role="document">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                            </div>
+                            <div class="modal-body">
+                                <div id="display_image" style='background-size: contain;background-repeat: no-repeat; background-image: url("<%=request.itemProvided.src%>")'></div>
+                            </div>
+                            <div class="modal-footer">
+                              <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
                 </div>
+                <div class="row">
+                  <div class="col-6">
                 <form action="/trades" method="post">
                     <input type="hidden" value="<%= request.id %>" name="accept">
                     <button action="submit"  class="tradeBtn">Accept</button>
                 </form>
+              </div>
+              <div class="col-6">
                 <form action="/trades?_method=DELETE" method="post" >
                     <input type="hidden" value="<%= request.id %>" name="decline">
                     <button action="submit" style="background-color: red;" class="tradeBtn">Decline</button>
                 </form>
+              </div>
+              </div>
                 </li>
          
             <% } %> 

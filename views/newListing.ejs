@@ -1,10 +1,15 @@
 <%- include('partials/navbar.ejs',{title:"New Listing",logged,username:user.firstName}) %>
 
 <div class="container" id="listings">
+  <div class="row">
+    <div class="col-md-6">
+    <h2 style="color: rgb(71,225,12);">New item details</h2>
+  </div>
+  </div>
     <form action="/items" method="post" id="newListingForm">
     <div class="row">
         <div class="form-group col-md-6">
-          <label for="src">Upload Image</label>
+          <label class="d-block" for="src">Upload Image</label>
           <input type="file"
          id="src" name="src"
          accept="image/png, image/jpeg" name="src">
@@ -12,22 +17,32 @@
       </div>
       <div class="row">
       <div class="form-group col-md-6">
-        <label for="title">Listing Title</label>
+        <label for="title">Title</label>
         <input type="text" class="form-control" id="title" placeholder="Listing Title" name="title">
         </div>
         </div>
         <div class=row>
         <div class="form-group col-md-6">
-      <label for="text">Item Description</label>
-      <input type="text" class="form-control" id="text" placeholder="Shoes, Watch etc." name="text">
+      <label for="text">Provide a description for your item</label>
+      <textarea  class="form-control" id="text" placeholder="Shoes" name="text" rows="3"></textarea>
       </div>
       </div>
-        
+        <div class="row">
+        <div class="form-group col-md-6">
+          <label for="category">Place your item in a category</label>
+          <select class="form-control" name="category" id="category">
+            <option value="Select" selected>Select</option>
+            <% for(let category of categories){ %> 
+              <option value="<%= category.ctgName%>"><%=category.ctgName  %> </option>
+            <% } %> 
+          </select>
+          </div>
+        </div>
     
       <div class="row">
         <div class="form-group col-md-6">
-          <label for="looksFor">Looking For</label>
-          <input type="text" class="form-control" id="looksFor" placeholder="Shoes" name="looksFor">
+          <label for="looksFor">What are you looking for?</label>
+          <input type="text" class="form-control" id="looksFor" placeholder="Shoes, Watch etc." name="looksFor">
         </div> 
       </div>
       <div class="row">
@@ -35,12 +50,17 @@
         <div class="form-check">
           <input class="form-check-input" type="checkbox" id="free" name="free">
           <label class="form-check-label" for="free">
-            Free
+            Are you offering your item for free?
           </label>
         </div>
       </div>
       </div>
+      <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-2">
       <button type="submit" class="btn btn-primary">Upload Listing</button>
+    </div>
+      </div>
       <div class="alert alert-warning alert-dismissible fade show w-50 mt-3 d-none" role="alert">
         <span></span>
       </div>

@@ -1,6 +1,6 @@
 <% let {listings,carousel}=data %> 
 
-<div class="container d-flex flex-column">
+<div class="container d-flex flex-column carousel">
   <h2 class="mt-5" style="color: rgb(71,225,12);">Add listing to carousel</h2>
   <p style="font-size:1.5em ;">Current carousel listings: <br> <span style="color: blueviolet;">1)<%= carousel[0].title %>, 2)<%= carousel[1].title %>, 3)<%= carousel[2].title %> </span></p>
   <form class="my-5" action="/manage/carousel" method="post">

@@ -14,5 +14,11 @@
   },
   "devDependencies": {
     "dotenv": "^16.0.1"
+  },
+
+  "scripts": {
+    "prestart": "start mongod --config ./data/mongod.cfg",
+    "start": "nodemon server.js",
+    "poststart": "start mongo admin --eval \"db.getSiblingDB('admin').shutdownServer()\""
   }
 }

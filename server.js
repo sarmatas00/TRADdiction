@@ -11,6 +11,7 @@ const passport=require("passport")
 const flash=require("express-flash")
 const session=require("express-session")
 const methodOverride=require("method-override")
+const seed=require("./seed.js")
 
 
 
@@ -21,7 +22,7 @@ const Category = require("./models/category.js")
 const app= express()
 app.set('view engine','ejs');
 app.set('views',path.join(__dirname,'views'))
-app.use("/static",express.static(path.join(__dirname,"/frontend","/static")))
+app.use("/static",express.static(path.join(__dirname,"/static")))
 app.use(express.json({limit:'50mb'}))
 app.use(express.urlencoded({extended:true}))
 app.use(flash())
@@ -36,8 +37,9 @@ app.use(methodOverride("_method"))
 
 
 mongoose.connect('mongodb://localhost:27017/TRADdiction',{useNewUrlParser:true, useUnifiedTopology: true})
-.then(res=>{
-    //console.log(res);
+.then(async res=>{
+    
+    seed.connect()
 })
 .catch(err=>{
     console.log(err,"errorrrmen");
@@ -53,17 +55,6 @@ async function findListingInDbById(id){
 }
 
 
-
-async function saveListingInDb(details){
-    try{
-        const list=new Listing(details);
-        list.save();
-        return true;
-    }catch(err){
-        console.log("Error saving listing in DB");
-        return false;
-    }
-}
 async function findUserByEmailDb(email){
     try{
         const ans=await User.findOne({email:email})
@@ -116,6 +107,18 @@ async function findListingsForCarousel(){
     }catch(err){console.log("Error findListingsForCarousel");return null;}
 }
 
+async function checkForSameRequest(provided,wanted){
+    const allRequests=await TradeRequest.find({})
+    
+    for(let req of allRequests){
+        if(req.itemProvided.title===provided && req.itemWanted.title===wanted){
+            return true
+        }
+    }
+    return false
+
+}
+
 
 //DB DONE
 initializePassport(passport,findUserByEmailDb,findUserByIdDb)
@@ -133,11 +136,6 @@ function checkNotAuthenticated(req,res,next){
     }
     return next()
 }
-
-
-
-
-
 
 
 
@@ -269,26 +267,34 @@ app.get("/listing/:id",checkAuthenticated,async(req,res)=>{
         res.redirect("/")
     }
 })
+
+
 //db done not tested
 app.post("/listing/:id",checkAuthenticated,async (req,res)=>{
     
     try{
-        if(req.params.tradeFor){
+        
+        if(req.body.tradeFor!==undefined){
         let itemWanted=await findListingInDbById(req.params.id);
         const request={id:Date.now().toString(),itemProvided:await findListingInDbById(req.body.tradeFor),itemWanted:itemWanted}
         let tradeRequest=new TradeRequest(request)
-        await tradeRequest.save();
-        req.flash("success","Request has been made, awaiting approval!")
-        
+        if(await checkForSameRequest(request.itemProvided.title,request.itemWanted.title)){
+            req.flash("success","You have already made that trade request, try again later")
+        }else{
+            req.flash("success","Request has been made, awaiting approval!")
+            await tradeRequest.save();
+
+        }
         }else{
             req.flash("success","List an item first")
             
-
         }
         res.redirect(`/listing/${req.params.id}`)
     }catch(E){
         console.log("error",E);
-        res.redirect("/")
+        req.flash("success","List an item first")
+
+        res.redirect(`/listing/${req.params.id}`)
     }
     
 })
@@ -300,12 +306,15 @@ app.get('/items',checkAuthenticated,async(req,res)=>{
     const user=await findUserByIdDb(req.user.id)
     let userListings=await findUserListings(req.user.id)
     userListings=userListings.filter((listing)=>{
-        console.log(listing.id);
-        console.log(listing.id.slice(listing.id.length-5,listing.id.length));
+        
          return listing.id.slice(listing.id.length-5,listing.id.length)!=='admin'
     })
+    if(!userListings.length){
+        req.flash("noitems","You currently haven't listed any items.")
+    }
     
     res.render("myItems",{logged:true,userListings,user})
+
 
 
 })
@@ -313,18 +322,23 @@ app.get('/items',checkAuthenticated,async(req,res)=>{
 //DB DONE
 app.get("/items/new",checkAuthenticated,async(req,res)=>{
     const user=findUserByIdDb(req.user.id)
-    res.render("newListing",{logged:true,user})
+    const categories=await Category.find()
+    res.render("newListing",{logged:true,user,categories})
+
     
 })
 //DB DONE NOT TESTED
 app.post("/items",checkAuthenticated,async(req,res)=>{
-    const newListing={...req.body.details,ctgName:"shit",id:`${Date.now().toString()}admin`,userId:req.user.id}
-    const objToAdd=new Listing(newListing);
+    let newListing=req.body.details
     try{
-        await objToAdd.save();
+        if(newListing){
+            newListing.userId=req.user.id
+            const objToAdd=new Listing(newListing);
+            await objToAdd.save();
+        }
         req.flash("success","Your listing is pending approval from an admin.")
     }catch(err){
-        console.log("ERRORNEWLISTING");
+        console.log(err);
     }
         res.redirect("/items")
 
@@ -508,6 +522,42 @@ app.post("/manage/carousel",checkAuthenticated,async (req,res)=>{
     console.log(req.body.for);
     await addition.save()
     res.redirect("/manage/carousel")
+})
+
+
+app.get("/about",(req,res)=>{
+    if(req.isAuthenticated()){
+        
+        res.render("about",{logged:true,user:req.user})
+    }else{
+        res.render("about",{logged:false})
+    }
+
+
+})
+
+
+app.get("/mission",(req,res)=>{
+    if(req.isAuthenticated()){
+        
+        res.render("mission",{logged:true,user:req.user})
+    }else{
+        res.render("mission",{logged:false})
+    }
+
+
+})
+
+
+app.get("/vision",(req,res)=>{
+    if(req.isAuthenticated()){
+        
+        res.render("vision",{logged:true,user:req.user})
+    }else{
+        res.render("vision",{logged:false})
+    }
+
+
 })
 
 

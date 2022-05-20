@@ -2,20 +2,22 @@
 
 <div class="container" id="items">
   <div class="row">
-    <div class="col-3">
-    <h1 style="color: white">My items</h1>
+    <div class="col-5">
+    <h1 style="color: white">My Items</h1>
   </div>
   <div class="col-3">
     <form action="/items/new" method="get">
-      <button class="newAdd" type="submit">Create Listing</button>
+      <button type="submit">Create Listing</button>
     </form>
   </div>
   </div>
   <% if(messages.success){ %> 
-    <% console.log(messages.success[0]) %> 
     <div class="alert alert-success alert-dismissible fade show" role="alert"><%=messages.success[0]%>
       <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
+  <% } %> 
+  <% if(messages.noitems){ %> 
+    <h2 style="color: blueviolet;"><%=messages.noitems[0]  %> </h2>
   <% } %> 
 
   <ul>
@@ -30,7 +32,8 @@
           background-image: url('<%=listing.src%>');
         "
       ></div>
-      <p><%= listing.title%></p>
+      <h3><span style="color: rgb(71,225,12);">Title </span> <br><%= listing.title%></h3>
+      <p ><span style="color: rgb(71,225,12);">Description</span> <br><%=listing.text %> </p>
       <form action="/items/<%=listing.id%>" method="get">
         <button class="newAdd" type="submit">Edit Listing</button>
       </form>

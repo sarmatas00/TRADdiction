@@ -3,12 +3,12 @@
 
 <div class="container" id="addDisplay">
     <div class="img" style='background-image: url("<%=listing.src%> ")'></div>
-    <h2>Title: <%=listing.title%></h2>
-    <p><%=listing.text%></p>
+    <h2><span style="color: rgb(71,225,12);">Title: </span> <%=listing.title%></h2>
+    <p><span style="color: rgb(71,225,12);">Description: </span><%=listing.text%></p>
     <%if(!listing.free){ %>
-        <small>Looking for: <%=listing.looksFor%> <span></span></small>
+        <small><span style="color: rgb(71,225,12);">Looking for: </span> <%=listing.looksFor%> <span></span></small>
     <%}else{%>
-        <small>Freebie<span></span></small>
+        <small><span style="color: rgb(71,225,12);">Freebie</span><span></span></small>
     <%} %> 
     <form action="/listing/<%=listing.id %> " method="post">
     <select class="form-select" id="tradeFor" name="tradeFor">
