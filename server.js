@@ -407,6 +407,10 @@ app.post("/trades",checkAuthenticated,async (req,res)=>{
     
     if(tradeReq!==null){
         try{ 
+            await Listing.findOneAndDelete({id:tradeReq.itemWanted.id})
+            await Listing.findOneAndDelete({id:tradeReq.itemProvided.id})
+
+            
             let updated=new TradeRequest(tradeReq)
             await TradeRequest.deleteOne({id:req.body.accept})
             await updated.save()

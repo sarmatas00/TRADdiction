@@ -14,9 +14,9 @@
         <% if(completed.length!==0){ %> 
             <% for(let trade of completed){ %> 
                 <% if(trade.itemWanted.userId==user.id){ %> 
-                    <li style="font-size: 1.3em;" class="tradeHistoryLi">Traded <span ><a style="color:blue ;" href="/listing/<%=trade.itemProvided.id%>"><%=trade.itemProvided.title %></a></span> for: <br> <span><a  style="color:red ;" href="/listing/<%=trade.itemWanted.id%>"><%=trade.itemWanted.title %></a></span> </li>
+                    <li style="font-size: 1.3em;" class="tradeHistoryLi">Traded <span style="color:blue ;"><%=trade.itemProvided.title %></span> for: <br> <span style="color:red ;"><%=trade.itemWanted.title %></span> </li>
                     <% }else{ %> 
-                        <li style="font-size: 1.3em;" class="tradeHistoryLi">Traded <span ><a style="color:blue ;" href="/listing/<%=trade.itemWanted.id%>"><%=trade.itemWanted.title %></a></span> for: <br> <span ><a style="color:red ;" href="/listing/<%=trade.itemProvided.id%>"><%=trade.itemProvided.title %></a></span> </li>
+                        <li style="font-size: 1.3em;" class="tradeHistoryLi">Traded <span  style="color:blue ;"><%=trade.itemWanted.title %></span> for: <br> <span style="color:red ;"><%=trade.itemProvided.title %></span> </li>
                     <% } %> 
             <% } %> 
         <% } %> 
