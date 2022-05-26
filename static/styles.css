@@ -272,6 +272,10 @@ nav{
     
 }
 
+.carousel .carousel-caption{
+    color: #474545;
+}
+
 
 h2{
     margin-bottom: 1em !important;
@@ -989,6 +993,37 @@ width: 90vw !important; }
     max-height: 100% !important;
 }
 
+#editListing{
+    color: white;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+#editListing .form-group{
+    margin-bottom: 0.5em;
+    
+
+}
+
+#editListing h2{
+    
+    text-align: center;
+}
+
+#editListing button{
+    background-color: #705df2;
+    padding: 10px 30px;
+    margin-left: 40%;
+    
+}
+
+#editListing button:hover{
+    
+    background-color: rgb(14, 35, 104);
+}
+
 @media screen and (min-width:769px) and (max-width: 1100px) {
     .collapseToTheSide{
         transform: translateX(-18%);
@@ -1570,6 +1605,11 @@ width: 90vw !important; }
         margin-left:  4em;
 
       }
+
+      #editListing button{
+        margin-left: 20%;
+        
+    }
       
 
     

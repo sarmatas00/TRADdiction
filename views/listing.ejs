@@ -1,6 +1,10 @@
 <%- include('partials/navbar.ejs',{title:`${listing.title}`,logged,username:user.firstName}) %>
 
 <div class="container" id="editListing">
+    <div class="row">
+        <div class="col">
+        <h2 style="color: rgb(71,225,12);">Edit Listing</h2>
+      </div>
     <form action="/items/<%=listing.id%>/edit?_method=PATCH" method="post">
         <div class="form-group">
             <label for="editTitle">Edit Title</label>
@@ -9,7 +13,7 @@
           
           <div class="form-group">
             <label for="editDescription">Edit Description</label>
-            <textarea class="form-control" id="editDescription" name="newText" value="<%=listing.text %>" rows="3"></textarea>
+            <textarea class="form-control" id="editDescription" name="newText" value="<%=listing.text %>" rows="3"><%=listing.text %></textarea>
           </div>
           <% if(listing.free){ %> 
             <div class="form-group">
