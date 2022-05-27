@@ -1,3 +1,7 @@
+// configuration της βιβλιοθηκης passport, η οποια αναλαμβανει το validation της συνδεσης ενος χρηστη στην εφαρμογη
+// και στην πλοηγηση του στις διαφορες σελιδες της εφαρμογης. Η βιβλιοθηκη χρησιμοποιειται εκτενως σε ολα σχεδον τα requests
+// που μπορουν να γινουν στη σελιδα
+
 const { authenticate } = require("passport/lib")
 const bcrypt=require("bcrypt")
 const LocalStrategy=require("passport-local").Strategy

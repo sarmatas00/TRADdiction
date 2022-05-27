@@ -1,12 +1,5 @@
 const mongoose=require('mongoose')
-/*
-{
-      email:"user1@gmail.com",
-      pass:"Aa123456!",
-      type:"user",
-      userID:1232
-    },
-*/
+
 const userSchema=new mongoose.Schema({
     id:{
         type:String,

@@ -1,3 +1,5 @@
+<!-- view που εμφανιζεται οταν ο χρηστης θελει να προσθεσει μια νεα αγγελια μεσω της "My items=>New Listing" -->
+
 <%- include('partials/navbar.ejs',{title:"New Listing",logged,username:user.firstName}) %>
 
 <div class="container" id="listings">
@@ -6,6 +8,7 @@
     <h2 style="color: rgb(71,225,12);">New item details</h2>
   </div>
   </div>
+  <!-- form που παιρνει ολα τα στοιχεια της νεας αγγελιας, καθως και την εικονα που ο χρηστης εισαγει απο τα αρχεια του -->
     <form action="/items" method="post" id="newListingForm">
     <div class="row">
         <div class="form-group col-md-6">

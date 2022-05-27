@@ -1,3 +1,6 @@
+<!-- χρησιμοποιειται απο το main view για την τοποθετηση του carousel με τις 3 αγγελιες που επιλεγει ο admin -->
+<!-- στην αρχικη οθονη. Εχει χρησιμοποιηθει carousel του bootstrap και μερικα custom styles για τις αναγκες των photos -->
+
 <div class="row" id="carousel">
     <h2 style="color: #8e8e8e;">Our newest additions</h2>
     <div
@@ -27,7 +30,7 @@
           aria-label="Slide 3"
         ></button>
       </div>
-
+      <!-- εδω εχουμε τα 3 items που γινονται display, που αποτελουνται απο τις φωτογραφιες των αγγελιων μαζι με καποια στοιχεια τους -->
       <div class="carousel-inner">
         <div class="carousel-item active" style="background-color:#031c05 ;">
           <div class="h-100" id="display_image" style='background-size: contain;background-repeat: no-repeat;background-position: center; background-image: url("<%=carousel[0].src%>")'></div>
@@ -57,6 +60,8 @@
           </div>
         </div>
       </div>
+
+      <!-- στη συνεχεια ο μηχανισμος του bootstrap για την εμφανιση του επομενου η προηγουμενου item -->
       <button
         class="carousel-control-prev"
         type="button"

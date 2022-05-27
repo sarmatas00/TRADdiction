@@ -1,3 +1,6 @@
+<!-- signup νεου χρηστη. Οταν ο χρηστης συμπληρωσει ολα τα πεδια με αποδεκτα δεδομενα, πραγματοποιειται η εγγραφη του
+και μπορει πλεον να συνδεθει στον λογαριασμο του -->
+
 <%- include("partials/navbar.ejs",{title:"Sign Up",logged:false}) %> 
 
 <div class="container" id="signup">
@@ -39,9 +42,14 @@
       <label for="inputState">State</label>
       <select id="inputState" class="form-control" name="state">
         <option selected>Choose...</option>
-        <option>Makedonia</option>
         <option>Attiki</option>
-        <option>Kappa keepo</option>
+        <option>Makedonia</option>
+        <option>Ipeiros</option>
+        <option>Thessalia</option>
+        <option>Pelloponisos</option>
+        <option>Ionia Nisia</option>
+        <option>Nisia Aigaiou</option>
+        <option>Kriti</option>
 
       </select>
     </div>

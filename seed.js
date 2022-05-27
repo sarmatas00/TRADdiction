@@ -1,9 +1,15 @@
+// εδω εχουμε ολα τα δειγματα αγγελιων, λογαριασμων και κατηγοριων, τα οποια φορτωνονται κατα την εναρξη της εφαρμογης στην βαση
+//και υπαρχει ενα ετοιμο δειγμα για καποιον που θελει να χρησιμοποιησει και να δει την εφαρμογη, πριν ο ιδιος προσθεσει δεδομενα
+
 const mongoose=require('mongoose')
 const Listing=require('./models/listing.js')
 const bcrypt=require("bcrypt");
 const User = require('./models/user.js');
 const Category = require('./models/category.js');
 const TradeRequest = require('./models/trade_request.js');
+const Message = require('./models/messages.js');
+
+// οι αγγελιες
 let listings=[
     {src:"https://pyxis.nymag.com/v1/imgs/f5e/cb1/3be2f873678308dc656756a9899aa1d25a-kids-converse.rhorizontal.w600.jpg",
     title:"White converse",
@@ -160,6 +166,7 @@ let listings=[
     }
 ]
 
+// οι κατηγοριες προιοντων
 let categories=[{ctgName:"condition"},
 {ctgName:"clothes"},
 {ctgName:"shoes"},
@@ -171,7 +178,7 @@ let categories=[{ctgName:"condition"},
 {ctgName:"fitness"},
 {ctgName:"rest"}];
 
-
+// οι αρχικες αγγελιες που προβαλλονται στο carousel
 let carousel=[{src:"https://pyxis.nymag.com/v1/imgs/f5e/cb1/3be2f873678308dc656756a9899aa1d25a-kids-converse.rhorizontal.w600.jpg",
 title:"White converse",
 text:"They are in great condition",
@@ -200,6 +207,7 @@ id:`1236carousel`,
 userId:6124
 }]
 
+// αρχικοποιηση 3 βασικων χρηστων και ενος admin
 const tmpPass=async ()=>{
     
     bcrypt.hash("12345",10).then(async (pass)=>{
@@ -228,17 +236,20 @@ const tmpPass=async ()=>{
     
 }
 
+// η μεθοδος που κανουμε export και καλειται απο τον server κατα την εναρξη του
+// εδω διαγραφουμε ολα τα τυχον παλια δεδομενα ωστε να μην υπαρχουν διπλοτυπα και εισαγουμε τα παραπανω δειγματα στην βαση
 async function connect(){
-    await tmpPass()
-
+    
     console.log("DB Connection succesful");
     await Listing.deleteMany({});
     await Listing.insertMany(listings)
     await Listing.insertMany(carousel)
     await User.deleteMany({});
+    await tmpPass()
     await Category.deleteMany({});
     await Category.insertMany(categories)
     await TradeRequest.deleteMany({});
+
 } 
 
 module.exports={connect}

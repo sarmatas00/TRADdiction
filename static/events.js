@@ -19,6 +19,7 @@ const dropdownItem=document.querySelectorAll(".dropdown-item")
 const admin=document.querySelector(".admin")
 const rightbox=document.querySelector("#rightbox ul")
 const leftbox=document.querySelector("#leftbox ul")
+const contactBtn=document.querySelector("#contact .submit-div")
 let widthMatch = window.matchMedia("(max-width: 768px)");
 
 
@@ -253,7 +254,7 @@ dropdownButton.addEventListener("click", function (evt) {
 
 
 //το dropdown πανω δεξια με τις επιλογες του χρηση που εμφανιζεται με το πατημα του κουμπιου
-//κλεινει αυτοματα αν ο χρηστης χασει το focus απο αυτη
+//κλεινει αυτοματα αν ο χρηστης χασει το focus απο αυτο
 if(dropdownMenu!==null){
 
   dropdownMenu.addEventListener("mouseleave", function (evt) {
@@ -275,6 +276,8 @@ toggler.addEventListener("click", function () {
   if(navCollapse2!==null){
   navCollapse2.classList.toggle("toggler-active");
 
+  //καθε option που υπαρχει μεσα στο dropdown εμφανιζεται σε διαφορετικο χρονο μετα την ενεργοποιηση
+  //του toggler, με την βοηθεια ενος custom animation
   dropdownItem.forEach((item, index) => {
     if (item.style.animation) {
       item.style.animation = "";
@@ -293,6 +296,8 @@ toggler.addEventListener("click", function () {
 }
 
 
+//τα togglers αυτα αφορουν μικρες συσκευες και συγκεκριμενα την σελιδα των trades, οπου αναλογα
+//το πατημα του χρηστη, πρεπει να λειτουργουν παραλληλα τα 2 "παραθυρα" των requests
 if(toggler2!==null && toggler3!==null){
   toggler2.addEventListener("click",function(){
     toggler2.classList.toggle("noToggler2")
@@ -317,6 +322,32 @@ if(toggler2!==null && toggler3!==null){
 
 
 }
+
+//στην συμπληρωση της φορμας επικοινωνιας κανουμε ελεγχο για το αν καποιο πεδιο εχει μεινει κενο
+//αν ολα ειναι συμπληρωμενα συνεχιζουμε με το request
+if(contactBtn!==null){
+contactBtn.addEventListener("click",(evt)=>{
+    const form=document.getElementById('contact-form')
+    const message={
+      name:new FormData(form).get("name"),
+      email:new FormData(form).get("email"),
+      subject:new FormData(form).get("subject"),
+      message:new FormData(form).get("message")
+    }
+    const alert=document.querySelector("#contact .alert-danger")
+    for(let i in message){
+      if(message[i]===""){
+        alert.innerText="Please fill all data"
+        alert.classList.remove("d-none")
+        setTimeout(()=>{alert.classList.add("d-none")},3000)
+        return;
+      }
+    }
+    form.submit()
+})
+}
+
+
 
 
 

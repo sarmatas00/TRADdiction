@@ -1,16 +1,12 @@
-
+<!-- το παραθυρο για την προσθηκη νεας κατηγοριας προιοντων στο panel του admin -->
 <% let categories=data %> 
 
 <div class="container d-flex  adminAdd">
-
-    
-    
+    <!-- σε εναν πινακα κανουμε display ολες τις μεχρι στιγμης κατηγοριες που ειναι διαθεσιμες στους χρηστες -->
     <table>
         <tr>
             <th>Categories</th>
-            
         </tr>
-        
         <% for(let i=0;i<categories.length;i++){ %> 
             <% if(i%4===0 ){ %> 
                 <tr>
@@ -23,6 +19,8 @@
         
     </table>
 
+    <!-- επειτα ο admin εχει την δυνατοτητα να προσθεσει μια νεα κατηγορια πληκτρολογωντας το ονομα που θελει να της δωσει -->
+    <!-- και γινεται ενα post request στον σερβερ για την αποθηκευση της στη βαση -->
     <form class="my-5" action="/manage" method="post">
         <div class="form-group">
             <label for="category" >New Category name</label>

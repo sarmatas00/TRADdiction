@@ -1,3 +1,6 @@
+<!-- view που προβαλλεται οταν ο χρηστης ειναι συνδεδεμενος στο προφιλ του και πατησει πανω σε μια
+αγγελια της αρχικης οθονης για να την δει ολοκληρη και να αποφασισει εαν θελει να κανει αιτηση ανταλλαγης -->
+
 <%- include('partials/navbar.ejs',{title:`${listing.title}`,logged,username:user.firstName}) %> 
 
 
@@ -14,12 +17,15 @@
     <select class="form-select" id="tradeFor" name="tradeFor">
     <option selected>My items</option>
 
-    
+    <!-- καθε αντικειμενο που εχει καταχωρισει ο χρηστης προβαλεται με τιτλους και του δινεται η δυνατοτητα
+    να το επιλεξει για να κανει αιτημα ανταλλαγης -->
     <% for(let l of myListings){ %>
             <option value=<%=l.id%> ><%=l.title %> </option>
     <% } %> 
    
     </select>
+    <!-- το κουμπι για αιτημα ανταλλαγης εμφανιζεται μονο εφοσον η αγγελια που εχει επιλεξει ο χρηστης να 
+    επισκεφθει δεν ειναι δικια του καταχωρηση -->
     <% if(messages.error){%>
         <div class="alert alert-danger mt-2" role="alert"><%=messages.error%> <a href="/">Back to home page</a></div>
     <% }else{ %>

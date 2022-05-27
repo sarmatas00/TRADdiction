@@ -1,8 +1,12 @@
 
 
-
+//βοηθητικη κλαση με στατικες μεθοδους που χρησιμοποιουνται κυριως στα events. Βοηθαει στο να 
+//ειναι πιο οργανωμενος ο κωδικας και με περισσοτερη συνοχη
 class search extends null{
-  
+
+  //η πρωτη μεθοδος χρησιμοποιειται στο searching και συγκρινει το κειμενο που εχει πληκτρολογησει ο χρηστης
+  //με τον τιτλο και την περιγραφη μιας συγκεκριμενης αγγελιας ωστε να βρεθει εαν υπαρχει καποιο word match
+  //και συνεπως να εμφανιστει η αγγελια στον χρηστη
     static searchByText(title,text,query){
         
       if(query.toLowerCase().split(" ").some((word)=>{return text.toLowerCase().includes(word)}) || query.toLowerCase().split(" ").some((word)=>{return title.toLowerCase().includes(word)})){
@@ -11,12 +15,13 @@ class search extends null{
       return false
     }
 
-    //returns error message if some input is incorrect, else returns true
+    //αυτη η μεθοδος παιρνει ως ορισμα ενα object με τα στοιχεια που εχει εισαγει καποιος χρηστης κατα το sign up
+    //και ο ρολος της ειναι να ελεγξει το αν συγκεκριμενα πεδια ειναι εντος οριων, με τη χρηση κανονικων εκφρασεων
     static checkInput(details) {
-        const reNum = /^69[0-9]{8}$/;
-        const reZip = /^[0-9]{5}$/;
-        const reMail = /^\S+@\S+\.\S+$/;
-        const rePass = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
+        const reNum = /^69[0-9]{8}$/;     //το κινητο τηλεφωνο πρεπει να ξεκινα με 69 και να ειναι 10 ακριβως ψηφια
+        const reZip = /^[0-9]{5}$/;       //ο ταχυδρομικος κωδικας πρεπει να ειναι 5 ψηφια
+        const reMail = /^\S+@\S+\.\S+$/;    //το email πρεπει να περιεχει @ και μετα .
+        const rePass = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;      //ο κωδικος πρεπει να ειναι τουλαχιστον 8 χαρακτηρες και να περιεχει αριθμο, πεζο και κεφαλαιο γραμμα
         
     
         for (let d in details) {
@@ -48,6 +53,8 @@ class search extends null{
         return "authenticated";
         
       }
+
+      
      
 
     

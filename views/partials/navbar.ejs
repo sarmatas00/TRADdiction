@@ -1,3 +1,6 @@
+<!-- η εναρξη της html με τα διαφορα styles και fonts που πρεπει να γινουν import και στη συνεχεια το navbar της σελιδας -->
+<!-- το συγκεκριμενο view χρησιμοποιειται απο ολα τα υπολοιπα views περαν του admin panel -->
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -31,15 +34,18 @@
       <div class="container-fluid" id="nav">
         <div class="row">
           <nav>
+            <!-- το toggler που εμφανιζεται στις μικρες οθονες πανω αριστερα και ειναι υπευθυνο για εμφανιση του menu -->
             <div class="toggler">
               <div class="line1"></div>
               <div class="line2"></div>
               <div class="line3"></div>
             </div>
+            <!-- ο τιτλος της σελιδας που αλλαζει αναλογα το view που προβαλλεται καθε φορα -->
             <a href="/" class="title" data-link
               ><span id="title1">TRADdiction</span></a
             >
-
+            <!-- το search bar μαζι με το search button του navbar που επιτελει την ιδια λειτουργεια με το searchbar πιο κατω -->
+            <!-- και ειναι υπευθυνο για φιλτραρισμα των αγγελιων αναλογα τις λεξεις που εισαγει ο χρηστης -->
             <div class="nav-collapse1">
               <form action="/search" class="queryItemsForm">
                 <input
@@ -51,8 +57,11 @@
                 <button type="submit" class="nav-btn"></button>
               </form>
             </div>
+            <!-- το βασικο μενου της σελιδας που ειναι κρυμμενο απο τον χρηστη και φαινεται με το πατημα του κουμπιου -->
+            <!-- με την βοηθεια διαφορων styles και events. -->
             <div class="nav-collapse2">
               <button class="btn btn-secondary" type="button" id="dropdown-btn">
+                <!-- εχουμε 2 εκδοσεις του menu, η 1η εμφανιζεται στον χρηστη οταν δεν εχει συνδεθει και του δινει τις επιλογες για login η signup -->
                 <% if(logged){%>
                   My Account
                 <%}else{ %> 
@@ -62,6 +71,7 @@
               </button>
               <ul class="dropdown-menu">
                 <% if(!logged){ %> 
+                  <!-- η 2η εκδοση αφορα εναν συνδεδεμενο χρηστη και περιεχει links που τον κατευθυνουν στα αναλογα views -->
                 <li>
                   <a class="dropdown-item" href="/signup" data-link>Sign-Up</a>
                 </li>

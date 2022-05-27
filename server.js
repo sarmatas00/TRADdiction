@@ -1,5 +1,5 @@
 
-
+require("dotenv").config()
 const express = require("express")
 const path = require("path")
 const mongoose=require("mongoose")
@@ -14,9 +14,9 @@ const methodOverride=require("method-override")
 const seed=require("./seed.js")
 
 
-
 const TradeRequest = require("./models/trade_request.js")
 const Category = require("./models/category.js")
+const Message = require("./models/messages.js")
 
 
 const app= express()
@@ -36,15 +36,17 @@ app.use(passport.session())
 app.use(methodOverride("_method"))
 
 
-mongoose.connect('mongodb://localhost:27017/TRADdiction',{useNewUrlParser:true, useUnifiedTopology: true})
+mongoose.connect(process.env.DATABASE,{useNewUrlParser:true, useUnifiedTopology: true})
 .then(async res=>{
     
-    seed.connect()
+    
+    // seed.connect()
 })
 .catch(err=>{
-    console.log(err,"errorrrmen");
+    console.log(err);
 })
 
+// search στη βαση για αγγελια με συγκεκριμενο id
 async function findListingInDbById(id){
     try{
          const ans=await Listing.findOne({id:id});
@@ -54,7 +56,7 @@ async function findListingInDbById(id){
     }
 }
 
-
+// search στη βαση για χρηστη με συγκεκριμενο email
 async function findUserByEmailDb(email){
     try{
         const ans=await User.findOne({email:email})
@@ -64,6 +66,8 @@ async function findUserByEmailDb(email){
         return null;
     }
 }
+
+// search στη βαση για χρηστη με συγκεκριμενο id
 async function findUserByIdDb(id){
     try{
         const ans=await User.findOne({id:id});
@@ -73,6 +77,8 @@ async function findUserByIdDb(id){
         return null;
     }
 }
+
+// search στη βαση για ολες τις αγγελιες που εχει καταχωρισει ενας χρηστης
 async function findUserListings(userID){
     try{
         const ans=await Listing.find({userId:userID});
@@ -82,13 +88,15 @@ async function findUserListings(userID){
         return null;
     }
 }
+// search στη βαση τις αγγελιες που εχουν καταχωρηθει απο χρηστες αλλα δεν εχουν λαβει ακομα εγκριση απο admin
 async function findListingsForApproval(){
     try{
         let ans=Listing.find({id:{$regex:/admin/,$options:'i'}})
         
         return ans;
-    }catch(err){console.log("Erro findListingsForApproval");return null;}
+    }catch(err){console.log("Error findListingsForApproval");return null;}
 }
+// search στη βαση για trade requests ενος χρηστη στα οποια εμπλεκεται ενα listing του
 async function findUsersIncomingRequests(userID){
     try{
         tradeReqs=await TradeRequest.find({'itemWanted.userId':userID})
@@ -99,6 +107,7 @@ async function findUsersIncomingRequests(userID){
     }
 }
 
+//search στη βαση για τις αγγελιες που εχουν επιλεχθει απο τον admin να γινονται display στο carousel 
 async function findListingsForCarousel(){
     try{
         let ans=Listing.find({id:{$regex:/carousel/,$options:'i'}})
@@ -107,6 +116,7 @@ async function findListingsForCarousel(){
     }catch(err){console.log("Error findListingsForCarousel");return null;}
 }
 
+// search στη βαση για το αν ενας χρηστης προσπαθει να κανει το ιδιο trade request πανω απο μια φορα
 async function checkForSameRequest(provided,wanted){
     const allRequests=await TradeRequest.find({})
     
@@ -120,9 +130,10 @@ async function checkForSameRequest(provided,wanted){
 }
 
 
-//DB DONE
+//εναρξη της βιβλιοθηκης passport για την αυθεντικοποιηση χρηστη
 initializePassport(passport,findUserByEmailDb,findUserByIdDb)
 
+// ελεγχος για το αν υπαρχει συνδεδεμενος χρηστης
 function checkAuthenticated(req,res,next){
     if(req.isAuthenticated()){
         return next()
@@ -140,17 +151,8 @@ function checkNotAuthenticated(req,res,next){
 
 
 
-
-
-
-
-
-
-
-
-
-
-
+// request που προβαλλει την αρχικη σελιδα. Αναλογα με το αν υπαρχει συνδεδεμενος χρηστης η οχι, στελνονται τα αναλογα
+// δεδομενα για την παρουσιαση του αναλογου navbar/menu
 app.get("/",async (req,res)=>{
     
     if(req.isAuthenticated()){
@@ -165,12 +167,14 @@ app.get("/",async (req,res)=>{
 
 
 
-
+//προβολη της login σελιδας
 app.get("/login",checkNotAuthenticated,(req,res)=>{
     
     res.render("login")
 })
 
+// οταν ο χρηστης βαλει τα στοιχεια του και πατησει login, ενεργοποιειται το passport και γινεται
+// η ταυτοποιηση. Αν ειναι επιτυχης αναλογα με τον τυπο χρηστη φορτωνει η αναλογη σελιδα, αλλιως ξαναοδηγειται στο login page
 app.post("/login",checkNotAuthenticated,passport.authenticate("local",{
     failureRedirect:"/login",
     failureFlash:true
@@ -182,33 +186,32 @@ app.post("/login",checkNotAuthenticated,passport.authenticate("local",{
     }
 })
 
-
+// προβολη της signup σελιδας
 app.get("/signup",checkNotAuthenticated,(req,res)=>{
     res.render("signup")
 })
 
-//DB CONNECTED
+//post request που ενεργοποιειται απο την σελιδα των events, οταν ο χρηστης εχει συμπληρωσει σωστα ολα τα απαραιτητα στοιχεια για signup
+
 app.post("/signup",checkNotAuthenticated,async (req,res)=>{
     try{
-        const details=req.body
-        console.log(details,details.password);
-        const hashedPass= await bcrypt.hash(details.password,10)
+        const details=req.body          //το object με τα στοιχεια του νεου χρηστη
+        const hashedPass= await bcrypt.hash(details.password,10)        //κρυπτογραφηση του κωδικου που εχει δωσει ο χρηστης με την βοηθεια βιβλιοθηκης
         
         
         
-        const emailExists=await User.findOne({email:details.email})
-        if(emailExists!==undefined){console.log("email found");}
+        const emailExists=await User.findOne({email:details.email})         //ελεγχος για υπαρξη account με ιδιο email
+        
         
         if(emailExists){
             req.flash("error","This email has already been registered!")
-            res.redirect("/signup")
+            res.redirect("/signup")                                         //ανακατευθυνση σε περιπτωση ιδιου email
 
         }else{
             details.password=hashedPass
             
-            const newUser=new User({id:Date.now().toString(),...details,type:"user"});
-            newUser.save();
-            console.log("saved user in db");
+            const newUser=new User({id:Date.now().toString(),...details,type:"user"});      
+            newUser.save();                                                 //αποθηκευση νεου χρηστη στη βαση
             res.redirect("/login")
 
         }
@@ -223,21 +226,23 @@ app.post("/signup",checkNotAuthenticated,async (req,res)=>{
     
 })
 
+//delete request που ενεργοποιειται οταν πατησει ο χρηστης το κουμπι logout και ενεργοποιει την logout μεθοδο του passport
 app.delete("/logout",(req,res)=>{
     req.logout()
     res.redirect("/")
 })
 
+//σελιδα για επαναφορα κωδικου χρηστη
 app.get("/recover",checkNotAuthenticated,(req,res)=>{
     res.render("forgetPass")
 })
-//DB CONNECTED
+
+
 app.post("/recover",checkNotAuthenticated,async (req,res)=>{
     try{
-        let dbFound=await findUserByEmailDb(req.body.emailRec);
+        let dbFound=await findUserByEmailDb(req.body.emailRec);             //ελεγχος για υπαρξη αυτου του account με αυτο το email
         let mail=dbFound.email;
-        if(mail){console.log("We have this ",mail);}
-        if(mail){
+        if(mail){                           //προβολη αναλογου μηνυματος αναλογα με την υπαρξη του account και ανακτευθυνση
             req.flash("exists","Please check your email, in order to recover your password!")
         }else{
             req.flash("exists","No account with that email has been registered!")
@@ -249,17 +254,17 @@ app.post("/recover",checkNotAuthenticated,async (req,res)=>{
     
 
 })
-//Done not tested
+//προβολη μαις συκεκριμενης αγγελιας οταν υπαρχει συνδεδεμενος χρηστης και πατησει "View" σε καποια αγγελια της αρχικης σελιδας
 app.get("/listing/:id",checkAuthenticated,async(req,res)=>{
-    const myListings=await findUserListings(req.user.id)
+    const myListings=await findUserListings(req.user.id)        
     
     let isHisListing=false
-    for(let listing of myListings){
+    for(let listing of myListings){                 //ελεγχος για το αν η αγγελια που θελει να δει ειναι δικη του καταχωρηση
         if(listing.id===req.params.id)
             isHisListing=true;
     }
     try{
-        if(isHisListing){
+        if(isHisListing){                   //ο χρηστης δεν μπορει να κανει ανταλλαγη με τον ευατο του =>μηνυμα λαθους
             req.flash("error","You can't make a trade with yourself!")
         }
         res.render("trade",{logged:true,user:req.user,listing:await findListingInDbById(req.params.id),myListings})
@@ -269,15 +274,15 @@ app.get("/listing/:id",checkAuthenticated,async(req,res)=>{
 })
 
 
-//db done not tested
+//request οταν ο χρηστης κανει trade request για μια συγκεκριμενη αγγελια με :id
 app.post("/listing/:id",checkAuthenticated,async (req,res)=>{
     
     try{
         
-        if(req.body.tradeFor!==undefined){
+        if(req.body.tradeFor!==undefined){          //πρεπει να εχει επιλεξει καποιο αντικειμενο να δωσει
         let itemWanted=await findListingInDbById(req.params.id);
         const request={id:Date.now().toString(),itemProvided:await findListingInDbById(req.body.tradeFor),itemWanted:itemWanted}
-        let tradeRequest=new TradeRequest(request)
+        let tradeRequest=new TradeRequest(request)      //κατασκευη νεου request και αποθηκευση στην βαση, εαν δεν εχει ξαναγινει το ιδιο request
         if(await checkForSameRequest(request.itemProvided.title,request.itemWanted.title)){
             req.flash("success","You have already made that trade request, try again later")
         }else{
@@ -301,15 +306,15 @@ app.post("/listing/:id",checkAuthenticated,async (req,res)=>{
 
 
 
-//Done not tested?
+//προβολη της σελιδας "my items"
 app.get('/items',checkAuthenticated,async(req,res)=>{
     const user=await findUserByIdDb(req.user.id)
     let userListings=await findUserListings(req.user.id)
-    userListings=userListings.filter((listing)=>{
+    userListings=userListings.filter((listing)=>{               //φερνουμε ολες τις αγγελιες του συγκεκριμενου χρηστη
         
-         return listing.id.slice(listing.id.length-5,listing.id.length)!=='admin'
+         return listing.id.slice(listing.id.length-5,listing.id.length)!=='admin'       //οχι τις αγγελιες που δεν εχουν λαβει εγκριση ακομα απο admin
     })
-    if(!userListings.length){
+    if(!userListings.length){                   //μηνυμα λαθους αν ο χρηστης δεν εχει καταχωρισει καποια αγγελια
         req.flash("noitems","You currently haven't listed any items.")
     }
     
@@ -319,7 +324,7 @@ app.get('/items',checkAuthenticated,async(req,res)=>{
 
 })
 
-//DB DONE
+//προβολη σελιδας "new Listing" για καταχωρηση νεας αγγελιας
 app.get("/items/new",checkAuthenticated,async(req,res)=>{
     const user=findUserByIdDb(req.user.id)
     const categories=await Category.find()
@@ -327,11 +332,11 @@ app.get("/items/new",checkAuthenticated,async(req,res)=>{
 
     
 })
-//DB DONE NOT TESTED
+//παιρνουμε τα στοιχεια της νεας αγγελιας 
 app.post("/items",checkAuthenticated,async(req,res)=>{
     let newListing=req.body.details
     try{
-        if(newListing){
+        if(newListing){             //αποθηκευουμε την νεα αγγελια στην βαση
             newListing.userId=req.user.id
             const objToAdd=new Listing(newListing);
             await objToAdd.save();
@@ -345,32 +350,33 @@ app.post("/items",checkAuthenticated,async(req,res)=>{
 
 })
 
+//προβολη σελιδας "Edit listing" για αλλαγη data μιας αγγελιας που εχει ηδη καταχωρησει ο χρηστης
 app.get("/items/:id",checkAuthenticated,async (req,res)=>{
     const user=await findUserByIdDb(req.user.id)
     const listing=await findListingInDbById(req.params.id)
     res.render("listing",{logged:true,listing,user})
 
 })
-//DB DONE NOT TESTED
+//patch request για edit μιας αγγελιας με τα νεα στοιχεια 
 app.patch("/items/:id/edit",checkAuthenticated,async (req,res)=>{
     
 
     const oldListing=await findListingInDbById(req.params.id)
     let newListing;
-    if(req.body.newLooksFor===""){
+    if(req.body.newLooksFor===""){          //κατασκευη αντικειμενου νεας αγγελιας με τα νεα δεδομενα
           newListing={src:oldListing.src,title:req.body.newTitle,text:req.body.newText,looksFor:"",free:true,category:oldListing.category,id:oldListing.id,userId:oldListing.userId}
      }else{
          newListing={src:oldListing.src,title:req.body.newTitle,text:req.body.newText,looksFor:req.body.newLooksFor,free:false,category:oldListing.category,id:oldListing.id,userId:oldListing.userId}
      }
      
-     await Listing.findOneAndUpdate({id:req.params.id},newListing);
+     await Listing.findOneAndUpdate({id:req.params.id},newListing);         //update της αγγελιας στη βαση
      
 
     res.redirect("/items")
     
     
 })
-//DB DONE NOT TESTED
+//διαγραφη αγγελιας απο την βαση
 app.delete("/items/:id",checkAuthenticated,async (req,res)=>{
     try{
         await Listing.findOneAndDelete({id:req.params.id})
@@ -381,7 +387,7 @@ app.delete("/items/:id",checkAuthenticated,async (req,res)=>{
     res.redirect("/items")
 })
 
-//db done not tested
+//προβολη σελιδας "Trades"
 app.get("/trades",checkAuthenticated,async(req,res)=>{
     let requests=await findUsersIncomingRequests(req.user.id)
     let pendingRequests=requests.filter(request=>request.completed===false);
@@ -391,14 +397,15 @@ app.get("/trades",checkAuthenticated,async(req,res)=>{
     
     let completed=allRequests.filter(request=>request.completed===true);
 
-    
+    //στελνουμε για render ολα τα completed και pending requests για εναν συγκεκριμενο χρηστη
     res.render("requests",{logged:true,user:req.user,requests:pendingRequests,completed})
 })
-//db done not tested
+
+//αποδοχη ανταλλαγης απο χρηστη
 app.post("/trades",checkAuthenticated,async (req,res)=>{
     
-    let tradeReq=await TradeRequest.findOne({id:req.body.accept});
-    tradeReq.completed=true;
+    let tradeReq=await TradeRequest.findOne({id:req.body.accept});      //βρισκουμε το request που θελει να αποδεχτει
+    tradeReq.completed=true;                                            
     tradeReq._id=mongoose.Types.ObjectId()
     tradeReq.isNew=true
 
@@ -407,12 +414,13 @@ app.post("/trades",checkAuthenticated,async (req,res)=>{
     
     if(tradeReq!==null){
         try{ 
+            //διαγραφη των listing που εμπλεκονται στο request απο την σελιδα αφου πλεον δεν ειναι διαθεσιμα
             await Listing.findOneAndDelete({id:tradeReq.itemWanted.id})
             await Listing.findOneAndDelete({id:tradeReq.itemProvided.id})
 
-            
+            //διαγραφη του παλιου request και αποθηκευση του νεου με completed=true
             let updated=new TradeRequest(tradeReq)
-            await TradeRequest.deleteOne({id:req.body.accept})
+            await TradeRequest.deleteOne({id:req.body.accept})              
             await updated.save()
         }catch(err){console.log(err)}
     }else{
@@ -424,10 +432,11 @@ app.post("/trades",checkAuthenticated,async (req,res)=>{
     res.redirect("/trades")
 })
 
-//db done not tested
+//απορριψη request απο χρηστη
 app.delete("/trades",checkAuthenticated,async(req,res)=>{
     
     try{
+        // βρισκουμε το συγκεκριμενο request και το διαγραφουμε 
         TradeRequest.findOneAndDelete({id:req.body.decline}, function (err, docs) {
             if (err){
                 console.log("Error deleting the declined request")
@@ -438,61 +447,67 @@ app.delete("/trades",checkAuthenticated,async(req,res)=>{
     res.redirect("/trades")
 })
 
-
+// προβολη κεντρικης σελιδας admin 
 app.get("/manage",checkAuthenticated,async (req,res)=>{
-    //TODO gimme all categories that exist in categories array
-    res.render("admin",{content:"adminAddCategory",data:await Category.find()})
+    //το default view που εμφανιζεται ειναι αυτο της προσθηκης νεας κατηγοριας
+    res.render("admin",{content:"adminAddCategory",data:await Category.find()})     
 })
 
 
-
+//προβολη σελιδας admin για διαγραφη μιας κατηγοριας
 app.get("/manage/remove",checkAuthenticated,async (req,res)=>{
-    //TODO gimme all categories that exist in categories array
     res.render("admin",{content:"adminRemoveCategory",data:await Category.find()})
 })
 
-//db done
+//προβολη σελιδας admin για approval νεων αγγελιων
 app.get("/manage/approve",checkAuthenticated,async (req,res)=>{
-    let approve=await findListingsForApproval();
+    let approve=await findListingsForApproval();            
     res.render("admin",{content:"adminApprove",data:approve})
 })
 
 
-
+//σελιδα admin που προβαλλονται ολοι οι εγγεγραμμενοι χρηστες της εφαρμογης
 app.get("/manage/users",checkAuthenticated,async (req,res)=>{
-    //send all users profiles
     res.render("admin",{content:"adminUsers",data:await User.find()})
 })
 
+//σελιδα admin για ελεγχο των αγγελιων που βρισκονται στο carousel της αρχικης σελιδας
 app.get("/manage/carousel",checkAuthenticated,async (req,res)=>{
-    //send all listings and carousel array
     res.render("admin",{content:"adminCarousel",data:{listings:await Listing.find(),carousel:await findListingsForCarousel()}})
 })
 
+// σελιδα admin για προβολη ολων των μηνυματων που εχουν ληφθει απο την φορμα επικοινωνιας
+app.get("/manage/contact",checkAuthenticated,async (req,res)=>{
+    res.render("admin",{content:"adminContact",data:await Message.find()})
+})
+
+//request για προσθηκη νεας κατηγοριας
 app.post("/manage",checkAuthenticated,async (req,res)=>{
-    //TODO add new category to db (category=req.body.ctgName)
+    //παιρνουμε το ονομα της νεας κατηγοριας και την αποθηκευουμε στην βαση
     let cat=new Category({ctgName:req.body.ctgName})
     await cat.save()
     res.redirect("/manage")
 })
-//DB DONE NOT TESTED DONT KNOW IF SPLICE WORKS
+
+//request για αποδοχη νεας αγγελιας
 app.post("/manage/approve",checkAuthenticated,async(req,res)=>{
     
-   let queryString=req.body.id;
-   let approved=await findListingInDbById(queryString)
+   let queryString=req.body.id;                             //id αγγελιας
+   let approved=await findListingInDbById(queryString)          //ευρεση αγγελιας
    
-   approved.id=approved.id.slice(0,approved.id.length-5);
-   await Listing.findOneAndUpdate({id:req.body.id},approved)
+   approved.id=approved.id.slice(0,approved.id.length-5);       //αφαιρουμε απο το id της αγγελιας την λεξη "admin" στο τελος που σηματοδοτει οτι εχει εγκριθει
+   await Listing.findOneAndUpdate({id:req.body.id},approved)        //update της αγγελιας με το ανανεωμενο id στην βαση
     res.redirect("/manage/approve")
 })
 
+//απορριψη νεας αγγελιας απο admin
 app.delete("/manage/approve",checkAuthenticated,async (req,res)=>{
     
-    await Listing.findOneAndDelete({id:req.body.id})
+    await Listing.findOneAndDelete({id:req.body.id})        //διαγραφουμε τελειως την νεα αγγελια
     res.redirect("/manage/approve")
 })
 
-
+//request για διαγραφη υπαρχουσας κατηγοριας με συγκεκριμενο ονομα απο την βαση
 app.delete("/manage",checkAuthenticated,async (req,res)=>{
     
     try{
@@ -504,18 +519,16 @@ app.delete("/manage",checkAuthenticated,async (req,res)=>{
 })
 
 
-
+//edit των αγγελιων που γινονται display στο carousel
 app.post("/manage/carousel",checkAuthenticated,async (req,res)=>{
-    //replace listing with (title=req.body.replace) with (title=req.body.for) in carousel array
-    // carousel.splice(carousel.indexOf(carousel.find((listing)=>listing.title===req.body.replace)),1) 
-    //get listing with title=req.body.for from db and push it in carousel array
-    // carousel.push(listings.find((listing)=>listing.title===req.body.for))
+    
     let carouselListings=await findListingsForCarousel()
-    // let listingToRemove=carouselListings.find((listing)=>{listing.id===req.body.replace})
-    await Listing.findOneAndDelete({id:req.body.replace})
+    //διαγραφουμε την αγγελια που υπαρχει ηδη στο carousel και θελουμε να αντικαταστησουμε
+    //δεν διαγραφουμε την πραγματικη αγγελια, αλλα ενα διπλοτυπο της με την λεξη "carousel" στο id
+    await Listing.findOneAndDelete({id:req.body.replace})       
     
 
-    console.log(req.body.for);
+    // προσθετουμε την νεα αγγελια με την λεξη "carousel" στις αγγελιες / αυτη που εχει επιλεξει για αντικατασταση
     let newId=await Listing.findOne({id:req.body.for})
     console.log("NEWID",newId);
     newId.id=`${newId.id}carousel`
@@ -523,12 +536,12 @@ app.post("/manage/carousel",checkAuthenticated,async (req,res)=>{
     newId.userId="null"
     newId.isNew=true
     let addition=new Listing(newId)
-    console.log(req.body.for);
+    
     await addition.save()
     res.redirect("/manage/carousel")
 })
 
-
+// προβολη της σελιδας "About us"
 app.get("/about",(req,res)=>{
     if(req.isAuthenticated()){
         
@@ -540,7 +553,7 @@ app.get("/about",(req,res)=>{
 
 })
 
-
+// προβολη της σελιδας "Our mission"
 app.get("/mission",(req,res)=>{
     if(req.isAuthenticated()){
         
@@ -552,7 +565,7 @@ app.get("/mission",(req,res)=>{
 
 })
 
-
+// προβολη της σελιδας "Our vision"
 app.get("/vision",(req,res)=>{
     if(req.isAuthenticated()){
         
@@ -564,6 +577,32 @@ app.get("/vision",(req,res)=>{
 
 })
 
+// προβολη της σελιδας "Contact us"
+app.get("/contact",(req,res)=>{
+    if(req.isAuthenticated()){
+        
+        res.render("contact",{logged:true,user:req.user})
+    }else{
+        res.render("contact",{logged:false})
+    }
+
+
+})
+
+//οταν καποιος στειλει ενα νεο μηνυμα επικοινωνιας, παιρνουμε τα δεδομενα του μηνυματος και το αποθηκευουμε στην βαση
+//ωστε να προβληθει στην συνεχεια στην σελιδα του admin
+app.post("/contact",async (req,res)=>{
+    console.log(req.body);
+    const newMessage=new Message({...req.body})
+    await newMessage.save()
+    try{
+        req.flash("success","Your message has been sent, we will get back to you soon!")
+    }catch(e){
+        console.log(e);
+    }
+    res.redirect("/contact")
+
+})
 
 
 
@@ -572,4 +611,5 @@ app.get("/vision",(req,res)=>{
 
 
 
+// χρηση του port 3000 για προβολη της εφαρμογης
 app.listen(3000)

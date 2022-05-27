@@ -1,9 +1,9 @@
+<!-- παραθυρο που ο admin μπορει να αφαιρεσει μια κατηγορια απο την ιστοσελιδα -->
+
 <% let categories=data %> 
 
 <div class="container d-flex  adminAdd">
-
-    
-    
+    <!-- αρχικα του εμφανιζονται σε εναν πινακα ολες οι κατηγοριες που ειναι ενεργες μεχρι τωρα -->
     <table>
         <tr>
             <th>Categories</th>
@@ -21,6 +21,7 @@
         </tr>
     </table>
 
+    <!-- στη συνεχεια πρεπει να διαλεξει ποια απο αυτες θελει να διαγραψει, μεσα απο την λιστα -->
     <form class="my-5" action="/manage?_method=DELETE" method="post">
         <div class="form-group">
             <label for="inputState">Choose which category you would like to remove</label>

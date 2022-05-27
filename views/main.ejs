@@ -1,3 +1,5 @@
+<!-- το main view / αρχικη σελιδα της εφαρμογης -->
+<!-- αρχικα ελεγχουμε το αν ο χρηστης εχει κανει login ωστε να γινει display το navar με αναλογο menu -->
 <% if(logged){ %> 
   <%- include('partials/navbar.ejs',{title:"Traddiction",logged,username:user.firstName}) %> 
 <% }else{ %> 
@@ -7,12 +9,12 @@
 <div class="container-fluid" id="newAdditions">
     
 
-    
+    <!-- carousel display -->
     <%-include("partials/carousel.ejs",{carousel})%>
-      
+      <!-- categories display -->
       <%-include("partials/category.ejs",{categories})%>
       
-
+<!-- main search form display -->
     <div class="row" id="searchItems">
       <h2 style="color: #8e8e8e;">Search for items</h2>
       <form action="/search" method="get" class="queryItemsForm">
@@ -20,7 +22,7 @@
         <button type="submit" id="query-btn">Go</button>
       </form>
     </div>
-
+<!-- listings display -->
     <%- include("partials/addControl.ejs",{listings}) %> 
 
     

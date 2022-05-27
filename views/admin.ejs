@@ -1,3 +1,5 @@
+<!-- για το admin panel δεν κανουμε import τα navbar και footer γι αυτο και ξαναγραφουμε την εναρξη της html απο την αρχη -->
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -26,6 +28,7 @@
     ></script>
   </head>
   <body>
+    <!-- αρχικα κανουμε display τον τιτλο και μια επιγραφη στο πανω μερος του panel -->
       <div class="container-fluid ">
       <div class="row admin-title">
         <div class="col-3">
@@ -39,12 +42,15 @@
       </div>
     </div>
     <hr style="color: white;">
+    <!-- το toggler που ειναι ορατο στις κινητες συσκευες, υπευθυνο για την πλοηγηση στις διαφορες κατηγοριες -->
     <div class="toggler d-md-none d-block">
       <div class="line1"></div>
       <div class="line2"></div>
       <div class="line3"></div>
     </div>
     <div class="container-fluid admin">
+      <!-- οι διαφορες επιλογες που εχει ενας admin, παρουσιαζονται στην μορφη buttons με αναλογα forms που -->
+      <!-- τον κατευθυνουν στο αναλογο view με καθε κλικ -->
       <div
         class="option">
         <form action="/manage" method="get">
@@ -63,9 +69,14 @@
       <div class="option"><form action="/manage/carousel" method="get">
         <button type="submit">Carousel Control</button>
       </form></div>
+      <div class="option"><form action="/manage/contact" method="get">
+        <button type="submit">Messages</button>
+      </form></div>
       <div class="option"><form action="/logout?_method=DELETE" method="post">
         <button type="submit">Sign Out</button>
       </form></div>
+      
+      <!-- ουσιαστικα στο κατω div γινεται display καθε φορα το αναλογο view που εχει επιλεξει ο admin -->
 
       <div class="content">
           <%- include(`partials/${content}.ejs`,data) %> 

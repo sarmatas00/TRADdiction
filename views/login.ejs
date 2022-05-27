@@ -1,13 +1,17 @@
+<!-- το login view -->
+
 <%- include("partials/navbar.ejs",{title:"Login",logged:false}) %> 
 
 <div class="container" id="login">
-    
+    <!-- με την βοηθεια ενος form στελνουμε στον σερβερ τις πληροφοριες του χρηστη -->
 <form method="post" action="/login">
+  <!-- email input -->
     <div class="form-group">
       <label for="email">E-mail</label>
       <input type="text" class="form-control" id="email" placeholder="Enter your email" name="email">
       
     </div>
+    <!-- password input -->
     <div class="form-group">
       <label for="password">Password</label>
       <input type="password" class="form-control" id="password" placeholder="Password" name="password">
@@ -18,6 +22,7 @@
     
     <button type="submit" class="btn btn-primary">Log In</button>
   </form>
+  <!-- σε περιπτωση λαθος στοιχειων εμφανιζεται το αναλογο μηνυμα λαθους που εχουμε στειλει απο τον σερβερ -->
   <% if(messages.error){ %> 
   <div class="alert alert-danger mt-2" role="alert"><%=messages.error  %></div>
     <% } %> 

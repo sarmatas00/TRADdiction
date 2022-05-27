@@ -1,0 +1,35 @@
+<!-- παραθυρο που ο admin μπορει να δει ολα τα μηνυματα που καποιος χρηστης εχει υποβαλλει μεσω της πλατφορμας contact us
+τα μηνυματα εμφανιζονται στην μορφη ενος πινακα, με γραμμες οσες και ο αριθμος των μηνυματων -->
+
+<% let messages=data %> 
+
+<table class="w-100" style="table-layout:fixed; font-size: 1.3em;">
+    <colgroup>
+        <col span="1" style="width: 20%;">
+        <col span="1" style="width: 30%;">
+        <col span="1" style="width: 20%;">
+        <col span="1" style="width: 30%;">
+     </colgroup>
+    <tr >
+        <th>Users</th>
+    </tr>
+    <tr style="color: blueviolet; ">
+        <th>Name</th>
+        <th>Email</th>
+        <th>Subject</th>
+        <th>Message</th>
+    </tr>
+    <% for(let i=0;i<messages.length;i++){ %> 
+        <tr style="overflow-wrap: break-word;">
+            <td><%=messages[i].name%></td>
+            <td><%=messages[i].email%></td>
+            <td><%=messages[i].subject%></td>
+            <td><%=messages[i].message%></td>
+        </tr> 
+    <% } %> 
+</table>
+
+<!-- αναλογο μηνυμα εμφανιζεται οταν δεν υπαρχει καποιο μηνυμα -->
+<% if(messages.length===0){ %> 
+    <h3 class="my-4">There is no new message at the moment</h3>
+<% } %> 

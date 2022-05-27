@@ -1,10 +1,15 @@
+<!-- παραθυρο στο οποιο ο admin βλεπει τις νεες αγγελιες που οι χρηστες εχουν ανεβασει -->
+<!-- οπου εχει την δυνατοτητα για εγκριση τους η απορριψη τους -->
+
 <% let listings=data %>
 
 <div class="container d-flex flex-column approveDiv">
   <h2 class="mt-5" style="color: rgb(71,225,12);">New Listings</h2>
+  <!-- εμφανιζουμε τον αριθμο των αγγελιων που αναμενουν εγκριση -->
   <% if(listings.length!==0){ %> 
     <h3><span style="color: blueviolet;"> <%= listings.length %></span> listings remain approval  </h3>
   <% for(let listing of listings){ %>
+    <!-- επειτα κανουμε display καθε μια απο τις αγγελιες αυτες, μαζι με 2 buttons-forms που εκτελουν τα αναλογα requests -->
   <div class="container d-flex flex-row align-items-start justify-content-between approve">
     <div
       id="display_image"
