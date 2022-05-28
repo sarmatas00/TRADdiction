@@ -40,7 +40,7 @@ mongoose.connect(process.env.DATABASE,{useNewUrlParser:true, useUnifiedTopology:
 .then(async res=>{
     
     
-    // seed.connect()
+    seed.connect()
 })
 .catch(err=>{
     console.log(err);
@@ -157,9 +157,9 @@ app.get("/",async (req,res)=>{
     
     if(req.isAuthenticated()){
         
-        res.render("main",{categories:await Category.find(),listings:(await Listing.find()).filter((listing)=>!listing.id.includes("carousel")),logged:true,user:req.user,carousel:await findListingsForCarousel()})
+        res.render("main",{categories:await Category.find(),listings:(await Listing.find()).filter((listing)=>!listing.id.includes("carousel") && !listing.id.includes("admin")),logged:true,user:req.user,carousel:await findListingsForCarousel()})
     }else{
-        res.render("main",{categories:await Category.find(),listings:(await Listing.find()).filter((listing)=>!listing.id.includes("carousel")),logged:false,carousel:await findListingsForCarousel()})
+        res.render("main",{categories:await Category.find(),listings:(await Listing.find()).filter((listing)=>!listing.id.includes("carousel") && !listing.id.includes("admin")),logged:false,carousel:await findListingsForCarousel()})
     }
 
 
@@ -312,14 +312,14 @@ app.get('/items',checkAuthenticated,async(req,res)=>{
     let userListings=await findUserListings(req.user.id)
     userListings=userListings.filter((listing)=>{               //φερνουμε ολες τις αγγελιες του συγκεκριμενου χρηστη
         
-         return listing.id.slice(listing.id.length-5,listing.id.length)!=='admin'       //οχι τις αγγελιες που δεν εχουν λαβει εγκριση ακομα απο admin
+         return listing.id.slice(listing.id.length-5,listing.id.length)!=='admin' 
+                &&  listing.id.slice(listing.id.length-8,listing.id.length)!=='carousel'     //οχι τις αγγελιες που δεν εχουν λαβει εγκριση ακομα απο admin
     })
     if(!userListings.length){                   //μηνυμα λαθους αν ο χρηστης δεν εχει καταχωρισει καποια αγγελια
         req.flash("noitems","You currently haven't listed any items.")
     }
     
     res.render("myItems",{logged:true,userListings,user})
-
 
 
 })
@@ -380,9 +380,34 @@ app.patch("/items/:id/edit",checkAuthenticated,async (req,res)=>{
 app.delete("/items/:id",checkAuthenticated,async (req,res)=>{
     try{
         await Listing.findOneAndDelete({id:req.params.id})
+        
+        if(Listing.findOne({id:`${req.params.id}carousel`})!==null){        //εαν η αγγελια που διαγραφεται υπαρχει και στο carousel την αντικαθιστουμε με μια αλλη
+            await Listing.findOneAndDelete({id:`${req.params.id}carousel`})
+            const allListings=await Listing.find()
+            const carouselListings=await findListingsForCarousel()
+            let newCarouselListing={}
+            for(let listing of allListings){
+                if(Object.keys(newCarouselListing).length!==0){break;}
+                if(!listing.id.includes("carousel")){
+                    
+                    if(!carouselListings.some((carListing)=>carListing.id.includes(listing.id))){
+                        newCarouselListing=listing
+                    }
+                    
+                }
+            }
+       
+            newCarouselListing.id=`${newCarouselListing.id}carousel`
+            newCarouselListing._id=mongoose.Types.ObjectId()
+            newCarouselListing.userId="null"
+            newCarouselListing.isNew=true
+            let addition=new Listing(newCarouselListing)
+            await addition.save()
+        }
         req.flash("success","Item deleted successfully!")
         
     }catch{
+
     }
     res.redirect("/items")
 })
@@ -530,7 +555,7 @@ app.post("/manage/carousel",checkAuthenticated,async (req,res)=>{
 
     // προσθετουμε την νεα αγγελια με την λεξη "carousel" στις αγγελιες / αυτη που εχει επιλεξει για αντικατασταση
     let newId=await Listing.findOne({id:req.body.for})
-    console.log("NEWID",newId);
+    
     newId.id=`${newId.id}carousel`
     newId._id=mongoose.Types.ObjectId()
     newId.userId="null"
@@ -603,6 +628,11 @@ app.post("/contact",async (req,res)=>{
     res.redirect("/contact")
 
 })
+
+
+
+  
+
 
 
 
