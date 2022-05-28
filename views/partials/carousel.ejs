@@ -1,0 +1,102 @@
+<!-- χρησιμοποιειται απο το main view για την τοποθετηση του carousel με τις 3 αγγελιες που επιλεγει ο admin -->
+<!-- στην αρχικη οθονη. Εχει χρησιμοποιηθει carousel του bootstrap και μερικα custom styles για τις αναγκες των photos -->
+
+<div class="row" id="carousel">
+    <h2 style="color: #8e8e8e;">Our newest additions</h2>
+    <div
+      id="carouselExampleCaptions"
+      class="carousel slide"
+      data-bs-ride="carousel"
+    >
+      <div class="carousel-indicators">
+        <button
+          type="button"
+          data-bs-target="#carouselExampleCaptions"
+          data-bs-slide-to="0"
+          class="active"
+          aria-current="true"
+          aria-label="Slide 1"
+        ></button>
+        <button
+          type="button"
+          data-bs-target="#carouselExampleCaptions"
+          data-bs-slide-to="1"
+          aria-label="Slide 2"
+        ></button>
+        <button
+          type="button"
+          data-bs-target="#carouselExampleCaptions"
+          data-bs-slide-to="2"
+          aria-label="Slide 3"
+        ></button>
+      </div>
+      <!-- εδω εχουμε τα 3 items που γινονται display, που αποτελουνται απο τις φωτογραφιες των αγγελιων μαζι με καποια στοιχεια τους -->
+      <div class="carousel-inner">
+        <div class="carousel-item active" style="background-color:#031c05 ;">
+          <% if(!carousel.length){ %> 
+          <div class="h-100" id="display_image" style='background-size: contain;background-repeat: no-repeat;background-position: center; background-image: url("https://wallpaperaccess.com/full/2416004.jpg")'></div>
+          <% }else{ %> 
+          <div class="h-100" id="display_image" style='background-size: contain;background-repeat: no-repeat;background-position: center; background-image: url("<%=carousel[0].src%>")'></div>
+          <div class="carousel-caption d-block">
+            <h5> <%= carousel[0].title %></h5>
+            <p>
+              <%=carousel[0].text  %> 
+            </p>
+          </div>
+        <% } %> 
+        </div>
+        <div class="carousel-item" style="background-color:#031c05 ;">
+          <% if(carousel.length<=1){ %> 
+            <div class="h-100" id="display_image" style='background-size: contain;background-repeat: no-repeat;background-position: center; background-image: url("https://wallpaperaccess.com/full/2416004.jpg")'></div>
+            <% }else{ %> 
+            <div class="h-100 " id="display_image" style='background-size: contain;background-repeat: no-repeat;background-position: center; background-image: url("<%=carousel[1].src%>")'></div>
+            <div class="carousel-caption d-block d-md-block">
+              <h5><%= carousel[1].title %> </h5>
+              <p>
+                <%=carousel[1].text  %> 
+              </p>
+          </div>
+        <% } %> 
+        </div>
+        <div class="carousel-item" style="background-color:#031c05 ;">
+          <% if(carousel.length<=2){ %> 
+            <div class="h-100" id="display_image" style='background-size: contain;background-repeat: no-repeat;background-position: center; background-image: url("https://wallpaperaccess.com/full/2416004.jpg")'></div>
+            <% }else{ %> 
+            <div class="h-100" id="display_image" style='background-size: contain;background-repeat: no-repeat;background-position: center; background-image: url("<%=carousel[2].src%>")'></div>
+            <div class="carousel-caption d-block d-md-block">
+              <h5><%= carousel[2].title %> </h5>
+              <p>
+                <%=carousel[2].text  %> 
+              </p>
+          </div>
+        <% } %> 
+        </div>
+      </div>
+
+      <!-- στη συνεχεια ο μηχανισμος του bootstrap για την εμφανιση του επομενου η προηγουμενου item -->
+      <button
+        class="carousel-control-prev"
+        type="button"
+        data-bs-target="#carouselExampleCaptions"
+        data-bs-slide="prev"
+      >
+        <span
+          class="carousel-control-prev-icon"
+          aria-hidden="true"
+        ></span>
+        <span class="visually-hidden">Previous</span>
+      </button>
+      <button
+        class="carousel-control-next"
+        type="button"
+        data-bs-target="#carouselExampleCaptions"
+        data-bs-slide="next"
+      >
+        <span
+          class="carousel-control-next-icon"
+          aria-hidden="true"
+        ></span>
+        <span class="visually-hidden">Next</span>
+      </button>
+    </div>
+  </div>

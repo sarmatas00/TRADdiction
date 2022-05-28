@@ -1,0 +1,112 @@
+<!-- η εναρξη της html με τα διαφορα styles και fonts που πρεπει να γινουν import και στη συνεχεια το navbar της σελιδας -->
+<!-- το συγκεκριμενο view χρησιμοποιειται απο ολα τα υπολοιπα views περαν του admin panel -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- <title>TRADdiction</title> -->
+    <title><%=title%> </title>
+    <!-- favicon -->
+    <link rel="shortcut icon" type="image/jpg" href="https://us.123rf.com/450wm/allexxandar/allexxandar1711/allexxandar171100816/89943181-s%C3%ADmbolo-de-la-letra-t-del-alfabeto-carta-del-espacio-carta-del-cielo-nocturno-.jpg?ver=6"/>
+    <!-- custom css styles -->
+    <link rel="stylesheet" href="/static/styles.css" />
+    <!-- google font -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
+    />
+    
+    <!-- bootstrap below -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
+      crossorigin="anonymous"
+    />
+    
+  </head>
+  <body>
+    <!-- navbar -->
+    <header>
+      <div class="container-fluid" id="nav">
+        <div class="row">
+          <nav>
+            <!-- το toggler που εμφανιζεται στις μικρες οθονες πανω αριστερα και ειναι υπευθυνο για εμφανιση του menu -->
+            <div class="toggler">
+              <div class="line1"></div>
+              <div class="line2"></div>
+              <div class="line3"></div>
+            </div>
+            <!-- ο τιτλος της σελιδας που αλλαζει αναλογα το view που προβαλλεται καθε φορα -->
+            <a href="/" class="title" data-link
+              ><span id="title1">TRADdiction</span></a
+            >
+            <!-- το search bar μαζι με το search button του navbar που επιτελει την ιδια λειτουργεια με το searchbar πιο κατω -->
+            <!-- και ειναι υπευθυνο για φιλτραρισμα των αγγελιων αναλογα τις λεξεις που εισαγει ο χρηστης -->
+            <div class="nav-collapse1">
+              <form action="/search" class="queryItemsForm">
+                <input
+                  type="search"
+                  placeholder="Search items"
+                  id="nav-input"
+                  name="queryText"
+                />
+                <button type="submit" class="nav-btn"></button>
+              </form>
+            </div>
+            <!-- το βασικο μενου της σελιδας που ειναι κρυμμενο απο τον χρηστη και φαινεται με το πατημα του κουμπιου -->
+            <!-- με την βοηθεια διαφορων styles και events. -->
+            <div class="nav-collapse2">
+              <button class="btn btn-secondary" type="button" id="dropdown-btn">
+                <!-- εχουμε 2 εκδοσεις του menu, η 1η εμφανιζεται στον χρηστη οταν δεν εχει συνδεθει και του δινει τις επιλογες για login η signup -->
+                <% if(logged){%>
+                  My Account
+                <%}else{ %> 
+                  Log-in/Sign-up
+                <% } %> 
+                <i class="arrow-down"></i>
+              </button>
+              <ul class="dropdown-menu">
+                <% if(!logged){ %> 
+                  <!-- η 2η εκδοση αφορα εναν συνδεδεμενο χρηστη και περιεχει links που τον κατευθυνουν στα αναλογα views -->
+                <li>
+                  <a class="dropdown-item" href="/signup" data-link>Sign-Up</a>
+                </li>
+                <br />
+                <li>
+                  <a class="dropdown-item isDisabled" href=""
+                    >Ηave an account?</a
+                  >
+                </li>
+                <br>
+                <li>
+                  <a class="dropdown-item" href="/login" data-link>Log-In</a>
+                </li>
+                <% }else{ %> 
+                  <li style="color:aqua; font-size: 1.2em;">Hey there, <%=username%> </li>
+                  <br/>
+                  <li>
+                    <a class="dropdown-item" href="/items" data-link>My items</a>
+                  </li>
+                  <li>
+                    <a class="dropdown-item" href="/trades" data-link>Trades</a>
+                  </li>
+                  <li>
+                    <a class="dropdown-item signout" href="/" data-link>
+                    <form action="/logout?_method=DELETE" method="POST">
+                      <button type="submit">Sign Out</button>
+                    </form>
+                  </a>
+                  </li>
+                <% } %> 
+              </ul>
+            </div>
+          </nav>
+        </div>
+      </div>
+    </header>
+
+    <main>

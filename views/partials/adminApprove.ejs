@@ -1,0 +1,47 @@
+<!-- παραθυρο στο οποιο ο admin βλεπει τις νεες αγγελιες που οι χρηστες εχουν ανεβασει -->
+<!-- οπου εχει την δυνατοτητα για εγκριση τους η απορριψη τους -->
+
+<% let listings=data %>
+
+<div class="container d-flex flex-column approveDiv">
+  <h2 class="mt-5" style="color: rgb(71,225,12);">New Listings</h2>
+  <!-- εμφανιζουμε τον αριθμο των αγγελιων που αναμενουν εγκριση -->
+  <% if(listings.length!==0){ %> 
+    <h3><span style="color: blueviolet;"> <%= listings.length %></span> listings remain approval  </h3>
+  <% for(let listing of listings){ %>
+    <!-- επειτα κανουμε display καθε μια απο τις αγγελιες αυτες, μαζι με 2 buttons-forms που εκτελουν τα αναλογα requests -->
+  <div class="container d-flex flex-row align-items-start justify-content-between approve">
+    <div
+      id="display_image"
+      
+      style="
+        width:30% !important;
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-image: url('<%=listing.src%>');
+      "
+    ></div>
+    <p style="max-width: 10vw;word-wrap: break-word;"><span style="color:blueviolet;font-size: 2em;display:block;">Title: </span> <%=listing.title  %> </p>
+    
+    <p style="word-wrap: break-word;max-width: 10vw;"><span style="color:blueviolet; font-size: 1.3em; display: block;">Description: </span><%= listing.text  %> </p>
+    <form action="/manage/approve" method="post" >
+        <input type="hidden" value="<%= listing.id %>" name="id">
+        <button action="submit"  class="tradeBtn">Approve</button>
+    </form>
+    <br>
+    <form action="/manage/approve?_method=DELETE"  method="post" >
+        <input type="hidden" value="<%= listing.id %>" name="id">
+        <button action="submit" style="background-color: red;" class="tradeBtn">Reject</button>
+    </form>
+
+  </div>
+
+  <% } %>
+  <form action="/manage/approve" method="post">
+    <!-- <input type="text" class="form-control w-50 mb-2" id="category" placeholder="Enter name" name="id"> -->
+  </form>
+  <% }else{ %> 
+    <h3>There is no new listing at the moment</h3>
+    <% } %> 
+
+</div>

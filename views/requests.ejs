@@ -1,0 +1,119 @@
+<!-- view για την προβολη των αιτησεων για ανταλλαγες που εχει κανει καποιος αλλος χρηστης για καποιο αντικειμενο του
+καθως και την προβολη των ολοκληρωμενων ανταλλαγων που εχει ηδη δεχτει -->
+
+<%- include('partials/navbar.ejs',{title:"Trades",logged,username:user.firstName}) %>
+
+<div class="container trades">
+    <h1>Trades</h1> 
+     <div>
+       <!-- στα αριστερα της οθονης εμφανιζουμε ολες τις ολοκληρωμενες ανταλλαγες με τιτλους αντικειμενων
+      που περιεχουν αντικειμενα που εχει ανεβασει ο ιδιος ο χρηστης και αντικειμενα αλλων χρηστων -->
+     <div id="leftbox">
+     <h2 style="color: blue;">Trade History</h2>
+     <div class="toggler2 d-sm-none d-block" >
+        <div class="line1" style="background-color: blue;"></div>
+        <div class="line2"></div>
+        <div class="line3" style="background-color: blue;"></div>
+      </div>
+     <ul id="tradeHistory" class="TradeHistoryLi">
+        <% if(completed.length!==0){ %> 
+            <% for(let trade of completed){ %> 
+                <% if(trade.itemWanted.userId==user.id){ %> 
+                    <li style="font-size: 1.3em;" class="tradeHistoryLi">Traded <span style="color:blue ;"><%=trade.itemProvided.title %></span> for: <br> <span style="color:red ;"><%=trade.itemWanted.title %></span> </li>
+                    <% }else{ %> 
+                        <li style="font-size: 1.3em;" class="tradeHistoryLi">Traded <span  style="color:blue ;"><%=trade.itemWanted.title %></span> for: <br> <span style="color:red ;"><%=trade.itemProvided.title %></span> </li>
+                    <% } %> 
+            <% } %> 
+        <% } %> 
+    </ul>
+    </div>
+    <!-- στην δεξια πλευρα της οθονης εμφανιζονται ολα τα requests που ειναι ανοιχτα και 2 κουμπια σε καθε request
+    για να επιλεξει ο  χρηστης αν δεχεται την ανταλλαγη η οχι. Το πατημα ενος κουμπιου στελνει το αναλογο request
+  στον σερβερ και εφοσον ο χρηστης αποδεχτει την ανταλλαγη, αυτη προστιθεται στα completed trades -->
+    <div id="rightbox">
+        <h2 style="color: red;">Trade Requests</h2>
+        <div class="toggler3 d-sm-none d-block">
+            <div class="line1" style="background-color: red;"></div>
+            <div class="line2"></div>
+            <div class="line3" style="background-color: red;"></div>
+          </div>
+        <ul>
+            <% let a=1 %> 
+            <% for(let request of requests){ %> 
+                <li class="tradeReqLi">
+                <span style="color: blue;"> User <%= request.itemProvided.userId%> requested</span> <br>
+                <div class="wanted">
+                <h4 class="mx-3"> <%= request.itemWanted.title %> </h4>
+                <p><%= request.itemWanted.text %></p>
+                <!-- Photo modal -->
+                <% const id="modal"+ (a++).toString() %>
+                <% const id3="#" +id %> 
+                <button style="background-color: #705df2;" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target=<%=id3%> >
+                    Photo
+                  </button>
+                  <div class="modal fade" id=<%=id%>   tabindex="-1" role="dialog" >
+                    <div class="modal-dialog" role="document">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                        </div>
+                        <div class="modal-body">
+                            <div id="display_image" style='background-size: contain;background-repeat: no-repeat; background-image: url("<%=request.itemWanted.src%>")'></div>
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+                <span style="color: red;"> in exchange for </span>
+                 <div class="provided">
+                    <h4 class="mx-3"> <%= request.itemProvided.title %> </h4>
+                    <p><%= request.itemProvided.text %></p>
+                  <% const id2="modal"+ (a++).toString() %> 
+                  <% const id4="#" +id2 %> 
+                    <button style="background-color: #705df2;" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target=<%=id4%> >
+                        Photo
+                      </button>
+                      <div class="modal fade" id=<%=id2%> tabindex="-1" role="dialog" >
+                        <div class="modal-dialog" role="document">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                            </div>
+                            <div class="modal-body">
+                                <div id="display_image" style='background-size: contain;background-repeat: no-repeat; background-image: url("<%=request.itemProvided.src%>")'></div>
+                            </div>
+                            <div class="modal-footer">
+                              <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                </div>
+                <div class="row">
+                  <div class="col-6">
+                <form action="/trades" method="post">
+                    <input type="hidden" value="<%= request.id %>" name="accept">
+                    <button action="submit"  class="tradeBtn">Accept</button>
+                </form>
+              </div>
+              <div class="col-6">
+                <form action="/trades?_method=DELETE" method="post" >
+                    <input type="hidden" value="<%= request.id %>" name="decline">
+                    <button action="submit" style="background-color: red;" class="tradeBtn">Decline</button>
+                </form>
+              </div>
+              </div>
+                </li>
+         
+            <% } %> 
+        </ul>
+    </div>
+</div>
+
+
+
+
+<%- include("partials/footer.ejs") %>

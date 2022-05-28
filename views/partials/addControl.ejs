@@ -1,0 +1,31 @@
+<!-- χρησιμοποιειται για την προβολη των αγγελιων στην αρχικη σελιδα -->
+
+<% for(let i=0;i<listings.length;i++){ %> 
+    <!-- για καθε μια απο τις αγγελιες κανουμε destruct τα στοιχεια -->
+    <% let {src,title,text,looksFor,free,category,id}=listings[i] %> 
+    <!-- για καθε 3 αγγελιες που τοποθετουμε στη σελιδα, δημιουργουμε μια νεα γραμμη -->
+    <% if(i%3===0){ %>              
+        <div class="row d-flex justify-content-evenly results">
+    <% } %> 
+    <!-- καθε αγγελια εχει τα παρακατω χαρακτηριστικα -->
+        <div class="col-3 item">
+            <div id="display_image" style='background-size: contain;background-repeat: no-repeat; background-image: url("<%=src%>")'></div>
+            <h6><%=title%></h6>
+            <p id="caption"><%=text%></p>
+            <% if(free){ %>
+            <p id="looksFor">Freebie <span id="items"></span></p>
+            <% }else{ %> 
+                <p id="looksFor">Looking for: <span id="items"><%=looksFor%></span></p>
+                <% } %>  
+                <button class="btn btn-info"><a href="/listing/<%=id%> " data-link>View!</a></button>
+                <div class="d-none"><%=category%></div>
+        </div>
+        <!-- κλεισιμο της γραμμης οταν εχουν μπει και οι (το πολυ) 3 αγγελιες -->
+    <% if(i%3===2){ %>         
+            </div>
+    <% } %> 
+
+<% } %> 
+<% if(!listings.length){ %> 
+    <h3 style="color: blueviolet;position:relative;max-width:90%;top:0;left:6%; margin-top:1em;">There are no active listings at the moment</h3>
+<% } %> 

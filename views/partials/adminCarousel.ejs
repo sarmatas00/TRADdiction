@@ -1,0 +1,34 @@
+<!-- παραθυρο που ο admin εχει την δυνατοτητα να αλλαξει τις αγγελιες που εμφανιζονται στο carousel -->
+<!-- της αρχικης σελιδας -->
+
+<% let {listings,carousel}=data %> 
+
+<div class="container d-flex flex-column carousel">
+  <h2 class="mt-5" style="color: rgb(71,225,12);">Add listing to carousel</h2>
+  <p style="font-size:1.5em ;">Current carousel listings: <br> <span style="color: blueviolet;">1)<%= carousel[0].title %>, 2)<%= carousel[1].title %>, 3)<%= carousel[2].title %> </span></p>
+  <form class="my-5" action="/manage/carousel" method="post">
+    <div class="form-group">
+      <!-- αρχικα πρεπει να επιλεξει ποια αγγελια απο τις 3 ηδη υπαρχουσες στο carousel θελει να αντικαταστησει -->
+        <label for="replace" style="font-size: 1.5em;">Replace</label>
+        <select id="replace" class="form-control w-50 mb-2" name="replace">
+          <option selected>Choose...</option>
+          <% for(let listing of carousel) {%>
+
+            <option value="<%=listing.id  %>"><%=listing.title  %> </option>
+        <% } %> 
+        </select>
+        <!-- στη συνεχεια επιλεγει ποια θελει να προσθεσει απο ολες τις υπολοιπες αγγελιες που υπαρχουν στη σελιδα -->
+        <label for="for" style="font-size: 1.5em;">for</label>
+        <select id="for" class="form-control w-50 mb-2" name="for">
+          <option selected>Choose...</option>
+          <% for(let listing of listings) {%>
+
+            <% if(!listing.id.includes("carousel") && !carousel.some((l)=>l.title===listing.title) ){ %>  
+              <option value="<%=listing.id  %>"><%=listing.title  %> </option>
+            <% } %> 
+        <% } %> 
+        </select>
+        <button type="submit" class="btn btn-dark px-4" style="border:1px solid rgb(71,225,12);" >Submit</button>
+      </div>
+</form>
+</div>

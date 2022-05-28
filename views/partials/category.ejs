@@ -1,0 +1,24 @@
+<!-- view που χρησιμοποιειται απο το main και εχει στοχο την προβολη των κατηγοριων στην αρχικη σελιδα -->
+<% for(let i=0;i<categories.length;i++){%>
+    <!-- για καθε 4 κατηγοριες που τοποθετουνται ανοιγουμε μια νεα γραμμη στη σελιδα -->
+    <% if(i%4===0){ %> 
+        <div class="row category">
+    <% } %> 
+        <% if(i===0){ %> 
+            <h2 style="color: #8e8e8e;">Browse by category</h2>
+        <%}%> 
+        <div class="col-3"  >
+            <button type="button" class="btn category-btn" style="background-color:rgb(71,225,12);">
+                <%=categories[i].ctgName%>
+            </button>
+        </div>
+        
+     
+    <% if(i%4===3){ %> 
+        </div>
+    <% } %> 
+    <% } %>  
+    <% if(categories.length%2!==0){ %>
+         </div> 
+    <% } %> 
+          

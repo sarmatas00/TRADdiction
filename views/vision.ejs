@@ -1,0 +1,23 @@
+<!-- το vision view που εχουμε προσβαση απο το footer -->
+
+
+<% if(logged){ %> 
+    <%- include('partials/navbar.ejs',{title:"Our Vision",logged,username:user.firstName}) %> 
+  <% }else{ %> 
+      <%- include('partials/navbar.ejs',{title:"Our Vision",logged}) %> 
+  <% } %> 
+
+<div class="container" id="vision">
+    <h1>Our Vision</h1>
+        <p style="font-size:22px">&emsp;&emsp;We want to see a better version of our world where waste and polution don't cause
+        all of this problems to our natural environment. A world without poluted air and seas filled with natural beauty, where
+        mother nature can run it's course and restore it's healthy state. We are only four people but with the support of the community
+        we can reach more people, reduce waste even further and expand our efforts to more ways of helping the restoration of the environment
+        as well as helping people.
+        </p>
+        <div>
+        <img src="https://cosmosmagazine.com/wp-content/uploads/2020/02/191010_nature.jpg">
+        </div>
+</div>
+
+<%- include("partials/footer.ejs") %> 

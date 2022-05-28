@@ -1,0 +1,50 @@
+
+
+<%- include('partials/navbar.ejs',{title:"MyItems",logged,username:user.firstName}) %>
+
+<div class="container" id="items">
+  <div class="row">
+    <div class="col-5">
+    <h1 style="color: white">My Items</h1>
+  </div>
+  <div class="col-3">
+    <form action="/items/new" method="get">
+      <button type="submit">Create Listing</button>
+    </form>
+  </div>
+  </div>
+  <% if(messages.success){ %> 
+    <div class="alert alert-success alert-dismissible fade show" role="alert"><%=messages.success[0]%>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+  <% } %> 
+  <% if(messages.noitems){ %> 
+    <h2 style="color: blueviolet;"><%=messages.noitems[0]  %> </h2>
+  <% } %> 
+
+  <ul>
+    <% for(listing of userListings){ %>
+    <li >
+      <div
+        id="display_image"
+        style="
+          width: 40%;
+          background-size: contain;
+          background-repeat: no-repeat;
+          background-image: url('<%=listing.src%>');
+        "
+      ></div>
+      <h3><span style="color: rgb(71,225,12);">Title </span> <br><%= listing.title%></h3>
+      <p ><span style="color: rgb(71,225,12);">Description</span> <br><%=listing.text %> </p>
+      <form action="/items/<%=listing.id%>" method="get">
+        <button class="newAdd" type="submit">Edit Listing</button>
+      </form>
+      <form action="/items/<%=listing.id%>?_method=DELETE" method="post">
+        <button class="newAdd"  type="submit" style="background-color: red;">Delete Listing</button>
+      </form>
+    </li>
+    <% } %>
+  </ul>
+</div>
+
+<%- include("partials/footer.ejs") %>
