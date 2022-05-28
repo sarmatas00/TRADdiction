@@ -57,6 +57,10 @@ if(queryItemsForm.length!==0){
 queryItemsForm.forEach((form)=>{form.addEventListener("submit", (evt) => {
   evt.preventDefault();
   if(form.parentElement.getAttribute("class").includes("1") && widthMatch.matches && !nav.classList.contains("toggleInput")){
+    const event=new Event("click")
+    if(toggler.classList.contains("toggle")){
+      toggler.dispatchEvent(event)
+    }
     nav.classList.add("toggleInput")
   }else{
     
@@ -271,10 +275,13 @@ if(dropdownMenu!==null){
 //ο χρηστης στις διαφορες επιλογες.
 if(toggler!==null && widthMatch.matches){
 toggler.addEventListener("click", function () {
-
   this.classList.toggle("toggle");
   if(navCollapse2!==null){
-  navCollapse2.classList.toggle("toggler-active");
+    if(nav.classList.contains("toggleInput")){
+      nav.classList.remove("toggleInput")
+    }
+    navCollapse2.classList.toggle("toggler-active");
+
 
   //καθε option που υπαρχει μεσα στο dropdown εμφανιζεται σε διαφορετικο χρονο μετα την ενεργοποιηση
   //του toggler, με την βοηθεια ενος custom animation
