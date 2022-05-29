@@ -38,8 +38,10 @@ app.use(methodOverride("_method"))
 mongoose.connect(process.env.DATABASE,{useNewUrlParser:true, useUnifiedTopology: true})
 .then(async res=>{
     
+    //καλει μια μεθοδο του seed αρχειου που αρχικοποιει την βαση με δεδομενα
+    //εχει ηδη γινει και η βαση ειναι στο cloud, γι αυτο και ειναι σε comment
     
-    seed.connect()
+    // seed.connect()           
 })
 .catch(err=>{
     console.log(err);
